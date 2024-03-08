@@ -1,13 +1,12 @@
-type TProjectObject = {
-  id: string;
+class ProjectObject {
   name: string;
   description: string;
-};
-
-class ProjectObject {
+  id: string;
   constructor(name: string, description: string) {
     this.name = name;
     this.description = description;
     this.id = self.crypto.randomUUID();
   }
 }
+
+export default ProjectObject;
