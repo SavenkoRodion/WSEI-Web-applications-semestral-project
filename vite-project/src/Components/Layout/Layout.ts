@@ -2,12 +2,17 @@ import IComponentWrapper from "../../Framework-core/Model/IComponentWrapper";
 import TComponent from "../../Framework-core/Model/TComponent";
 
 class Layout implements IComponentWrapper {
-  #result: string;
+  #result: string = "";
   #afterRender: Array<() => any> = [];
+  #innerComponent: IComponentWrapper;
 
   public constructor(innerComponent: IComponentWrapper) {
+    this.#innerComponent = innerComponent;
+  }
+
+  public getComponent = (): TComponent => {
     const { result: innerComponentResult, afterRender: innerAfterRenderQueue } =
-      innerComponent.getComponent();
+      this.#innerComponent.getComponent();
     this.#result = `
      <div>
       <nav>
@@ -21,9 +26,7 @@ class Layout implements IComponentWrapper {
    `;
 
     this.#afterRender = this.#afterRender.concat(innerAfterRenderQueue);
-  }
 
-  public getComponent = (): TComponent => {
     return {
       result: this.#result,
       afterRender: this.#afterRender,

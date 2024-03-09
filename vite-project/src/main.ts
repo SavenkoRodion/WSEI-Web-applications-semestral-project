@@ -3,7 +3,8 @@ import ProjectCreate from "./Components/Project/projectCreate";
 import ProjectList from "./Components/Project/projectList";
 import Navigation from "./Framework-core/Navigation/Navigation";
 import Render from "./Framework-core/Render/Render";
-import ProjectObject from "./Model/projectObject";
+import { ProjectObject } from "./Model/projectObject";
+import IRepository from "./Repository/IRepository";
 import ProjectRepository from "./Repository/Project";
 import "./style.css";
 

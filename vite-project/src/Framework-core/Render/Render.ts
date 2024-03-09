@@ -6,6 +6,7 @@ class Render {
     const { result, afterRender } = navigationInstance
       .getComponentByPath(window.location.pathname)
       .getComponent();
+    console.log(result);
 
     document.querySelector<HTMLDivElement>("#app")!.innerHTML = "";
     document.querySelector<HTMLDivElement>("#app")!.innerHTML = result;

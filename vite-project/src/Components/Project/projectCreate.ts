@@ -1,14 +1,23 @@
 import IComponentWrapper from "../../Framework-core/Model/IComponentWrapper";
 import TComponent from "../../Framework-core/Model/TComponent";
-import ProjectObject from "../../Model/projectObject";
+import {
+  IProjectCreateRequest,
+  ProjectObject,
+} from "../../Model/projectObject";
+import IRepository from "../../Repository/IRepository";
 
 //this should implement interface with one method: getComponent, other methods should be private
 
 class ProjectCreate implements IComponentWrapper {
-  #result: string;
-  #afterRender: Array<() => any>;
+  #result: string = "";
+  #afterRender: Array<() => any> = [];
+  #repository: IRepository<ProjectObject>;
 
   public constructor(projectRepository: IRepository<ProjectObject>) {
+    this.#repository = projectRepository;
+  }
+
+  public getComponent = (): TComponent => {
     this.#result = `
     <div>
       <h1>Create project</h1>
@@ -21,9 +30,6 @@ class ProjectCreate implements IComponentWrapper {
     </div>`;
 
     this.#afterRender = [this.#applyCreateEventListener];
-  }
-
-  public getComponent = (): TComponent => {
     return {
       result: this.#result,
       afterRender: this.#afterRender,
@@ -45,13 +51,11 @@ class ProjectCreate implements IComponentWrapper {
       return;
     }
 
-    const projectList: Array<any> = JSON.parse(
-      localStorage.getItem("projectList") ?? "[]"
-    );
-    projectList.push(
-      new ProjectObject(nameInput!.value, descriptionInput!.value)
-    );
-    localStorage.setItem("projectList", JSON.stringify(projectList));
+    const result = this.#repository.create({
+      name: nameInput.value,
+      description: descriptionInput.value,
+    } as IProjectCreateRequest);
+    if (!result) console.error("failed to create entity");
 
     return;
   };

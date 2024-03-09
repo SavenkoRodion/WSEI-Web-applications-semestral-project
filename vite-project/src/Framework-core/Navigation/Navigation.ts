@@ -10,16 +10,16 @@ type pathToComponentMapping = {
 //404 not found
 
 class Navigation {
-  private static instance: Navigation;
-  private pathToComponentMapping: Array<pathToComponentMapping> = [];
+  static #instance: Navigation;
+  #pathToComponentMapping: Array<pathToComponentMapping> = [];
   private constructor() {}
 
   public static getInstance(): Navigation {
-    if (!Navigation.instance) {
-      Navigation.instance = new Navigation();
+    if (!Navigation.#instance) {
+      Navigation.#instance = new Navigation();
     }
 
-    return Navigation.instance;
+    return Navigation.#instance;
   }
 
   public addPathToComponentMapping = (
@@ -27,7 +27,7 @@ class Navigation {
     path: string,
     cssNavigationClass: string
   ): void => {
-    this.pathToComponentMapping.push({
+    this.#pathToComponentMapping.push({
       component: component,
       linkedPath: path,
       cssNavigationClass: cssNavigationClass,
@@ -36,12 +36,12 @@ class Navigation {
 
   public getComponentByPath = (path: string): IComponentWrapper => {
     return (
-      this.pathToComponentMapping.filter((e) => e.linkedPath === path)[0]
+      this.#pathToComponentMapping.filter((e) => e.linkedPath === path)[0]
         ?.component ?? "<h1>404 Page Not Found</h1>"
     );
   };
 
-  private handleRedirect = (path: string, cssNavigationClass: string) => {
+  #handleRedirect = (path: string, cssNavigationClass: string) => {
     document.querySelectorAll(`.${cssNavigationClass}`).forEach((e) => {
       e.addEventListener("click", () => {
         history.replaceState(null, "", path);
@@ -51,8 +51,8 @@ class Navigation {
   };
 
   public applyNavigation = () => {
-    this.pathToComponentMapping.map((e) =>
-      this.handleRedirect(e.linkedPath, e.cssNavigationClass)
+    this.#pathToComponentMapping.map((e) =>
+      this.#handleRedirect(e.linkedPath, e.cssNavigationClass)
     );
   };
 }
