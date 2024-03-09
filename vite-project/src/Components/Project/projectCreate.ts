@@ -8,7 +8,7 @@ class ProjectCreate implements IComponentWrapper {
   #result: string;
   #afterRender: Array<() => any>;
 
-  public constructor() {
+  public constructor(projectRepository: IRepository<ProjectObject>) {
     this.#result = `
     <div>
       <h1>Create project</h1>

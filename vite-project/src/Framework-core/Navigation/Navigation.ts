@@ -7,6 +7,8 @@ type pathToComponentMapping = {
   cssNavigationClass: string;
 };
 
+//404 not found
+
 class Navigation {
   private static instance: Navigation;
   private pathToComponentMapping: Array<pathToComponentMapping> = [];
