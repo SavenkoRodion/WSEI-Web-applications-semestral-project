@@ -29,7 +29,9 @@ class ProjectCreate implements IComponentWrapper {
       <button id="project-create">Create</button>
     </div>`;
 
-    this.#afterRender = [this.#applyCreateEventListener];
+    this.#afterRender = this.#afterRender.concat([
+      this.#applyCreateEventListeners,
+    ]);
     return {
       result: this.#result,
       afterRender: this.#afterRender,
@@ -55,12 +57,15 @@ class ProjectCreate implements IComponentWrapper {
       name: nameInput.value,
       description: descriptionInput.value,
     } as IProjectCreateRequest);
-    if (!result) console.error("failed to create entity");
-
+    if (!result) {
+      console.error("failed to create entity");
+      return;
+    }
+    alert("Project created successfully");
     return;
   };
 
-  #applyCreateEventListener = () => {
+  #applyCreateEventListeners = () => {
     console.log(document.querySelector<HTMLButtonElement>("#project-create"));
     document
       .querySelector<HTMLButtonElement>("#project-create")!

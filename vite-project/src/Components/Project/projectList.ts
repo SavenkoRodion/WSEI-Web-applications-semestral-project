@@ -1,9 +1,8 @@
 import IComponentWrapper from "../../Framework-core/Model/IComponentWrapper";
 import TComponent from "../../Framework-core/Model/TComponent";
+import Render from "../../Framework-core/Render/Render";
 import { ProjectObject } from "../../Model/projectObject";
 import IRepository from "../../Repository/IRepository";
-
-//render shouldn't be in ctor
 
 class ProjectList implements IComponentWrapper {
   #result: string = "";
@@ -15,7 +14,6 @@ class ProjectList implements IComponentWrapper {
   }
 
   public getComponent = (): TComponent => {
-    console.log("here");
     const projects = this.#projectRepository.getAll();
     this.#result = `
       <div>
@@ -27,17 +25,48 @@ class ProjectList implements IComponentWrapper {
             projects?.length
               ? projects?.map(
                   (e: ProjectObject) =>
-                    `<p>Project id: ${e.id}</p><p>Project name: ${e.name}</p><p>Project description: ${e.description}</p>`
+                    `<div style="border:1px solid black; padding: 5px">
+                      <p>Project id: ${e.id}</p>
+                      <p>Project name: ${e.name}</p>
+                      <p>Project description: ${e.description}</p>
+                      <button class="project-delete" id="${e.id}">Delete</button>
+                      <button class="project-edit" id="${e.id}">Edit</button>
+                    </div>`
                 )
               : "There isn't any project yet"
           }
         </div>
       </div>`;
-    this.#afterRender = [];
+    this.#afterRender = this.#afterRender.concat([
+      this.#applyCreateEventListeners,
+    ]);
     return {
       result: this.#result,
       afterRender: this.#afterRender,
     } as TComponent;
+  };
+
+  #handleProjectDelete = (lol: string) => {
+    console.log(lol);
+    this.#projectRepository.delete(lol);
+    Render.render();
+  };
+
+  #handleProjectEdit = () => {
+    return;
+  };
+
+  #applyCreateEventListeners = () => {
+    [...document.querySelectorAll(".project-delete")].map((e) =>
+      e.addEventListener("click", () => {
+        this.#handleProjectDelete(e.id);
+      })
+    );
+    [...document.querySelectorAll(".project-edit")].map((e) =>
+      e.addEventListener("click", () => {
+        this.#handleProjectEdit();
+      })
+    );
   };
 }
 

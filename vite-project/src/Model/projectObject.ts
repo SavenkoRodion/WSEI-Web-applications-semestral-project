@@ -5,8 +5,8 @@ export class ProjectObject {
   description: string;
   id: string;
   constructor({ name, description }: IProjectCreateRequest) {
-    this.name = name;
-    this.description = description;
+    this.name = name.trim();
+    this.description = description.trim();
     this.id = self.crypto.randomUUID();
   }
 }
