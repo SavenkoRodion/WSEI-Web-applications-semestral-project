@@ -37,16 +37,10 @@ class ProjectRepository implements IRepository<ProjectObject> {
   };
 
   delete = (guid: string): boolean => {
-    console.log(guid);
     const projectList: Array<ProjectObject> = this.getAll() ?? [];
-    console.log(projectList);
-    console.log(projectList.filter((e) => e.id === guid)?.length);
-    if (!projectList.filter((e) => e.id === guid)?.length) {
-      return false;
-    }
+    if (!projectList.filter((e) => e.id === guid)?.length) return false;
 
     const index = projectList.map((e) => e.id).indexOf(guid);
-    console.log(index);
     if (index !== -1) {
       projectList.splice(index, 1);
       localStorage.setItem(
