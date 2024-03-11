@@ -1,4 +1,5 @@
 import { Project } from "../model/project";
+import ProjectRepository from "../repository/ProjectRepository";
 import staticConfigs from "../staticConfigs";
 
 console.log("lol");
@@ -7,6 +8,7 @@ const inputName = document.querySelector<HTMLInputElement>("#project-name");
 const inputDesc = document.querySelector<HTMLInputElement>(
   "#project-description"
 );
+
 btnSave?.addEventListener("click", () => {
   if (!inputName?.value) {
     return;
@@ -18,8 +20,9 @@ btnSave?.addEventListener("click", () => {
     name: inputName.value,
     description: inputDesc.value,
   });
-  localStorage.setItem(
-    staticConfigs.localstorageProjectObjectVariable,
-    JSON.stringify(projectObject)
-  );
+  const repository: IRepository<Project> = new ProjectRepository();
+  const result = repository.create(projectObject);
+  if (result) alert("Project created successfully");
+  else alert("Failed to create a project");
+  console.log(repository.getAll());
 });
