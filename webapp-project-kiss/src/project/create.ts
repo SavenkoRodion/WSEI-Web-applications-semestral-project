@@ -1,8 +1,7 @@
 import { Project } from "../model/project";
+import IRepository from "../repository/IRepository";
 import ProjectRepository from "../repository/ProjectRepository";
-import staticConfigs from "../staticConfigs";
 
-console.log("lol");
 const btnSave = document.querySelector("#project-save");
 const inputName = document.querySelector<HTMLInputElement>("#project-name");
 const inputDesc = document.querySelector<HTMLInputElement>(
@@ -16,13 +15,14 @@ btnSave?.addEventListener("click", () => {
   if (!inputDesc?.value) {
     return;
   }
+
   const projectObject = new Project({
     name: inputName.value,
     description: inputDesc.value,
   });
+
   const repository: IRepository<Project> = new ProjectRepository();
   const result = repository.create(projectObject);
   if (result) alert("Project created successfully");
   else alert("Failed to create a project");
-  console.log(repository.getAll());
 });
