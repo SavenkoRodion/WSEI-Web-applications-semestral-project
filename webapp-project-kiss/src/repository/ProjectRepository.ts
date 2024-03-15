@@ -24,10 +24,26 @@ class ProjectRepository implements IRepository<Project> {
   }
 
   delete(id: string): boolean {
+    if (!id.trim()) return false;
+
     const projectList: Project[] = this.getAll();
     var index = projectList.map((e) => e.id).indexOf(id);
+
     if (index !== -1) {
       projectList.splice(index, 1);
+      localStorage.setItem(
+        staticConfigs.localstorageProjectObjectVariable,
+        JSON.stringify(projectList)
+      );
+      return true;
+    } else return false;
+  }
+
+  replace(project: Project): boolean {
+    const projectList: Project[] = this.getAll();
+    const index = projectList.map((e) => e.id).indexOf(project.id);
+    if (index !== -1) {
+      projectList.splice(index, 1, project);
       localStorage.setItem(
         staticConfigs.localstorageProjectObjectVariable,
         JSON.stringify(projectList)
