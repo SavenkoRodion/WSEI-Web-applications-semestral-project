@@ -32,7 +32,7 @@ domProjectWrapper!.innerHTML = projects
 
 [...document.querySelectorAll<HTMLElement>(".project-delete-js")].map((e) =>
   e.addEventListener("click", () => {
-    const response = repository.delete(e.dataset["delete-guid"] ?? "");
+    const response = repository.delete(e.dataset["deleteGuid"] ?? "");
     if (response) location.reload();
     else alert("failed to remove project");
   })
