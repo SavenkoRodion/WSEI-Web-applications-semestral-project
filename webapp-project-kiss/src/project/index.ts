@@ -70,7 +70,7 @@ function editButtonEvent(e: HTMLElement) {
     descriptionInput!.parentNode!.appendChild(projectDescription!);
     nameInput!.parentNode!.removeChild(nameInput!);
     descriptionInput!.parentNode!.removeChild(descriptionInput!);
-    parentNode.appendChild(e);
+    parentNode.appendChild(e); //
   });
   btnSave.addEventListener("click", () => {
     const thisProject = repository
@@ -85,6 +85,9 @@ function editButtonEvent(e: HTMLElement) {
     descriptionInput!.parentNode!.appendChild(projectDescription!);
     nameInput!.parentNode!.removeChild(nameInput!);
     descriptionInput!.parentNode!.removeChild(descriptionInput!);
+    parentNode.removeChild(btnSave);
+    parentNode.removeChild(btnCancel);
+    parentNode.appendChild(e);
     //location.reload();
   });
   parentNode.appendChild(btnSave);
