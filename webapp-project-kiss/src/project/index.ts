@@ -66,6 +66,10 @@ function editButtonEvent(e: HTMLElement) {
   btnCancel.addEventListener("click", () => {
     parentNode.removeChild(btnSave);
     parentNode.removeChild(btnCancel);
+    nameInput!.parentNode!.appendChild(projectName!);
+    descriptionInput!.parentNode!.appendChild(projectDescription!);
+    nameInput!.parentNode!.removeChild(nameInput!);
+    descriptionInput!.parentNode!.removeChild(descriptionInput!);
     parentNode.appendChild(e);
   });
   btnSave.addEventListener("click", () => {
@@ -75,8 +79,13 @@ function editButtonEvent(e: HTMLElement) {
     if (!thisProject) return;
     thisProject.name = nameInput.value.trim();
     thisProject.description = descriptionInput.value.trim();
-    repository.replace(thisProject);
-    location.reload();
+    projectName!.textContent = nameInput.value.trim();
+    projectDescription!.textContent = descriptionInput.value.trim();
+    nameInput!.parentNode!.appendChild(projectName!);
+    descriptionInput!.parentNode!.appendChild(projectDescription!);
+    nameInput!.parentNode!.removeChild(nameInput!);
+    descriptionInput!.parentNode!.removeChild(descriptionInput!);
+    //location.reload();
   });
   parentNode.appendChild(btnSave);
   parentNode.appendChild(btnCancel);
