@@ -69,7 +69,14 @@ function editButtonEvent(e: HTMLElement) {
     parentNode.appendChild(e);
   });
   btnSave.addEventListener("click", () => {
-    //todo
+    const thisProject = repository
+      .getAll()
+      .find((x) => x.id === e.dataset["editGuid"]);
+    if (!thisProject) return;
+    thisProject.name = nameInput.value.trim();
+    thisProject.description = descriptionInput.value.trim();
+    repository.replace(thisProject);
+    location.reload();
   });
   parentNode.appendChild(btnSave);
   parentNode.appendChild(btnCancel);
