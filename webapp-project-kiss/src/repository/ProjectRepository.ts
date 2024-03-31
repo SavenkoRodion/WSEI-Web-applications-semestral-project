@@ -1,8 +1,10 @@
-import { Project } from "../model/project";
+import { Project } from "../model/Project";
 import staticConfigs from "../staticConfigs";
+import authorize from "../util/decorators/authorize";
 import IRepository from "./IRepository";
 
 class ProjectRepository implements IRepository<Project> {
+  @authorize()
   create(project: Project) {
     const projectList: Project[] = this.getAll();
     console.log(projectList);
@@ -15,6 +17,7 @@ class ProjectRepository implements IRepository<Project> {
     return true;
   }
 
+  @authorize()
   getAll() {
     const fromStorage =
       localStorage.getItem(staticConfigs.localstorageProjectObjectVariable) ??
@@ -23,6 +26,7 @@ class ProjectRepository implements IRepository<Project> {
     return parsed;
   }
 
+  @authorize()
   delete(id: string): boolean {
     if (!id.trim()) return false;
 
@@ -39,6 +43,7 @@ class ProjectRepository implements IRepository<Project> {
     } else return false;
   }
 
+  @authorize()
   replace(project: Project): boolean {
     const projectList: Project[] = this.getAll();
     const index = projectList.map((e) => e.id).indexOf(project.id);
