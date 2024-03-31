@@ -13,3 +13,10 @@ export class Project {
     this.id = crypto.randomUUID();
   }
 }
+
+export class SelectedProject {
+  id: string;
+  constructor(id: string) {
+    this.id = id;
+  }
+}

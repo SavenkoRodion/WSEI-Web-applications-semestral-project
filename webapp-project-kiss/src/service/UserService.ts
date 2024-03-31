@@ -1,10 +1,10 @@
 import { User } from "../model/User";
 
-export interface IUserHandler {
+export interface IUserService {
   getLoggedUser: () => User | null;
 }
 
-export class UserHandler implements IUserHandler {
+export class UserService implements IUserService {
   getLoggedUser = () => {
     return new User("Adam", "Smith");
   };

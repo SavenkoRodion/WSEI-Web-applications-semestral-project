@@ -1,6 +1,7 @@
-import { Project } from "../model/Project";
+import { Project, SelectedProject } from "../model/Project";
 import IRepository from "../repository/IRepository";
 import ProjectRepository from "../repository/ProjectRepository";
+import SelectedProjectRepository from "../repository/SelectedProjectRepository";
 
 const getProjectListElement = (
   id: string,
@@ -13,6 +14,7 @@ const getProjectListElement = (
     <p>Project name: <span data-display-name="${name}">${name}</span></p>
     <p>Project description: <span data-display-description="${description}">${description}</span></p>
     <div>
+      <button data-select-guid="${id}" class="project-select-js">Select</button>
       <button data-delete-guid="${id}" class="project-delete-js">Delete</button>
       <button data-edit-guid="${id}" class="project-edit-js">Edit</button>
     </div>
@@ -20,8 +22,8 @@ const getProjectListElement = (
   <hr />`;
 };
 
-const repository: IRepository<Project> = new ProjectRepository();
-const projects = repository.getAll();
+const projectRepository: IRepository<Project> = new ProjectRepository();
+const projects = projectRepository.getAll();
 const domProjectWrapper = document.querySelector<HTMLDivElement>(
   "#project-list-container"
 );
@@ -30,9 +32,14 @@ domProjectWrapper!.innerHTML = projects
   .map((e) => getProjectListElement(e.id, e.name, e.description))
   .join("");
 
+const selectedProjectRepository: IRepository<SelectedProject> =
+  new SelectedProjectRepository();
+
+console.log(selectedProjectRepository.getAll());
+
 [...document.querySelectorAll<HTMLElement>(".project-delete-js")].map((e) =>
   e.addEventListener("click", () => {
-    const response = repository.delete(e.dataset["deleteGuid"] ?? "");
+    const response = projectRepository.delete(e.dataset["deleteGuid"] ?? "");
     if (response) location.reload();
     else alert("failed to remove project");
   })
@@ -73,7 +80,7 @@ function editButtonEvent(e: HTMLElement) {
     parentNode.appendChild(e); //
   });
   btnSave.addEventListener("click", () => {
-    const thisProject = repository
+    const thisProject = projectRepository
       .getAll()
       .find((x) => x.id === e.dataset["editGuid"]);
     if (!thisProject) return;
