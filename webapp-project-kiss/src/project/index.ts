@@ -57,16 +57,20 @@ class ProjectPage {
   };
 
   #applyEditButtonEvents = () => {
-    [...document.querySelectorAll<HTMLElement>(".project-edit-js")].map((e) =>
-      e.addEventListener("click", () => {
-        this.#editButtonEvent(e);
-      })
+    [...document.querySelectorAll<HTMLButtonElement>(".project-edit-js")].map(
+      (e) =>
+        e.addEventListener("click", () => {
+          this.#editButtonEvent(e);
+        })
     );
   };
 
-  #editButtonEvent = (e: HTMLElement) => {
-    //refactor this mess
-    const parentNode = e.parentNode!;
+  #editButtonEvent = (e: HTMLButtonElement) => {
+    const { editGuid } = e.dataset;
+    if (!editGuid) return;
+
+    const btnParentNode = e.parentNode as HTMLElement;
+    if (!btnParentNode) return;
 
     const btnSave = document.createElement("button");
     btnSave.innerHTML = "Save";
@@ -74,50 +78,57 @@ class ProjectPage {
     btnCancel.innerHTML = "Cancel";
     const nameInput = document.createElement("input");
     const descriptionInput = document.createElement("input");
-    const projectName = document.querySelector(
-      `[data-display-row="${e.dataset["editGuid"]}"] > p > [data-display-name]`
-    );
-    const projectDescription = document.querySelector(
-      `[data-display-row="${e.dataset["editGuid"]}"] > p > [data-display-description]`
-    );
-    nameInput.value = projectName?.innerHTML ?? "";
-    descriptionInput.value = projectDescription?.innerHTML ?? "";
 
-    btnCancel.addEventListener("click", () => {
-      parentNode.removeChild(btnSave);
-      parentNode.removeChild(btnCancel);
-      nameInput!.parentNode!.appendChild(projectName!);
-      descriptionInput!.parentNode!.appendChild(projectDescription!);
-      nameInput!.parentNode!.removeChild(nameInput!);
-      descriptionInput!.parentNode!.removeChild(descriptionInput!);
-      parentNode.appendChild(e); //
-    });
-    btnSave.addEventListener("click", () => {
+    const projectName = document.querySelector<HTMLElement>(
+      `[data-display-row="${editGuid}"] > p > [data-display-name]`
+    );
+    const projectDescription = document.querySelector<HTMLElement>(
+      `[data-display-row="${editGuid}"] > p > [data-display-description]`
+    );
+
+    if (!projectName || !projectDescription) return;
+
+    nameInput.value = projectName.innerHTML.trim();
+    descriptionInput.value = projectDescription.innerHTML.trim();
+
+    const cancelHandler = () => {
+      btnParentNode.removeChild(btnSave);
+      btnParentNode.removeChild(btnCancel);
+      btnParentNode.appendChild(e);
+      nameInput.parentNode?.appendChild(projectName);
+      descriptionInput.parentNode?.appendChild(projectDescription);
+      projectName.parentNode?.removeChild(nameInput);
+      descriptionInput.parentNode?.removeChild(descriptionInput);
+    };
+
+    const saveHandler = () => {
       const thisProject = this.#projectRepository
         .getAll()
-        .find((x) => x.id === e.dataset["editGuid"]);
+        .find((x) => x.id === editGuid);
       if (!thisProject) return;
-      thisProject.name = nameInput.value.trim();
-      thisProject.description = descriptionInput.value.trim();
-      projectName!.textContent = nameInput.value.trim();
-      projectDescription!.textContent = descriptionInput.value.trim();
-      nameInput!.parentNode!.appendChild(projectName!);
-      descriptionInput!.parentNode!.appendChild(projectDescription!);
-      nameInput!.parentNode!.removeChild(nameInput!);
-      descriptionInput!.parentNode!.removeChild(descriptionInput!);
-      parentNode.removeChild(btnSave);
-      parentNode.removeChild(btnCancel);
-      parentNode.appendChild(e);
+
+      const trimmedName = nameInput.value.trim();
+      const trimmedDescription = descriptionInput.value.trim();
+
+      thisProject.name = trimmedName;
+      thisProject.description = trimmedDescription;
+      projectName.textContent = trimmedName;
+      projectDescription.textContent = trimmedDescription;
+
       this.#projectRepository.replace(thisProject);
-      //location.reload();
-    });
-    parentNode.appendChild(btnSave);
-    parentNode.appendChild(btnCancel);
-    projectName!.parentNode!.appendChild(nameInput!);
-    projectDescription!.parentNode!.appendChild(descriptionInput!);
-    parentNode.removeChild(e);
-    projectName!.parentNode!.removeChild(projectName!);
-    projectDescription!.parentNode!.removeChild(projectDescription!);
+      location.reload();
+    };
+
+    btnCancel.addEventListener("click", cancelHandler);
+    btnSave.addEventListener("click", saveHandler);
+
+    btnParentNode.appendChild(btnSave);
+    btnParentNode.appendChild(btnCancel);
+    btnParentNode.removeChild(e);
+    projectName.parentNode?.appendChild(nameInput);
+    projectDescription.parentNode?.appendChild(descriptionInput);
+    projectName.parentNode?.removeChild(projectName);
+    projectDescription.parentNode?.removeChild(projectDescription);
   };
 
   #loadSelectedProject = () => {
