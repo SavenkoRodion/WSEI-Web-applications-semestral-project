@@ -8,7 +8,7 @@ class SelectedProjectRepository implements IRepository<SelectedProject> {
   create(project: SelectedProject) {
     localStorage.setItem(
       staticConfigs.localstorageSelectedProjectVariable,
-      JSON.stringify(project)
+      JSON.stringify([project])
     );
     return true;
   }
