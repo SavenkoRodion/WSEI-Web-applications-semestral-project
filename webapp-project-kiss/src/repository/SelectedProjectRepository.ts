@@ -1,4 +1,4 @@
-import { SelectedProject } from "../model/Project";
+import { SelectedProject } from "../model/project";
 import staticConfigs from "../staticConfigs";
 import authorize from "../util/decorators/authorize";
 import IRepository from "./IRepository";

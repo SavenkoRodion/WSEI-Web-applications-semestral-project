@@ -1,4 +1,4 @@
-import { Project } from "../model/Project";
+import { Project } from "../model/project";
 import IRepository from "../repository/IRepository";
 import ProjectRepository from "../repository/ProjectRepository";
 

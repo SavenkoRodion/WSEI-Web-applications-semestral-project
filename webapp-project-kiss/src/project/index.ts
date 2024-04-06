@@ -1,4 +1,4 @@
-import { Project, SelectedProject } from "../model/Project";
+import { Project, SelectedProject } from "../model/project";
 import IRepository from "../repository/IRepository";
 import ProjectRepository from "../repository/ProjectRepository";
 import SelectedProjectRepository from "../repository/SelectedProjectRepository";
@@ -148,7 +148,7 @@ class ProjectPage {
         navLink.href = "/";
         const allProjects = this.#projectRepository.getAll();
         const thisProjectTMP = allProjects.filter(
-          (e) => (e.id = selectedProject[0].id)
+          (e) => (e.id === selectedProject[0].id)
         );
         navLink.innerHTML = `Selected project: ${thisProjectTMP[0].name}`;
       } else alert("Can't find selected project");
