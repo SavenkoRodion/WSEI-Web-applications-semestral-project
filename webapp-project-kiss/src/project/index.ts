@@ -8,23 +8,26 @@ class ProjectPage {
   #projectRepository: IRepository<Project>;
   #selectedProjectRepository: IRepository<SelectedProject>;
   #projects: Project[];
-  #domProjectWrapper: HTMLDivElement | null;
+  #domProjectWrapper: HTMLDivElement;
 
   constructor() {
     this.#projectRepository = new ProjectRepository();
     this.#projects = this.#projectRepository.getAll();
     this.#domProjectWrapper = document.querySelector<HTMLDivElement>(
       "#project-list-container"
-    );
+    )!;
 
     this.#selectedProjectRepository = new SelectedProjectRepository();
   }
 
   #getProjectListElement = (id: string, name: string, description: string) => {
+    const lol = document.createElement("div");
+    lol.innerHTML = name
+    debugger
     return `
     <div data-display-row="${id}">
       <p>Project id: ${id}</p>
-      <p>Project name: <span data-display-name="${name}">${name}</span></p>
+      <p>Project name: <span data-display-name="${lol.textContent}">${lol.textContent}</span></p>
       <p>Project description: <span data-display-description="${description}">${description}</span></p>
       <div>
         <button data-select-guid="${id}" class="project-select-js">Select</button>
@@ -73,9 +76,9 @@ class ProjectPage {
     if (!btnParentNode) return;
 
     const btnSave = document.createElement("button");
-    btnSave.innerHTML = "Save";
+    btnSave.textContent = "Save";
     const btnCancel = document.createElement("button");
-    btnCancel.innerHTML = "Cancel";
+    btnCancel.textContent = "Cancel";
     const nameInput = document.createElement("input");
     const descriptionInput = document.createElement("input");
 
@@ -133,24 +136,23 @@ class ProjectPage {
 
   #loadSelectedProject = () => {
     const selectedProject = this.#selectedProjectRepository.getAll();
-    console.log(typeof selectedProject);
     if (selectedProject.length === 1) {
       const selectedProjectButton = document.querySelector<HTMLButtonElement>(
         `[data-select-guid="${selectedProject[0].id}"]`
       );
       if (selectedProjectButton) {
-        selectedProjectButton.innerHTML = "SELECTED";
+        selectedProjectButton.textContent = "SELECTED";
         const navLink = document.querySelector<HTMLLinkElement>(
           "#nav-selected-project"
         );
-        console.log(navLink);
         if (!navLink) return;
         navLink.href = "/";
-        const allProjects = this.#projectRepository.getAll();
-        const thisProjectTMP = allProjects.filter(
+        const thisProjectTMP = this.#projectRepository
+        .getAll()
+        .filter(
           (e) => (e.id === selectedProject[0].id)
         );
-        navLink.innerHTML = `Selected project: ${thisProjectTMP[0].name}`;
+        navLink.textContent = `Selected project: ${thisProjectTMP[0].name}`;
       } else alert("Can't find selected project");
     }
   };
@@ -166,7 +168,7 @@ class ProjectPage {
 
   @authorize()
   public run() {
-    this.#domProjectWrapper!.innerHTML = this.#projects
+    this.#domProjectWrapper.innerHTML = this.#projects
       .map((e) => this.#getProjectListElement(e.id, e.name, e.description))
       .join("");
     this.#applySelectButtonEvents();
