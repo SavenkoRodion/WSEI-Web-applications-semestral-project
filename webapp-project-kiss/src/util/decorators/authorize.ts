@@ -1,4 +1,4 @@
-import { IUserHandler, UserHandler } from "../../handlers/UserHandler";
+import { IUserService, UserService } from "../../service/UserService";
 
 export default function authorize() {
   return function (
@@ -8,8 +8,8 @@ export default function authorize() {
   ) {
     const original = descriptor.value;
     descriptor.value = function (...args: any[]) {
-      const userHandler: IUserHandler = new UserHandler();
-      const loggedUser = userHandler.getLoggedUser();
+      const userService: IUserService = new UserService();
+      const loggedUser = userService.getLoggedUser();
       if (loggedUser) {
         const result = original.apply(this, args);
         return result;
