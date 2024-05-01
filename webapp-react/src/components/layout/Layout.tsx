@@ -1,0 +1,34 @@
+import {
+  AppBar,
+  Box,
+  CssBaseline,
+  Link,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import { Outlet } from "react-router-dom";
+
+const Layout = () => {
+  return (
+    <Box>
+      <CssBaseline />
+      <AppBar position="sticky">
+        <Toolbar variant="dense">
+          <Typography variant="h6" color="inherit" component="div">
+            <Link
+              href="/projekt"
+              sx={{ color: "white", textDecoration: "underline" }}
+            >
+              Projekt
+            </Link>
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Box>
+        <Outlet />
+      </Box>
+    </Box>
+  );
+};
+
+export default Layout;
