@@ -8,15 +8,15 @@ const ProjectPageLayout = () => {
         <Toolbar variant="dense">
           <Typography>
             <Link
-              href="/projekt"
+              href="/project"
               sx={{ color: "white", textDecoration: "underline" }}
             >
-              Projekt list
+              Project list
             </Link>
           </Typography>
           <Typography>
             <Link
-              href="/projekt-create"
+              href="project/create"
               sx={{
                 color: "white",
                 textDecoration: "underline",
@@ -28,7 +28,7 @@ const ProjectPageLayout = () => {
           </Typography>
           <Typography>
             <Link
-              href="/projekt-create"
+              href="/project/create"
               sx={{
                 color: "white",
                 textDecoration: "underline",

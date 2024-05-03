@@ -1,13 +1,13 @@
-import { IUserService, UserService } from "../../service/UserService";
+import { IUserService, UserService } from "../service/UserService";
 
 export default function authorize() {
   return function (
-    target: Object,
+    target: object,
     key: string | symbol,
     descriptor: PropertyDescriptor
   ) {
     const original = descriptor.value;
-    descriptor.value = function (...args: any[]) {
+    descriptor.value = function (...args: unknown[]) {
       const userService: IUserService = new UserService();
       const loggedUser = userService.getLoggedUser();
       if (loggedUser) {

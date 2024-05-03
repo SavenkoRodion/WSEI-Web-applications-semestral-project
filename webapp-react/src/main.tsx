@@ -5,6 +5,7 @@ import Layout from "./components/layout/Layout.tsx";
 import Home from "./components/home/Home.tsx";
 import ProjectPageLayout from "./components/layout/ProjectPageLayout.tsx";
 import ProjectList from "./components/project/ProjectList.tsx";
+import ProjectCreate from "./components/project/ProjectCreate.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -12,8 +13,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <Routes>
         <Route element={<Layout />} path="/">
           <Route element={<Home />} index></Route>
-          <Route element={<ProjectPageLayout />} path="projekt">
+          <Route element={<ProjectPageLayout />} path="project">
             <Route element={<ProjectList />} path="" />
+            <Route element={<ProjectCreate />} path="create" />
           </Route>
         </Route>
       </Routes>

@@ -16,10 +16,10 @@ const Layout = () => {
         <Toolbar variant="dense">
           <Typography variant="h5">
             <Link
-              href="/projekt"
+              href="/project"
               sx={{ color: "white", textDecoration: "underline" }}
             >
-              Projekt
+              Project
             </Link>
           </Typography>
         </Toolbar>
