@@ -14,7 +14,7 @@ const Layout = () => {
       <CssBaseline />
       <AppBar position="sticky">
         <Toolbar variant="dense">
-          <Typography variant="h6" color="inherit" component="div">
+          <Typography variant="h5">
             <Link
               href="/projekt"
               sx={{ color: "white", textDecoration: "underline" }}
