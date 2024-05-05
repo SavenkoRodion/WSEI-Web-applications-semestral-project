@@ -16,7 +16,7 @@ const ProjectList = () => {
     //   renderCell: () => {
     //     return (
     //       <Radio
-    //         checked={!!context.selectedProject}
+    //         checked={!!context.SelectedProjectId}
     //         onChange={() => {
     //           console.log("lol");
     //         }}
@@ -29,9 +29,9 @@ const ProjectList = () => {
     { field: "description", headerName: "Project description", flex: 2 },
   ];
 
-  const [selectionModel, setSelectionModel] = useState<GridRowId[]>([
-    context.selectedProjectId,
-  ]);
+  const [selectionModel, setSelectionModel] = useState<GridRowId[]>(
+    context.selectedProjectId ? [context.selectedProjectId] : []
+  );
 
   return (
     <Box>
@@ -46,15 +46,10 @@ const ProjectList = () => {
         }}
         rowSelectionModel={selectionModel}
         onRowSelectionModelChange={(selection) => {
-          //TODO: Refactor
-          if (selection.length > 1) {
-            const selectionSet = new Set(selectionModel);
-            const result = selection.filter((s) => !selectionSet.has(s));
-            setSelectionModel(result);
-            context.setSelectedProjectId(result[0].toString());
-          } else {
-            setSelectionModel(selection);
-          }
+          const selectionSet = new Set(selectionModel);
+          const result = selection.filter((s) => !selectionSet.has(s));
+          setSelectionModel(result);
+          context.setSelectedProjectId(result[0]?.toString() ?? null);
         }}
       ></DataGrid>
     </Box>

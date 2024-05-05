@@ -1,11 +1,11 @@
 import authorize from "../decorators/authorize";
-import { SelectedProject } from "../model/Project";
+import { SelectedProjectId } from "../model/Project";
 import staticConfigs from "../staticConfigs";
 import IRepository from "./IRepository";
 
-class SelectedProjectRepository implements IRepository<SelectedProject> {
+class SelectedProjectRepository implements IRepository<SelectedProjectId> {
   @authorize()
-  create(project: SelectedProject) {
+  create(project: SelectedProjectId) {
     localStorage.setItem(
       staticConfigs.localstorageSelectedProjectVariable,
       JSON.stringify([project])
@@ -18,7 +18,7 @@ class SelectedProjectRepository implements IRepository<SelectedProject> {
     const fromStorage =
       localStorage.getItem(staticConfigs.localstorageSelectedProjectVariable) ??
       "[]";
-    const parsed: SelectedProject[] = JSON.parse(fromStorage);
+    const parsed: SelectedProjectId[] = JSON.parse(fromStorage);
     return parsed;
   }
 
@@ -26,7 +26,7 @@ class SelectedProjectRepository implements IRepository<SelectedProject> {
   delete(id: string): boolean {
     if (id.trim() === "") return false;
 
-    const projectList: SelectedProject[] = this.getAll();
+    const projectList: SelectedProjectId[] = this.getAll();
     const index = projectList.map((e) => e.id).indexOf(id);
 
     if (index !== -1) {
@@ -40,8 +40,8 @@ class SelectedProjectRepository implements IRepository<SelectedProject> {
   }
 
   @authorize()
-  replace(project: SelectedProject): boolean {
-    const projectList: SelectedProject[] = this.getAll();
+  replace(project: SelectedProjectId): boolean {
+    const projectList: SelectedProjectId[] = this.getAll();
     const index = projectList.map((e) => e.id).indexOf(project.id);
     if (index !== -1) {
       projectList.splice(index, 1, project);

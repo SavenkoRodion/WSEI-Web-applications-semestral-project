@@ -9,9 +9,9 @@ export class Project {
   }
 }
 
-export class SelectedProject {
-  id: string;
-  constructor(id: string) {
+export class SelectedProjectId {
+  id: string | null;
+  constructor(id: string | null) {
     this.id = id;
   }
 }

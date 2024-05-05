@@ -1,27 +1,27 @@
 import { AppBar, Box, Link, Toolbar, Typography } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import IRepository from "../../repository/IRepository";
-import { Project, SelectedProject } from "../../model/Project";
+import { Project, SelectedProjectId } from "../../model/Project";
 import SelectedProjectRepository from "../../repository/SelectedProjectRepository";
 import ProjectRepository from "../../repository/ProjectRepository";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export type TProjectContext = {
   projects: Project[];
-  selectedProjectId: string;
-  setSelectedProjectId: (id: string) => void;
+  selectedProjectId: string | null;
+  setSelectedProjectId: (id: string | null) => void;
 };
 
 export const ProjectPageLayout = () => {
   const projectRepository: IRepository<Project> = new ProjectRepository();
   const projects = projectRepository.getAll();
 
-  const selectedProjectRepository: IRepository<SelectedProject> =
+  const selectedProjectRepository: IRepository<SelectedProjectId> =
     new SelectedProjectRepository();
   const [selectedProjectId, setSelectedProjectId] = useState(
     selectedProjectRepository.getAll()[0].id
   );
-  const [selectedProject] = useState(
+  const [selectedProject, setSelectedProject] = useState<Project | undefined>(
     projects.filter((e) => e.id === selectedProjectId)[0]
   );
 
@@ -30,6 +30,11 @@ export const ProjectPageLayout = () => {
     selectedProjectId: selectedProjectId,
     setSelectedProjectId: setSelectedProjectId,
   };
+
+  useEffect(() => {
+    selectedProjectRepository.create(new SelectedProjectId(selectedProjectId));
+    setSelectedProject(projects.filter((e) => e.id === selectedProjectId)[0]);
+  }, [selectedProjectId]);
 
   return (
     <>
@@ -64,7 +69,7 @@ export const ProjectPageLayout = () => {
                 marginLeft: "16px",
               }}
             >
-              Selected project: {selectedProject.name ?? "none"}
+              Selected project: {selectedProject?.name ?? "none"}
             </Link>
           </Typography>
         </Toolbar>
