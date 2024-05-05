@@ -8,8 +8,8 @@ import { useState } from "react";
 
 export type TProjectContext = {
   projects: Project[];
-  selectedProject: Project;
-  setSelectedProject: (x: Project) => void;
+  selectedProjectId: string;
+  setSelectedProjectId: (id: string) => void;
 };
 
 export const ProjectPageLayout = () => {
@@ -18,15 +18,17 @@ export const ProjectPageLayout = () => {
 
   const selectedProjectRepository: IRepository<SelectedProject> =
     new SelectedProjectRepository();
-  const selectedProjectId = selectedProjectRepository.getAll()[0];
-  const [selectedProject, setSelectedProject] = useState(
-    projects.filter((e) => e.id === selectedProjectId.id)[0]
+  const [selectedProjectId, setSelectedProjectId] = useState(
+    selectedProjectRepository.getAll()[0].id
+  );
+  const [selectedProject] = useState(
+    projects.filter((e) => e.id === selectedProjectId)[0]
   );
 
   const context: TProjectContext = {
     projects: projects,
-    selectedProject: selectedProject,
-    setSelectedProject: setSelectedProject,
+    selectedProjectId: selectedProjectId,
+    setSelectedProjectId: setSelectedProjectId,
   };
 
   return (

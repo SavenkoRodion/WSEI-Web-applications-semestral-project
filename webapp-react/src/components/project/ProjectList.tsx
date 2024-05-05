@@ -29,7 +29,10 @@ const ProjectList = () => {
     { field: "description", headerName: "Project description", flex: 2 },
   ];
 
-  const [selectionModel, setSelectionModel] = useState<GridRowId[]>([]);
+  const [selectionModel, setSelectionModel] = useState<GridRowId[]>([
+    context.selectedProjectId,
+  ]);
+
   return (
     <Box>
       <DataGrid
@@ -47,8 +50,8 @@ const ProjectList = () => {
           if (selection.length > 1) {
             const selectionSet = new Set(selectionModel);
             const result = selection.filter((s) => !selectionSet.has(s));
-            console.log(result);
             setSelectionModel(result);
+            context.setSelectedProjectId(result[0].toString());
           } else {
             setSelectionModel(selection);
           }
