@@ -1,6 +1,6 @@
-import { SelectedProject } from "../model/project";
+import authorize from "../decorators/authorize";
+import { SelectedProject } from "../model/Project";
 import staticConfigs from "../staticConfigs";
-import authorize from "../util/decorators/authorize";
 import IRepository from "./IRepository";
 
 class SelectedProjectRepository implements IRepository<SelectedProject> {
@@ -27,7 +27,7 @@ class SelectedProjectRepository implements IRepository<SelectedProject> {
     if (id.trim() === "") return false;
 
     const projectList: SelectedProject[] = this.getAll();
-    let index = projectList.map((e) => e.id).indexOf(id);
+    const index = projectList.map((e) => e.id).indexOf(id);
 
     if (index !== -1) {
       projectList.splice(index, 1);

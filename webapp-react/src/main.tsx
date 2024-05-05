@@ -3,9 +3,9 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./components/layout/Layout.tsx";
 import Home from "./components/home/Home.tsx";
-import ProjectPageLayout from "./components/layout/ProjectPageLayout.tsx";
 import ProjectList from "./components/project/ProjectList.tsx";
 import ProjectCreate from "./components/project/ProjectCreate.tsx";
+import { ProjectPageLayout } from "./components/layout/ProjectPageLayout.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
