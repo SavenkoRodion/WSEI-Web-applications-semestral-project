@@ -4,27 +4,22 @@ import { Project } from "../../model/Project";
 import { useOutletContext } from "react-router-dom";
 import { TProjectContext } from "../layout/ProjectPageLayout";
 import { useState } from "react";
-import ProjectEditDialog from "./ProjectEditModal";
+import ProjectEditDialog from "./ProjectEditDialog";
 
 const ProjectList = () => {
+  const [projectToEdit, setProjectToEdit] = useState<Project | null>(null);
+
+  const handleEdit = (projectToEdit: Project) => {
+    setProjectToEdit(projectToEdit);
+  };
+
+  const handleEditDialogClose = () => {
+    setProjectToEdit(null);
+  };
+
   const context: TProjectContext = useOutletContext();
 
   const columns: GridColDef<Project[][number]>[] = [
-    // {
-    //   field: "select",
-    //   headerName: "",
-    //   width: 50,
-    //   renderCell: () => {
-    //     return (
-    //       <Radio
-    //         checked={!!context.SelectedProjectId}
-    //         onChange={() => {
-    //           console.log("lol");
-    //         }}
-    //       />
-    //     );
-    //   },
-    // },
     { field: "id", headerName: "ID", flex: 1 },
     { field: "name", headerName: "Project name", flex: 0.75 },
     { field: "description", headerName: "Project description", flex: 2 },
@@ -34,7 +29,7 @@ const ProjectList = () => {
       flex: 0.25,
       renderCell: ({ row }: { row: Project }) => {
         console.log(row);
-        return <Button>Edit</Button>;
+        return <Button onClick={() => handleEdit(row)}>Edit</Button>;
       },
     },
     {
@@ -74,7 +69,12 @@ const ProjectList = () => {
         disableColumnMenu
         autoHeight
       ></DataGrid>
-      <ProjectEditDialog />
+      {projectToEdit && (
+        <ProjectEditDialog
+          project={projectToEdit}
+          onClose={handleEditDialogClose}
+        />
+      )}
     </Box>
   );
 };
