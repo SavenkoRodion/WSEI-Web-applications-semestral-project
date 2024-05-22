@@ -26,7 +26,7 @@ const ProjectDeleteDialog = ({
         Are you sure you want to delete project: {name}?
       </DialogContent>
       <DialogContent>
-        <Stack justifyContent="space-between" direction="row">
+        <Stack justifyContent="space-between" direction="row" width="500px">
           <Button onClick={onClose}>Close</Button>
           <Button
             onClick={() => onDelete(id)}

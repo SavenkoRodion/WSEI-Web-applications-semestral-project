@@ -1,10 +1,11 @@
-import { AppBar, Box, Link, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Button, Link, Toolbar, Typography } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import IRepository from "../../repository/IRepository";
 import { Project, SelectedProjectId } from "../../model/Project";
 import SelectedProjectRepository from "../../repository/SelectedProjectRepository";
 import ProjectRepository from "../../repository/ProjectRepository";
 import { useEffect, useState } from "react";
+import ProjectCreateDialog from "../project/ProjectCreateDialog";
 
 export type TProjectContext = {
   projects: Project[];
@@ -36,6 +37,21 @@ export const ProjectPageLayout = () => {
     setSelectedProject(projects.filter((e) => e.id === selectedProjectId)[0]);
   }, [selectedProjectId]);
 
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+
+  const handleCreateDialogClose = () => {
+    setIsCreateDialogOpen(false);
+  };
+
+  const handleCreateDialogOpen = () => {
+    setIsCreateDialogOpen(true);
+  };
+
+  const handleCreateDialogCreate = (name: string, description: string) => {
+    projectRepository.create(new Project(name, description));
+    setIsCreateDialogOpen(false);
+  };
+
   return (
     <>
       <AppBar position="sticky">
@@ -49,8 +65,8 @@ export const ProjectPageLayout = () => {
             </Link>
           </Typography>
           <Typography>
-            <Link
-              href="project/create"
+            <Button
+              onClick={handleCreateDialogOpen}
               sx={{
                 color: "white",
                 textDecoration: "underline",
@@ -58,7 +74,7 @@ export const ProjectPageLayout = () => {
               }}
             >
               Create project
-            </Link>
+            </Button>
           </Typography>
           <Typography>
             <Link
@@ -77,6 +93,12 @@ export const ProjectPageLayout = () => {
       <Box>
         <Outlet context={context} />
       </Box>
+      {isCreateDialogOpen && (
+        <ProjectCreateDialog
+          onClose={handleCreateDialogClose}
+          onCreate={handleCreateDialogCreate}
+        />
+      )}
     </>
   );
 };

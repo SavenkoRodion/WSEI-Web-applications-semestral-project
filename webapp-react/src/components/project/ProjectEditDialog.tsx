@@ -45,7 +45,13 @@ const ProjectEditDialog = ({
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "15px",
+          }}
+        >
           <Stack>
             <Typography>Project id: {project.id}</Typography>
           </Stack>
