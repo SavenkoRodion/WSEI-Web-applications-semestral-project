@@ -1,22 +1,32 @@
 import {
+  Box,
   Button,
   Dialog,
   DialogContent,
   DialogTitle,
   IconButton,
-  OutlinedInput,
   Stack,
+  TextField,
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Project } from "../../model/Project";
+import { useState } from "react";
 
 type ProjectEditDialogProps = {
   project: Project;
   onClose: () => void;
+  onSave: (project: Project) => void;
 };
 
-const ProjectEditDialog = ({ project, onClose }: ProjectEditDialogProps) => {
+const ProjectEditDialog = ({
+  project,
+  onClose,
+  onSave,
+}: ProjectEditDialogProps) => {
+  const [name, setName] = useState(project.name);
+  const [description, setDescription] = useState(project.description);
+
   return (
     <Dialog open onClose={onClose} fullWidth>
       <DialogTitle>
@@ -35,26 +45,45 @@ const ProjectEditDialog = ({ project, onClose }: ProjectEditDialogProps) => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <Stack>
-          <Typography>Project id: {project.id}</Typography>
-        </Stack>
-        <Stack>
-          <OutlinedInput
-            value={project.name}
-            label="Project name"
-            size="small"
-          />
-        </Stack>
-        <Stack>
-          <OutlinedInput
-            value={project.description}
-            label="Project description"
-            size="small"
-          />
-        </Stack>
-        <Stack>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button>Save</Button>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+          <Stack>
+            <Typography>Project id: {project.id}</Typography>
+          </Stack>
+          <Stack>
+            <TextField
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Project name"
+              label="Project name"
+              size="small"
+            />
+          </Stack>
+          <Stack>
+            <TextField
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              label="Project description"
+              size="small"
+            />
+          </Stack>
+        </Box>
+
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          sx={{ marginTop: "15px" }}
+        >
+          <Button onClick={onClose} variant="outlined">
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() =>
+              onSave({ id: project.id, name: name, description: description })
+            }
+          >
+            Save
+          </Button>
         </Stack>
       </DialogContent>
     </Dialog>

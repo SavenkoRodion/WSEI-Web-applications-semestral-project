@@ -5,6 +5,8 @@ import { useOutletContext } from "react-router-dom";
 import { TProjectContext } from "../layout/ProjectPageLayout";
 import { useState } from "react";
 import ProjectEditDialog from "./ProjectEditDialog";
+import ProjectRepository from "../../repository/ProjectRepository";
+import IRepository from "../../repository/IRepository";
 
 const ProjectList = () => {
   const [projectToEdit, setProjectToEdit] = useState<Project | null>(null);
@@ -15,6 +17,12 @@ const ProjectList = () => {
 
   const handleEditDialogClose = () => {
     setProjectToEdit(null);
+  };
+
+  const handleEditDialogSave = (projectToEdit: Project) => {
+    const projectRepository: IRepository<Project> = new ProjectRepository();
+    projectRepository.replace(projectToEdit);
+    window.location.reload();
   };
 
   const context: TProjectContext = useOutletContext();
@@ -73,6 +81,7 @@ const ProjectList = () => {
         <ProjectEditDialog
           project={projectToEdit}
           onClose={handleEditDialogClose}
+          onSave={handleEditDialogSave}
         />
       )}
     </Box>
