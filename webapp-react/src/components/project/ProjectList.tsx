@@ -7,9 +7,11 @@ import { useState } from "react";
 import ProjectEditDialog from "./ProjectEditDialog";
 import ProjectRepository from "../../repository/ProjectRepository";
 import IRepository from "../../repository/IRepository";
+import ProjectDeleteDialog from "./ProjectDeleteDialog";
 
 const ProjectList = () => {
   const [projectToEdit, setProjectToEdit] = useState<Project | null>(null);
+  const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
 
   const handleEdit = (projectToEdit: Project) => {
     setProjectToEdit(projectToEdit);
@@ -22,6 +24,22 @@ const ProjectList = () => {
   const handleEditDialogSave = (projectToEdit: Project) => {
     const projectRepository: IRepository<Project> = new ProjectRepository();
     projectRepository.replace(projectToEdit);
+    setProjectToEdit(null);
+    window.location.reload();
+  };
+
+  const openDeleteDialog = (projectToDelete: Project) => {
+    setProjectToDelete(projectToDelete);
+  };
+
+  const handleDeleteDialogClose = () => {
+    setProjectToDelete(null);
+  };
+
+  const handleDeleteDialogDelete = (projectId: string) => {
+    const projectRepository: IRepository<Project> = new ProjectRepository();
+    projectRepository.delete(projectId);
+    setProjectToDelete(null);
     window.location.reload();
   };
 
@@ -44,8 +62,16 @@ const ProjectList = () => {
       field: "delete",
       headerName: "Delete",
       flex: 0.25,
-      renderCell: () => {
-        return <Button>Delete</Button>;
+      renderCell: ({ row }: { row: Project }) => {
+        return (
+          <Button
+            onClick={() => {
+              openDeleteDialog(row);
+            }}
+          >
+            Delete
+          </Button>
+        );
       },
     },
   ];
@@ -82,6 +108,14 @@ const ProjectList = () => {
           project={projectToEdit}
           onClose={handleEditDialogClose}
           onSave={handleEditDialogSave}
+        />
+      )}
+      {projectToDelete && (
+        <ProjectDeleteDialog
+          id={projectToDelete.id}
+          name={projectToDelete.name}
+          onClose={handleDeleteDialogClose}
+          onDelete={handleDeleteDialogDelete}
         />
       )}
     </Box>
