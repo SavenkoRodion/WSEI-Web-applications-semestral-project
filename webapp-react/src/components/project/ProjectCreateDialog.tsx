@@ -28,14 +28,15 @@ const ProjectCreateDialog = ({
             label="Project name"
             value={name}
             onChange={(e) => {
-              setName(e.target.value);
+              setName(e.target.value.trim());
             }}
             size="small"
+            required
           />
           <TextField
             label="Project description"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => setDescription(e.target.value.trim())}
             size="small"
           />
         </Stack>
@@ -46,6 +47,7 @@ const ProjectCreateDialog = ({
           <Button
             onClick={() => onCreate(name, description)}
             variant="contained"
+            disabled={!name || !description}
           >
             Create
           </Button>

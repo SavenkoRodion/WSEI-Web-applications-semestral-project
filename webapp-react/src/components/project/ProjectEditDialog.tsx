@@ -30,7 +30,7 @@ const ProjectEditDialog = ({
   return (
     <Dialog open onClose={onClose} fullWidth>
       <DialogTitle>
-        Lolek
+        Project edit
         <IconButton
           aria-label="close"
           onClick={onClose}
@@ -58,7 +58,7 @@ const ProjectEditDialog = ({
           <Stack>
             <TextField
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value.trim())}
               placeholder="Project name"
               label="Project name"
               size="small"
@@ -67,7 +67,7 @@ const ProjectEditDialog = ({
           <Stack>
             <TextField
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={(e) => setDescription(e.target.value.trim())}
               label="Project description"
               size="small"
             />
@@ -87,6 +87,7 @@ const ProjectEditDialog = ({
             onClick={() =>
               onSave({ id: project.id, name: name, description: description })
             }
+            disabled={!name || !description}
           >
             Save
           </Button>

@@ -72,6 +72,7 @@ export const ProjectPageLayout = () => {
                 textDecoration: "underline",
                 marginLeft: "16px",
               }}
+              variant="text"
             >
               Create project
             </Button>
