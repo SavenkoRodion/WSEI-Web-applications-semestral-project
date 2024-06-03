@@ -5,7 +5,6 @@ import { Project, SelectedProjectId } from "../../model/Project";
 import SelectedProjectRepository from "../../repository/SelectedProjectRepository";
 import ProjectRepository from "../../repository/ProjectRepository";
 import { useEffect, useMemo, useState } from "react";
-import ProjectCreateDialog from "../../components/project/ProjectCreateDialog";
 
 export type TProjectContext = {
   projects: Project[];
@@ -39,21 +38,6 @@ export const ProjectPageLayout = () => {
     setSelectedProject(projects.filter((e) => e.id === selectedProjectId)[0]);
   }, [selectedProjectId, selectedProjectRepository, projects]);
 
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-
-  const handleCreateDialogClose = () => {
-    setIsCreateDialogOpen(false);
-  };
-
-  const handleCreateDialogOpen = () => {
-    setIsCreateDialogOpen(true);
-  };
-
-  const handleCreateDialogCreate = (name: string, description: string) => {
-    projectRepository.create(new Project(name, description));
-    setIsCreateDialogOpen(false);
-  };
-
   return (
     <>
       <AppBar position="sticky">
@@ -64,19 +48,6 @@ export const ProjectPageLayout = () => {
               sx={{ color: "white", textDecoration: "underline" }}
             >
               Project list
-            </Link>
-          </Typography>
-          <Typography>
-            <Link
-              onClick={handleCreateDialogOpen}
-              sx={{
-                color: "white",
-                textDecoration: "underline",
-                marginLeft: "16px",
-                cursor: "pointer",
-              }}
-            >
-              Create project
             </Link>
           </Typography>
           <Typography>
@@ -96,12 +67,6 @@ export const ProjectPageLayout = () => {
       <Box>
         <Outlet context={context} />
       </Box>
-      {isCreateDialogOpen && (
-        <ProjectCreateDialog
-          onClose={handleCreateDialogClose}
-          onCreate={handleCreateDialogCreate}
-        />
-      )}
     </>
   );
 };
