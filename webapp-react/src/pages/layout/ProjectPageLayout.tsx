@@ -1,11 +1,11 @@
-import { AppBar, Box, Button, Link, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Link, Toolbar, Typography } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import IRepository from "../../repository/IRepository";
 import { Project, SelectedProjectId } from "../../model/Project";
 import SelectedProjectRepository from "../../repository/SelectedProjectRepository";
 import ProjectRepository from "../../repository/ProjectRepository";
-import { useEffect, useState } from "react";
-import ProjectCreateDialog from "../project/ProjectCreateDialog";
+import { useEffect, useMemo, useState } from "react";
+import ProjectCreateDialog from "../../components/project/ProjectCreateDialog";
 
 export type TProjectContext = {
   projects: Project[];
@@ -17,8 +17,10 @@ export const ProjectPageLayout = () => {
   const projectRepository: IRepository<Project> = new ProjectRepository();
   const projects = projectRepository.getAll();
 
-  const selectedProjectRepository: IRepository<SelectedProjectId> =
-    new SelectedProjectRepository();
+  const selectedProjectRepository: IRepository<SelectedProjectId> = useMemo(
+    () => new SelectedProjectRepository(),
+    []
+  );
   const [selectedProjectId, setSelectedProjectId] = useState(
     selectedProjectRepository.getAll()[0].id
   );
@@ -35,7 +37,7 @@ export const ProjectPageLayout = () => {
   useEffect(() => {
     selectedProjectRepository.create(new SelectedProjectId(selectedProjectId));
     setSelectedProject(projects.filter((e) => e.id === selectedProjectId)[0]);
-  }, [selectedProjectId]);
+  }, [selectedProjectId, selectedProjectRepository, projects]);
 
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
@@ -65,21 +67,21 @@ export const ProjectPageLayout = () => {
             </Link>
           </Typography>
           <Typography>
-            <Button
+            <Link
               onClick={handleCreateDialogOpen}
               sx={{
                 color: "white",
                 textDecoration: "underline",
                 marginLeft: "16px",
+                cursor: "pointer",
               }}
-              variant="text"
             >
               Create project
-            </Button>
+            </Link>
           </Typography>
           <Typography>
             <Link
-              href="/project/create"
+              href={`/project/${selectedProject?.id ?? ""}`}
               sx={{
                 color: "white",
                 textDecoration: "underline",

@@ -38,6 +38,7 @@ const ProjectCreateDialog = ({
             value={description}
             onChange={(e) => setDescription(e.target.value.trim())}
             size="small"
+            required
           />
         </Stack>
       </DialogContent>

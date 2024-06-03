@@ -1,13 +1,13 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { DataGrid, GridColDef, GridRowId } from "@mui/x-data-grid";
 import { Project } from "../../model/Project";
 import { useOutletContext } from "react-router-dom";
 import { TProjectContext } from "../layout/ProjectPageLayout";
 import { useState } from "react";
-import ProjectEditDialog from "./ProjectEditDialog";
+import ProjectEditDialog from "../../components/project/ProjectEditDialog";
 import ProjectRepository from "../../repository/ProjectRepository";
 import IRepository from "../../repository/IRepository";
-import ProjectDeleteDialog from "./ProjectDeleteDialog";
+import ProjectDeleteDialog from "../../components/project/ProjectDeleteDialog";
 
 const ProjectList = () => {
   const [projectToEdit, setProjectToEdit] = useState<Project | null>(null);
@@ -82,27 +82,38 @@ const ProjectList = () => {
 
   return (
     <Box>
-      <DataGrid
-        rows={context.projects}
-        columns={columns}
-        disableColumnSelector
-        hideFooterSelectedRowCount
-        checkboxSelection
-        initialState={{
-          pagination: { paginationModel: { pageSize: 5 } },
-        }}
-        rowSelectionModel={selectionModel}
-        onRowSelectionModelChange={(selection) => {
-          const selectionSet = new Set(selectionModel);
-          const result = selection.filter((s) => !selectionSet.has(s));
-          setSelectionModel(result);
-          context.setSelectedProjectId(result[0]?.toString() ?? null);
-        }}
-        disableRowSelectionOnClick
-        disableColumnResize
-        disableColumnMenu
-        autoHeight
-      ></DataGrid>
+      <Stack>
+        <DataGrid
+          rows={context.projects}
+          columns={columns}
+          disableColumnSelector
+          hideFooterSelectedRowCount
+          checkboxSelection
+          initialState={{
+            pagination: { paginationModel: { pageSize: 5 } },
+          }}
+          rowSelectionModel={selectionModel}
+          onRowSelectionModelChange={(selection) => {
+            const selectionSet = new Set(selectionModel);
+            const result = selection.filter((s) => !selectionSet.has(s));
+            setSelectionModel(result);
+            context.setSelectedProjectId(result[0]?.toString() ?? null);
+          }}
+          disableRowSelectionOnClick
+          disableColumnResize
+          disableColumnMenu
+          autoHeight
+        ></DataGrid>
+      </Stack>
+      <Stack>
+        <Button
+          sx={{ width: "150px", margin: "20px 0 0 10px" }}
+          variant="contained"
+          size="small"
+        >
+          Create project
+        </Button>
+      </Stack>
       {projectToEdit && (
         <ProjectEditDialog
           project={projectToEdit}
