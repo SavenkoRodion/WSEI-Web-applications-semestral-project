@@ -1,4 +1,4 @@
-import { Box, Button, Stack } from "@mui/material";
+import { AppBar, Box, Button, Stack, Toolbar } from "@mui/material";
 import { useState } from "react";
 import ProjectStoryCreateDialog from "../../components/project/ProjectStoryCreateDialog";
 
@@ -15,25 +15,28 @@ const ProjectStories = () => {
 
   const handleCreateDialogCreate = () => {};
   return (
-    <Box>
-      <Stack>Tabel</Stack>
-      <Stack>
-        <Button
-          sx={{ width: "150px", margin: "20px 0 0 10px" }}
-          variant="contained"
-          size="small"
-          onClick={handleCreateDialogOpen}
-        >
-          Create project
-        </Button>
-      </Stack>
-      {isCreateDialogOpen && (
-        <ProjectStoryCreateDialog
-          onClose={handleCreateDialogClose}
-          onCreate={handleCreateDialogCreate}
-        />
-      )}
-    </Box>
+    <>
+      <AppBar position="sticky">
+        <Toolbar variant="dense">
+          <Button
+            sx={{ color: "white", textDecoration: "underline" }}
+            size="small"
+            onClick={handleCreateDialogOpen}
+          >
+            Create story
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <Box>
+        <Stack>Tabel</Stack>
+        {isCreateDialogOpen && (
+          <ProjectStoryCreateDialog
+            onClose={handleCreateDialogClose}
+            onCreate={handleCreateDialogCreate}
+          />
+        )}
+      </Box>
+    </>
   );
 };
 

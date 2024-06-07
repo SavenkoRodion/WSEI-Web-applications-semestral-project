@@ -12,11 +12,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />} path="/">
-          <Route element={<Home />} index></Route>
-          <Route element={<ProjectPageLayout />} path="project">
-            <Route element={<ProjectList />} path="" />
-            <Route element={<ProjectStories />} path=":projectId" />
-          </Route>
+          <Route element={<Home />} index />
+          <Route element={<ProjectList />} path="project" />
+          <Route element={<ProjectStories />} path="project/:projectId" />
         </Route>
       </Routes>
     </BrowserRouter>

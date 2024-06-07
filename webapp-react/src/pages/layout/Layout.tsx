@@ -7,25 +7,73 @@ import {
   Typography,
 } from "@mui/material";
 import { Outlet } from "react-router-dom";
+import { Project, SelectedProjectId } from "../../model/Project";
+import ProjectRepository from "../../repository/ProjectRepository";
+import IRepository from "../../repository/IRepository";
+import { useEffect, useMemo, useState } from "react";
+import SelectedProjectRepository from "../../repository/SelectedProjectRepository";
+
+export type TProjectContext = {
+  projects: Project[];
+  selectedProjectId: string | null;
+  setSelectedProjectId: (id: string | null) => void;
+};
 
 const Layout = () => {
+  const projectRepository: IRepository<Project> = new ProjectRepository();
+  const projects = projectRepository.getAll();
+
+  const selectedProjectRepository: IRepository<SelectedProjectId> = useMemo(
+    () => new SelectedProjectRepository(),
+    []
+  );
+  const [selectedProjectId, setSelectedProjectId] = useState(
+    selectedProjectRepository.getAll()[0].id
+  );
+  const [selectedProject, setSelectedProject] = useState<Project | undefined>(
+    projects.filter((e) => e.id === selectedProjectId)[0]
+  );
+
+  const context: TProjectContext = {
+    projects: projects,
+    selectedProjectId: selectedProjectId,
+    setSelectedProjectId: setSelectedProjectId,
+  };
+
+  useEffect(() => {
+    selectedProjectRepository.create(new SelectedProjectId(selectedProjectId));
+    setSelectedProject(projects.filter((e) => e.id === selectedProjectId)[0]);
+  }, [selectedProjectId, selectedProjectRepository, projects]);
+
   return (
     <Box>
       <CssBaseline />
       <AppBar position="sticky">
         <Toolbar variant="dense">
-          <Typography variant="h5">
+          <Typography>
             <Link
               href="/project"
               sx={{ color: "white", textDecoration: "underline" }}
             >
-              Project
+              Project list
+            </Link>
+          </Typography>
+          <Typography>
+            <Link
+              href={`/project/${selectedProject?.id ?? ""}`}
+              sx={{
+                color: "white",
+                textDecoration: "underline",
+                marginLeft: "16px",
+              }}
+            >
+              Selected project: {selectedProject?.name ?? "none"}
             </Link>
           </Typography>
         </Toolbar>
       </AppBar>
       <Box>
-        <Outlet />
+        <Outlet context={context} />
       </Box>
     </Box>
   );

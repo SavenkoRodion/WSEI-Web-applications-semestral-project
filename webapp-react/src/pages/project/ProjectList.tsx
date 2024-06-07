@@ -1,12 +1,12 @@
-import { Box, Button, Stack } from "@mui/material";
+import { AppBar, Box, Button, Stack, Toolbar } from "@mui/material";
 import { useOutletContext } from "react-router-dom";
-import { TProjectContext } from "../layout/ProjectPageLayout";
 import ProjectTable from "../../components/project/ProjectTable";
 import { useState } from "react";
 import { Project } from "../../model/Project";
 import ProjectCreateDialog from "../../components/project/ProjectCreateDialog";
 import IRepository from "../../repository/IRepository";
 import ProjectRepository from "../../repository/ProjectRepository";
+import { TProjectContext } from "../layout/Layout";
 
 const ProjectList = () => {
   const context: TProjectContext = useOutletContext();
@@ -29,27 +29,30 @@ const ProjectList = () => {
   };
 
   return (
-    <Box>
-      <Stack>
-        <ProjectTable context={context} />
-      </Stack>
-      <Stack>
-        <Button
-          sx={{ width: "150px", margin: "20px 0 0 10px" }}
-          variant="contained"
-          size="small"
-          onClick={handleCreateDialogOpen}
-        >
-          Create project
-        </Button>
-      </Stack>
-      {isCreateDialogOpen && (
-        <ProjectCreateDialog
-          onClose={handleCreateDialogClose}
-          onCreate={handleCreateDialogCreate}
-        />
-      )}
-    </Box>
+    <>
+      <AppBar position="sticky">
+        <Toolbar variant="dense">
+          <Button
+            sx={{ color: "white", textDecoration: "underline" }}
+            size="small"
+            onClick={handleCreateDialogOpen}
+          >
+            Create project
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <Box>
+        <Stack>
+          <ProjectTable context={context} />
+        </Stack>
+        {isCreateDialogOpen && (
+          <ProjectCreateDialog
+            onClose={handleCreateDialogClose}
+            onCreate={handleCreateDialogCreate}
+          />
+        )}
+      </Box>
+    </>
   );
 };
 
