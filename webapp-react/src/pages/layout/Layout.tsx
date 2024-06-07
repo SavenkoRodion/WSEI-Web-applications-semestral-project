@@ -51,9 +51,18 @@ const Layout = () => {
       <AppBar position="sticky">
         <Toolbar variant="dense">
           <Typography>
+            <Link href="/" sx={{ color: "white", textDecoration: "underline" }}>
+              Home
+            </Link>
+          </Typography>
+          <Typography>
             <Link
               href="/project"
-              sx={{ color: "white", textDecoration: "underline" }}
+              sx={{
+                color: "white",
+                textDecoration: "underline",
+                marginLeft: "16px",
+              }}
             >
               Project list
             </Link>

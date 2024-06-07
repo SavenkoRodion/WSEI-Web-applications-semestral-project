@@ -1,6 +1,7 @@
 import { AppBar, Box, Button, Stack, Toolbar } from "@mui/material";
 import { useState } from "react";
 import ProjectStoryCreateDialog from "../../components/project/ProjectStoryCreateDialog";
+import StoryGrid from "../../components/story/StoryGrid";
 
 const ProjectStories = () => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -28,7 +29,9 @@ const ProjectStories = () => {
         </Toolbar>
       </AppBar>
       <Box>
-        <Stack>Tabel</Stack>
+        <Stack>
+          <StoryGrid data={[1, 2]} />
+        </Stack>
         {isCreateDialogOpen && (
           <ProjectStoryCreateDialog
             onClose={handleCreateDialogClose}
