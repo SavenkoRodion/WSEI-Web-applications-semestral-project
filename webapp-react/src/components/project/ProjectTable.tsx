@@ -1,12 +1,12 @@
 import { DataGrid, GridColDef, GridRowId } from "@mui/x-data-grid";
 import { Project } from "../../model/Project";
 import { Button } from "@mui/material";
-import { TProjectContext } from "../../pages/layout/ProjectPageLayout";
 import { useState } from "react";
 import ProjectRepository from "../../repository/ProjectRepository";
 import IRepository from "../../repository/interfaces/IRepository";
 import ProjectDeleteDialog from "./ProjectDeleteDialog";
 import ProjectEditDialog from "./ProjectEditDialog";
+import { TProjectContext } from "../../pages/layout/Layout";
 
 type ProjectTableProps = {
   context: TProjectContext;

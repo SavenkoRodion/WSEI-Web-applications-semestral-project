@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material";
 import styles from "./styles";
 import StoryCard from "./StoryCard";
-import { Story } from "../../model/Story";
+import { Story, StoryStatus } from "../../model/Story";
 
 type StoryGridProps = {
   data: Story[];
@@ -34,15 +34,33 @@ const StoryGrid = ({ data }: StoryGridProps) => {
         justifyContent={"space-between"}
         flexDirection={"row"}
       >
-        <Box sx={[styles.column, { padding: "10px" }]} flexDirection={"column"}>
-          {data.map(() => (
-            <Stack sx={{ mb: "10px" }}>
-              <StoryCard />
-            </Stack>
-          ))}
+        <Box sx={[styles.column]} flexDirection={"column"}>
+          {data
+            .filter((e) => e.status === StoryStatus.Todo)
+            .map((e) => (
+              <Stack sx={{ mb: "10px" }}>
+                <StoryCard story={e} />
+              </Stack>
+            ))}
         </Box>
-        <Box sx={[styles.column]}></Box>
-        <Box sx={[styles.column]}></Box>
+        <Box sx={[styles.column]}>
+          {data
+            .filter((e) => e.status === StoryStatus.Doing)
+            .map((e) => (
+              <Stack sx={{ mb: "10px" }}>
+                <StoryCard story={e} />
+              </Stack>
+            ))}
+        </Box>
+        <Box sx={[styles.column]}>
+          {data
+            .filter((e) => e.status === StoryStatus.Done)
+            .map((e) => (
+              <Stack sx={{ mb: "10px" }}>
+                <StoryCard story={e} />
+              </Stack>
+            ))}
+        </Box>
       </Box>
     </Box>
   );

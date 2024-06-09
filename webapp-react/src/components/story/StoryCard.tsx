@@ -5,28 +5,44 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
+import { Story, StoryPriority } from "../../model/Story";
+import IReadRepository from "../../repository/interfaces/IReadRepository";
+import UserRepository from "../../repository/UserRepository";
+import { User } from "../../model/User";
 
-const StoryCard = () => {
+type StoryCardProps = {
+  story: Story;
+};
+
+const StoryCard = ({ story }: StoryCardProps) => {
+  const userRepository: IReadRepository<User> = new UserRepository();
+
+  const storyOwner = userRepository
+    .getAll()
+    .filter((e) => e.id === story.ownerUserId)[0];
+
   return (
-    <Card sx={{ minWidth: 275 }}>
+    <Card>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Word of the Day
+          {`Owner: ${storyOwner.firstName} ${storyOwner.lastName}`}
         </Typography>
         <Typography variant="h5" component="div">
-          Test message
+          {story.name}
         </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          adjective
+
+        <Typography>{story.description}</Typography>
+        <Typography sx={{ mt: 1.5 }} color="text.secondary">
+          {`Priority: ${StoryPriority[story.priority]}`}
         </Typography>
-        <Typography variant="body2">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
+        <Typography color="text.secondary">
+          {`Created: ${new Date(story.dateOfCreation).toLocaleDateString(
+            "en-GB"
+          )}`}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Learn More</Button>
+        <Button size="small">Card edit</Button>
       </CardActions>
     </Card>
   );

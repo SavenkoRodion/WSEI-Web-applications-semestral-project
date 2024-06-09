@@ -18,7 +18,13 @@ import { User } from "../../model/User";
 
 type CreateDialogProps = {
   onClose: () => void;
-  onCreate: (name: string, description: string) => void;
+  onCreate: (
+    name: string,
+    description: string,
+    priority: StoryPriority,
+    status: StoryStatus,
+    ownerUserId: string
+  ) => void;
   userList: User[];
 };
 
@@ -31,7 +37,7 @@ const StoryCreateDialog = ({
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState<StoryPriority>(StoryPriority.Mid);
   const [status, setStatus] = useState<StoryStatus>(StoryStatus.Todo);
-  const [user, setUser] = useState<User | null>(null);
+  const [userId, setUserId] = useState<string>("");
 
   return (
     <Dialog open onClose={onClose}>
@@ -42,7 +48,7 @@ const StoryCreateDialog = ({
             label="Story name"
             value={name}
             onChange={(e) => {
-              setName(e.target.value.trim());
+              setName(e.target.value);
             }}
             size="small"
             required
@@ -50,7 +56,7 @@ const StoryCreateDialog = ({
           <TextField
             label="Story description"
             value={description}
-            onChange={(e) => setDescription(e.target.value.trim())}
+            onChange={(e) => setDescription(e.target.value)}
             size="small"
             required
           />
@@ -65,7 +71,9 @@ const StoryCreateDialog = ({
             select
           >
             {Object.entries(StoryPriorityValues).map(([key, value]) => (
-              <MenuItem value={value}>{key}</MenuItem>
+              <MenuItem value={value} key={key}>
+                {key}
+              </MenuItem>
             ))}
           </TextField>
           <TextField
@@ -79,21 +87,26 @@ const StoryCreateDialog = ({
             select
           >
             {Object.entries(StoryStatusValues).map(([key, value]) => (
-              <MenuItem value={value}>{key}</MenuItem>
+              <MenuItem value={value} key={key}>
+                {key}
+              </MenuItem>
             ))}
           </TextField>
           <TextField
             label="Owner"
-            value={user}
+            value={userId}
             size={"small"}
             onChange={(e) => {
-              setUser(e.target.value as unknown as User);
+              setUserId(e.target.value);
             }}
             required
             select
           >
             {userList.map((e) => (
-              <MenuItem value={e.id}>{`${e.firstName} ${e.lastName}`}</MenuItem>
+              <MenuItem
+                value={e.id}
+                key={e.id}
+              >{`${e.firstName} ${e.lastName}`}</MenuItem>
             ))}
           </TextField>
         </Stack>
@@ -102,9 +115,11 @@ const StoryCreateDialog = ({
         <Stack direction="row" justifyContent="space-between">
           <Button onClick={onClose}>Close</Button>
           <Button
-            onClick={() => onCreate(name, description)}
+            onClick={() =>
+              onCreate(name, description, priority, status, userId)
+            }
             variant="contained"
-            disabled={!name || !description}
+            disabled={!name.trim() || !description.trim() || !userId}
           >
             Create
           </Button>

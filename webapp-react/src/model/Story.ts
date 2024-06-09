@@ -9,21 +9,19 @@ export class Story {
   ownerUserId: string;
 
   constructor(
-    id: string,
     name: string,
     description: string,
     priority: StoryPriority,
     projectId: string,
-    dateOfCreation: Date,
     status: StoryStatus,
     ownerUserId: string
   ) {
-    this.id = id;
-    this.name = name;
-    this.description = description;
+    this.id = crypto.randomUUID();
+    this.name = name.trim();
+    this.description = description.trim();
     this.priority = priority;
     this.projectId = projectId;
-    this.dateOfCreation = dateOfCreation;
+    this.dateOfCreation = new Date();
     this.status = status;
     this.ownerUserId = ownerUserId;
   }
