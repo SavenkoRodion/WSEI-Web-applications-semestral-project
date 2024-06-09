@@ -8,6 +8,14 @@ class UserRepository implements IReadRepository<User> {
   getAll() {
     const fromStorage = localStorage.getItem(localStorageConfigs.user) ?? "[]";
     const parsed: User[] = JSON.parse(fromStorage);
+    if (!parsed.length)
+      localStorage.setItem(
+        localStorageConfigs.user,
+        JSON.stringify([
+          new User("Adam", "Smith"),
+          new User("Usero", "Secundo"),
+        ])
+      );
     return parsed;
   }
 }

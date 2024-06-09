@@ -1,8 +1,8 @@
 class localStorageConfigs {
-  public static project: string = "projectList_kiss";
-  public static selectedProject: string = "selectedProject_kiss";
-  public static story: string = "story_kiss";
-  public static user: string = "user_kiss";
+  public static project: string = "projectList_react";
+  public static selectedProject: string = "selectedProject_react";
+  public static story: string = "story_react";
+  public static user: string = "user_react";
 }
 
 export default localStorageConfigs;

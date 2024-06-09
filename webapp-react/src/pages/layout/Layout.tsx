@@ -27,11 +27,12 @@ const Layout = () => {
     () => new SelectedProjectRepository(),
     []
   );
-  const [selectedProjectId, setSelectedProjectId] = useState(
-    selectedProjectRepository.getAll()[0].id
+
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
+    selectedProjectRepository.getAll()[0]?.id ?? null
   );
-  const [selectedProject, setSelectedProject] = useState<Project | undefined>(
-    projects.filter((e) => e.id === selectedProjectId)[0]
+  const [selectedProject, setSelectedProject] = useState<Project | null>(
+    projects.filter((e) => e.id === selectedProjectId)[0] ?? null
   );
 
   const context: TProjectContext = {

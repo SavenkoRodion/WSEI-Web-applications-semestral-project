@@ -42,7 +42,8 @@ const StoryCard = ({ story }: StoryCardProps) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Card edit</Button>
+        <Button size="small">Edit</Button>
+        <Button size="small">Delete</Button>
       </CardActions>
     </Card>
   );
