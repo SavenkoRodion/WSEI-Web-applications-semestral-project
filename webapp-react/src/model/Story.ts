@@ -1,11 +1,11 @@
-class Story {
+export class Story {
   id: string;
   name: string;
   description: string;
   priority: StoryPriority;
   projectId: string;
   dateOfCreation: Date;
-  status: Status;
+  status: StoryStatus;
   ownerUserId: string;
 
   constructor(
@@ -15,7 +15,7 @@ class Story {
     priority: StoryPriority,
     projectId: string,
     dateOfCreation: Date,
-    status: Status,
+    status: StoryStatus,
     ownerUserId: string
   ) {
     this.id = id;
@@ -35,10 +35,20 @@ export enum StoryPriority {
   High,
 }
 
-export enum Status {
+export const StoryPriorityValues = {
+  Low: StoryPriority.Low,
+  Mid: StoryPriority.Mid,
+  High: StoryPriority.High,
+};
+
+export enum StoryStatus {
   Todo,
   Doing,
   Done,
 }
 
-export default Story;
+export const StoryStatusValues = {
+  Todo: StoryStatus.Todo,
+  Doing: StoryStatus.Doing,
+  Done: StoryStatus.Done,
+};

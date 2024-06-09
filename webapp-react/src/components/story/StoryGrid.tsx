@@ -1,9 +1,10 @@
 import { Box, Stack, Typography } from "@mui/material";
 import styles from "./styles";
 import StoryCard from "./StoryCard";
+import { Story } from "../../model/Story";
 
 type StoryGridProps = {
-  data: unknown[];
+  data: Story[];
 };
 
 const StoryGrid = ({ data }: StoryGridProps) => {

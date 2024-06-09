@@ -4,8 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./pages/layout/Layout.tsx";
 import Home from "./pages/home/Home.tsx";
 import ProjectList from "./pages/project/ProjectList.tsx";
-import { ProjectPageLayout } from "./pages/layout/ProjectPageLayout.tsx";
-import ProjectStories from "./pages/project/ProjectStories.tsx";
+import ProjectStories from "./pages/project/ProjectStories.1.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

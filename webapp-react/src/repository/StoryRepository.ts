@@ -1,7 +1,7 @@
 import authorize from "../decorators/authorize";
 import localStorageConfigs from "../localStorageConfigs";
 import Story from "../model/Story";
-import IRepository from "./IRepository";
+import IRepository from "./interfaces/IRepository";
 
 class StoryRepository implements IRepository<Story> {
   @authorize()

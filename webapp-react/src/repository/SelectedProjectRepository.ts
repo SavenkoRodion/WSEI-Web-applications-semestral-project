@@ -1,6 +1,6 @@
 import authorize from "../decorators/authorize";
 import { SelectedProjectId } from "../model/Project";
-import IRepository from "./IRepository";
+import IRepository from "./interfaces/IRepository";
 import localStorageConfigs from "../localStorageConfigs";
 
 class SelectedProjectRepository implements IRepository<SelectedProjectId> {

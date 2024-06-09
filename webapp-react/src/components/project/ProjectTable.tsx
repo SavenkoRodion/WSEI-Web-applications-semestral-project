@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 import { TProjectContext } from "../../pages/layout/ProjectPageLayout";
 import { useState } from "react";
 import ProjectRepository from "../../repository/ProjectRepository";
-import IRepository from "../../repository/IRepository";
+import IRepository from "../../repository/interfaces/IRepository";
 import ProjectDeleteDialog from "./ProjectDeleteDialog";
 import ProjectEditDialog from "./ProjectEditDialog";
 
