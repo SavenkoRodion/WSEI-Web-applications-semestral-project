@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material";
 import styles from "./styles";
 import StoryCard from "./StoryCard";
-import { Story, StoryStatus } from "../../model/Story";
+import { Story } from "../../model/Story";
 
 type StoryGridProps = {
   data: Story[];
@@ -10,58 +10,51 @@ type StoryGridProps = {
 const StoryGrid = ({ data }: StoryGridProps) => {
   return (
     <Box>
-      <Box
-        display={"flex"}
-        flexDirection={"row"}
-        gap={"3px"}
-        justifyContent={"space-between"}
-        sx={{ height: "35px" }}
-      >
-        <Stack sx={[styles.header]}>
-          <Typography>TO DO</Typography>
-        </Stack>
-        <Stack sx={[styles.header]}>
-          <Typography>IN PROGRESS</Typography>
-        </Stack>
-        <Stack sx={[styles.header]}>
-          <Typography>DONE</Typography>
-        </Stack>
-      </Box>
-      <Box
-        display={"flex"}
-        height={"100vh"}
-        gap={"3px"}
-        justifyContent={"space-between"}
-        flexDirection={"row"}
-      >
-        <Box sx={[styles.column]} flexDirection={"column"}>
-          {data
-            .filter((e) => e.status === StoryStatus.Todo)
-            .map((e) => (
-              <Stack sx={{ mb: "10px" }}>
-                <StoryCard story={e} />
-              </Stack>
-            ))}
+      {!!data.length && (
+        <Box
+          display={"flex"}
+          flexDirection={"row"}
+          gap={"3px"}
+          justifyContent={"space-between"}
+          sx={{ height: "35px" }}
+        >
+          <Stack sx={[styles.header]}>
+            <Typography>STORIES</Typography>
+          </Stack>
+          <Stack sx={[styles.header]}>
+            <Typography>TO DO</Typography>
+          </Stack>
+          <Stack sx={[styles.header]}>
+            <Typography>IN PROGRESS</Typography>
+          </Stack>
+          <Stack sx={[styles.header]}>
+            <Typography>DONE</Typography>
+          </Stack>
         </Box>
-        <Box sx={[styles.column]}>
-          {data
-            .filter((e) => e.status === StoryStatus.Doing)
-            .map((e) => (
-              <Stack sx={{ mb: "10px" }}>
-                <StoryCard story={e} />
-              </Stack>
-            ))}
+      )}
+      {data.map((e) => (
+        <Box
+          display={"flex"}
+          gap={"3px"}
+          justifyContent={"space-between"}
+          flexDirection={"row"}
+          sx={styles.grid}
+        >
+          <Box sx={[styles.column]} flexDirection={"column"}>
+            <Stack key={e.id}>
+              <StoryCard story={e} />
+            </Stack>
+          </Box>
+          <Box sx={[styles.column]} flexDirection={"column"}></Box>
+          <Box sx={[styles.column]}></Box>
+          <Box sx={[styles.column]}></Box>
         </Box>
-        <Box sx={[styles.column]}>
-          {data
-            .filter((e) => e.status === StoryStatus.Done)
-            .map((e) => (
-              <Stack sx={{ mb: "10px" }}>
-                <StoryCard story={e} />
-              </Stack>
-            ))}
+      ))}
+      {!data.length && (
+        <Box display={"flex"} justifyContent={"center"}>
+          <Typography>This project has no stories!</Typography>
         </Box>
-      </Box>
+      )}
     </Box>
   );
 };

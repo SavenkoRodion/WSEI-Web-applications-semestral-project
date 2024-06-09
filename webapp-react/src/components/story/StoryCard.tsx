@@ -5,7 +5,7 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import { Story, StoryPriority } from "../../model/Story";
+import { Story, StoryPriority, StoryStatus } from "../../model/Story";
 import IReadRepository from "../../repository/interfaces/IReadRepository";
 import UserRepository from "../../repository/UserRepository";
 import { User } from "../../model/User";
@@ -73,6 +73,9 @@ const StoryCard = ({ story }: StoryCardProps) => {
 
           <Typography>{story.description}</Typography>
           <Typography sx={{ mt: 1.5 }} color="text.secondary">
+            {`Status: ${StoryStatus[story.status]}`}
+          </Typography>
+          <Typography color="text.secondary">
             {`Priority: ${StoryPriority[story.priority]}`}
           </Typography>
           <Typography color="text.secondary">
