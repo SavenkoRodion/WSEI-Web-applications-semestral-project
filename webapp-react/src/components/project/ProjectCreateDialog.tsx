@@ -28,7 +28,7 @@ const ProjectCreateDialog = ({
             label="Project name"
             value={name}
             onChange={(e) => {
-              setName(e.target.value.trim());
+              setName(e.target.value);
             }}
             size="small"
             required
@@ -36,8 +36,9 @@ const ProjectCreateDialog = ({
           <TextField
             label="Project description"
             value={description}
-            onChange={(e) => setDescription(e.target.value.trim())}
+            onChange={(e) => setDescription(e.target.value)}
             size="small"
+            required
           />
         </Stack>
       </DialogContent>

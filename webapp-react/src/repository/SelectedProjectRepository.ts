@@ -1,13 +1,13 @@
 import authorize from "../decorators/authorize";
 import { SelectedProjectId } from "../model/Project";
-import staticConfigs from "../staticConfigs";
-import IRepository from "./IRepository";
+import IRepository from "./interfaces/IRepository";
+import localStorageConfigs from "../localStorageConfigs";
 
 class SelectedProjectRepository implements IRepository<SelectedProjectId> {
   @authorize()
   create(project: SelectedProjectId) {
     localStorage.setItem(
-      staticConfigs.localstorageSelectedProjectVariable,
+      localStorageConfigs.selectedProject,
       JSON.stringify([project])
     );
     return true;
@@ -16,8 +16,7 @@ class SelectedProjectRepository implements IRepository<SelectedProjectId> {
   @authorize()
   getAll() {
     const fromStorage =
-      localStorage.getItem(staticConfigs.localstorageSelectedProjectVariable) ??
-      "[]";
+      localStorage.getItem(localStorageConfigs.selectedProject) ?? "[]";
     const parsed: SelectedProjectId[] = JSON.parse(fromStorage);
     return parsed;
   }
@@ -32,7 +31,7 @@ class SelectedProjectRepository implements IRepository<SelectedProjectId> {
     if (index !== -1) {
       projectList.splice(index, 1);
       localStorage.setItem(
-        staticConfigs.localstorageSelectedProjectVariable,
+        localStorageConfigs.selectedProject,
         JSON.stringify(projectList)
       );
       return true;
@@ -46,7 +45,7 @@ class SelectedProjectRepository implements IRepository<SelectedProjectId> {
     if (index !== -1) {
       projectList.splice(index, 1, project);
       localStorage.setItem(
-        staticConfigs.localstorageSelectedProjectVariable,
+        localStorageConfigs.selectedProject,
         JSON.stringify(projectList)
       );
       return true;

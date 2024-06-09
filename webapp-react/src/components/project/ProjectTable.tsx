@@ -1,21 +1,20 @@
-import { Box, Button } from "@mui/material";
 import { DataGrid, GridColDef, GridRowId } from "@mui/x-data-grid";
 import { Project } from "../../model/Project";
-import { useOutletContext } from "react-router-dom";
-import { TProjectContext } from "../layout/ProjectPageLayout";
+import { Button } from "@mui/material";
 import { useState } from "react";
-import ProjectEditDialog from "./ProjectEditDialog";
 import ProjectRepository from "../../repository/ProjectRepository";
-import IRepository from "../../repository/IRepository";
+import IRepository from "../../repository/interfaces/IRepository";
 import ProjectDeleteDialog from "./ProjectDeleteDialog";
+import ProjectEditDialog from "./ProjectEditDialog";
+import { TProjectContext } from "../../pages/layout/Layout";
 
-const ProjectList = () => {
+type ProjectTableProps = {
+  context: TProjectContext;
+};
+
+const ProjectTable = ({ context }: ProjectTableProps) => {
   const [projectToEdit, setProjectToEdit] = useState<Project | null>(null);
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
-
-  const handleEdit = (projectToEdit: Project) => {
-    setProjectToEdit(projectToEdit);
-  };
 
   const handleEditDialogClose = () => {
     setProjectToEdit(null);
@@ -26,10 +25,6 @@ const ProjectList = () => {
     projectRepository.replace(projectToEdit);
     setProjectToEdit(null);
     window.location.reload();
-  };
-
-  const openDeleteDialog = (projectToDelete: Project) => {
-    setProjectToDelete(projectToDelete);
   };
 
   const handleDeleteDialogClose = () => {
@@ -43,7 +38,13 @@ const ProjectList = () => {
     window.location.reload();
   };
 
-  const context: TProjectContext = useOutletContext();
+  const openDeleteDialog = (projectToDelete: Project) => {
+    setProjectToDelete(projectToDelete);
+  };
+
+  const handleEdit = (projectToEdit: Project) => {
+    setProjectToEdit(projectToEdit);
+  };
 
   const columns: GridColDef<Project[][number]>[] = [
     { field: "id", headerName: "ID", flex: 1 },
@@ -81,7 +82,7 @@ const ProjectList = () => {
   );
 
   return (
-    <Box>
+    <>
       <DataGrid
         rows={context.projects}
         columns={columns}
@@ -118,8 +119,8 @@ const ProjectList = () => {
           onDelete={handleDeleteDialogDelete}
         />
       )}
-    </Box>
+    </>
   );
 };
 
-export default ProjectList;
+export default ProjectTable;
