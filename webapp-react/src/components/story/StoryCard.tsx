@@ -13,6 +13,7 @@ import { useState } from "react";
 import StoryDeleteDialog from "./StoryDeleteDialog";
 import StoryRepository from "../../repository/StoryRepository";
 import IRepository from "../../repository/interfaces/IRepository";
+import StoryEditDialog from "./StoryEditDialog";
 
 type StoryCardProps = {
   story: Story;
@@ -21,9 +22,9 @@ type StoryCardProps = {
 const StoryCard = ({ story }: StoryCardProps) => {
   const userRepository: IReadRepository<User> = new UserRepository();
 
-  const storyOwner = userRepository
-    .getAll()
-    .filter((e) => e.id === story.ownerUserId)[0];
+  const userList = userRepository.getAll();
+
+  const storyOwner = userList.filter((e) => e.id === story.ownerUserId)[0];
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
@@ -39,6 +40,22 @@ const StoryCard = ({ story }: StoryCardProps) => {
 
   const handleDelete = () => {
     storyRepository.delete(story.id);
+    handleDeleteDialogClose();
+    window.location.reload();
+  };
+
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+
+  const handleEditDialogClose = () => {
+    setIsEditDialogOpen(false);
+  };
+
+  const handleEditDialogOpen = () => {
+    setIsEditDialogOpen(true);
+  };
+
+  const handleEdit = (editedStory: Story) => {
+    storyRepository.replace(editedStory);
     handleDeleteDialogClose();
     window.location.reload();
   };
@@ -65,7 +82,9 @@ const StoryCard = ({ story }: StoryCardProps) => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small">Edit</Button>
+          <Button size="small" onClick={handleEditDialogOpen}>
+            Edit
+          </Button>
           <Button size="small" onClick={handleDeleteDialogOpen}>
             Delete
           </Button>
@@ -77,6 +96,14 @@ const StoryCard = ({ story }: StoryCardProps) => {
           onDelete={handleDelete}
           id={story.id}
           name={story.name}
+        />
+      )}
+      {isEditDialogOpen && (
+        <StoryEditDialog
+          onClose={handleEditDialogClose}
+          onEdit={handleEdit}
+          story={story}
+          userList={userList}
         />
       )}
     </>
