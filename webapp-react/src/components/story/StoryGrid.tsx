@@ -11,13 +11,7 @@ const StoryGrid = ({ data }: StoryGridProps) => {
   return (
     <Box>
       {!!data.length && (
-        <Box
-          display={"flex"}
-          flexDirection={"row"}
-          gap={"3px"}
-          justifyContent={"space-between"}
-          sx={{ height: "35px" }}
-        >
+        <Box display={"flex"} gap={"3px"} sx={{ height: "35px" }}>
           <Stack sx={[styles.header]}>
             <Typography>STORIES</Typography>
           </Stack>
@@ -33,19 +27,13 @@ const StoryGrid = ({ data }: StoryGridProps) => {
         </Box>
       )}
       {data.map((e) => (
-        <Box
-          display={"flex"}
-          gap={"3px"}
-          justifyContent={"space-between"}
-          flexDirection={"row"}
-          sx={styles.grid}
-        >
-          <Box sx={[styles.column]} flexDirection={"column"}>
+        <Box sx={styles.grid}>
+          <Box sx={[styles.column]}>
             <Stack key={e.id}>
               <StoryCard story={e} />
             </Stack>
           </Box>
-          <Box sx={[styles.column]} flexDirection={"column"}></Box>
+          <Box sx={[styles.column]}></Box>
           <Box sx={[styles.column]}></Box>
           <Box sx={[styles.column]}></Box>
         </Box>
