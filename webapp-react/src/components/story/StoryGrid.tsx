@@ -3,6 +3,7 @@ import styles from "./styles";
 import StoryCard from "./StoryCard";
 import { Story } from "../../model/Story";
 import { Task, TaskStatus } from "../../model/Task";
+import TaskCard from "../task/TaskCard";
 
 type StoryGridProps = {
   stories: Story[];
@@ -28,32 +29,38 @@ const StoryGrid = ({ stories, tasks }: StoryGridProps) => {
           </Stack>
         </Box>
       )}
-      {stories.map((e) => (
+      {stories.map((story) => (
         <Box sx={styles.grid}>
           <Box sx={[styles.column]}>
-            <Stack key={e.id}>
-              <StoryCard story={e} />
+            <Stack key={story.id}>
+              <StoryCard story={story} />
             </Stack>
           </Box>
           <Box sx={[styles.column]}>
             {tasks
-              .filter((e) => e.status === TaskStatus.Todo)
+              .filter(
+                (e) => e.status === TaskStatus.Todo && e.storyId === story.id
+              )
               .map((e) => (
-                <>{e.name}</>
+                <TaskCard task={e} />
               ))}
           </Box>
           <Box sx={[styles.column]}>
             {tasks
-              .filter((e) => e.status === TaskStatus.Doing)
+              .filter(
+                (e) => e.status === TaskStatus.Doing && e.storyId === story.id
+              )
               .map((e) => (
-                <>{e.name}</>
+                <TaskCard task={e} />
               ))}
           </Box>
           <Box sx={[styles.column]}>
             {tasks
-              .filter((e) => e.status === TaskStatus.Done)
+              .filter(
+                (e) => e.status === TaskStatus.Done && e.storyId === story.id
+              )
               .map((e) => (
-                <>{e.name}</>
+                <TaskCard task={e} />
               ))}
           </Box>
         </Box>

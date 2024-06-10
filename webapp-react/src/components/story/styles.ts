@@ -17,6 +17,9 @@ const column: SxProps = {
   width: "100%",
   backgroundColor: "#eeeeee",
   padding: "10px",
+  gap: "10px",
+  display: "flex",
+  flexDirection: "column",
 };
 
 const styles = {
