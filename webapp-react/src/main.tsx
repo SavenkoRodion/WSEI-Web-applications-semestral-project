@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Layout from "./pages/layout/Layout.tsx";
+import Layout from "./components/layout/Layout.tsx";
 import Home from "./pages/home/Home.tsx";
 import ProjectList from "./pages/project/ProjectList.tsx";
 import ProjectStories from "./pages/project/ProjectStories.tsx";

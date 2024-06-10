@@ -6,7 +6,7 @@ import { Project } from "../../model/Project";
 import ProjectCreateDialog from "../../components/project/ProjectCreateDialog";
 import IRepository from "../../repository/interfaces/IRepository";
 import ProjectRepository from "../../repository/ProjectRepository";
-import { TProjectContext } from "../layout/Layout";
+import { TProjectContext } from "../../components/layout/Layout";
 
 const ProjectList = () => {
   const context: TProjectContext = useOutletContext();

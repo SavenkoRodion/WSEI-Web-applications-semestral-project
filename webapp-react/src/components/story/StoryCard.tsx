@@ -62,7 +62,7 @@ const StoryCard = ({ story }: StoryCardProps) => {
 
   return (
     <>
-      <Card>
+      <Card sx={{ boxShadow: "inset 2px 0px blue" }}>
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             {`Owner: ${storyOwner.firstName} ${storyOwner.lastName}`}
