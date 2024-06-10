@@ -31,7 +31,7 @@ const TaskEditDialog = ({
 }: TaskEditDialogProps) => {
   const [name, setName] = useState(task.name);
   const [storyId, setStoryId] = useState<string>(task.storyId);
-  const [priority, setPriority] = useState<TaskPriority>(TaskPriority.Mid);
+  const [priority, setPriority] = useState<TaskPriority>(task.priority);
   const [timeEstimation, setTimeEstimation] = useState<number | undefined>(
     task.timeEstimationInDays
   );
