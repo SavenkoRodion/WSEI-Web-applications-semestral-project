@@ -83,6 +83,8 @@ const ProjectStories = () => {
     .getAll()
     .filter((e) => e.projectId === projectId);
 
+  const userList = userRepository.getAll();
+
   return (
     <>
       {projectId && (
@@ -115,14 +117,14 @@ const ProjectStories = () => {
               <StoryCreateDialog
                 onClose={handleStoryCreateDialogClose}
                 onCreate={handleStoryCreateDialogCreate}
-                userList={userRepository.getAll()}
+                userList={userList}
               />
             )}
             {isTaskCreateDialogOpen && (
               <TaskCreateDialog
                 onClose={handleTaskCreateDialogClose}
                 onCreate={handleTaskCreateDialogCreate}
-                userList={userRepository.getAll()}
+                userList={userList}
                 storyList={storyList}
               />
             )}
