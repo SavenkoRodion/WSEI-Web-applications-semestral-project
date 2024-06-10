@@ -12,6 +12,7 @@ import { User } from "../../model/User";
 import { useState } from "react";
 import TaskRepository from "../../repository/TaskRepository";
 import IRepository from "../../repository/interfaces/IRepository";
+import TaskDeleteDialog from "./TaskDeleteDialog";
 
 type TaskCardProps = {
   task: Task;
@@ -23,6 +24,10 @@ const TaskCard = ({ task }: TaskCardProps) => {
   const userList = userRepository.getAll();
 
   const taskOwner = userList.filter((e) => e.id === task.ownerUserId)[0];
+
+  const taskOwnerName = task.ownerUserId
+    ? `${taskOwner.firstName} ${taskOwner.lastName}`
+    : "Unassigned";
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
@@ -63,7 +68,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
       <Card sx={{ boxShadow: "inset 2px 0px green" }}>
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            {`Owner: ${taskOwner.firstName} ${taskOwner.lastName}`}
+            {`Owner: ${taskOwnerName}`}
           </Typography>
           <Typography variant="h5" component="div">
             {task.name}
@@ -84,6 +89,9 @@ const TaskCard = ({ task }: TaskCardProps) => {
         </CardContent>
         <CardActions>
           <Button size="small" onClick={handleEditDialogOpen}>
+            Details
+          </Button>
+          <Button size="small" onClick={handleEditDialogOpen}>
             Edit
           </Button>
           <Button size="small" onClick={handleDeleteDialogOpen}>
@@ -92,13 +100,12 @@ const TaskCard = ({ task }: TaskCardProps) => {
         </CardActions>
       </Card>
       {isDeleteDialogOpen && (
-        // <TaskDeleteDialog
-        //   onClose={handleDeleteDialogClose}
-        //   onDelete={handleDelete}
-        //   id={task.id}
-        //   name={task.name}
-        // />
-        <></>
+        <TaskDeleteDialog
+          onClose={handleDeleteDialogClose}
+          onDelete={handleDelete}
+          id={task.id}
+          name={task.name}
+        />
       )}
       {isEditDialogOpen && (
         // <TaskEditDialog
