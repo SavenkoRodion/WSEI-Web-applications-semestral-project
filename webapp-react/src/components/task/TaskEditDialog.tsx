@@ -9,43 +9,54 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
+import { Task, TaskPriority, TaskPriorityValues } from "../../model/Task";
 import { User } from "../../model/User";
-import { Story } from "../../model/Story";
 import { DatePicker } from "@mui/x-date-pickers";
-import { TaskPriority, TaskPriorityValues } from "../../model/Task";
+import { Story } from "../../model/Story";
 
-type TaskCreateDialogProps = {
+type TaskEditDialogProps = {
   onClose: () => void;
-  onCreate: (
-    name: string,
-    storyId: string,
-    priority: TaskPriority,
-    timeEstimationInDays?: number,
-    startDate?: Date,
-    endDate?: Date,
-    ownerUserId?: string
-  ) => void;
+  onEdit: (task: Task) => void;
+  task: Task;
   userList: User[];
   storyList: Story[];
 };
 
-const TaskCreateDialog = ({
+const TaskEditDialog = ({
   onClose,
-  onCreate,
+  onEdit,
+  task,
   userList,
   storyList,
-}: TaskCreateDialogProps) => {
-  const [name, setName] = useState("");
-  const [storyId, setStoryId] = useState<string | undefined>();
+}: TaskEditDialogProps) => {
+  const [name, setName] = useState(task.name);
+  const [storyId, setStoryId] = useState<string>(task.storyId);
   const [priority, setPriority] = useState<TaskPriority>(TaskPriority.Mid);
-  const [timeEstimation, setTimeEstimation] = useState<number | undefined>();
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
-  const [userId, setUserId] = useState<string | undefined>();
+  const [timeEstimation, setTimeEstimation] = useState<number | undefined>(
+    task.timeEstimationInDays
+  );
+  const [startDate, setStartDate] = useState<Date | null>(
+    task.startDate ?? null
+  );
+  const [endDate, setEndDate] = useState<Date | null>(task.endDate ?? null);
+  const [userId, setUserId] = useState<string | undefined>(task.ownerUserId);
+
+  const editedTask = task;
+
+  const getEditedTask = () => {
+    editedTask.name = name;
+    editedTask.storyId = storyId;
+    editedTask.priority = priority;
+    editedTask.timeEstimationInDays = timeEstimation;
+    editedTask.startDate = startDate ?? undefined;
+    editedTask.endDate = endDate ?? undefined;
+    editedTask.ownerUserId = userId;
+    return editedTask;
+  };
 
   return (
     <Dialog open onClose={onClose}>
-      <DialogTitle>Create a task</DialogTitle>
+      <DialogTitle>Task update</DialogTitle>
       <DialogContent>
         <Stack gap="15px" width="500px" sx={{ marginTop: "5px" }}>
           <TextField
@@ -148,21 +159,11 @@ const TaskCreateDialog = ({
         <Stack direction="row" justifyContent="space-between">
           <Button onClick={onClose}>Close</Button>
           <Button
-            onClick={() =>
-              onCreate(
-                name,
-                storyId!,
-                priority,
-                timeEstimation,
-                startDate ?? undefined,
-                endDate ?? undefined,
-                userId
-              )
-            }
+            onClick={() => onEdit(getEditedTask())}
             variant="contained"
             disabled={!name.trim() || !storyId || !userId}
           >
-            Create
+            Update
           </Button>
         </Stack>
       </DialogContent>
@@ -170,4 +171,4 @@ const TaskCreateDialog = ({
   );
 };
 
-export default TaskCreateDialog;
+export default TaskEditDialog;

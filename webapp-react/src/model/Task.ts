@@ -1,11 +1,12 @@
 export type TaskParameters = {
   name: string;
+  storyId: string;
+  priority: TaskPriority;
+  projectId: string;
   timeEstimationInDays: number | undefined;
   startDate: Date | undefined;
   endDate: Date | undefined;
   ownerUserId: string | undefined;
-  projectId: string;
-  storyId: string;
 };
 
 export class Task {
@@ -22,24 +23,25 @@ export class Task {
   storyId: string;
   constructor({
     name,
+    storyId,
+    priority,
+    projectId,
     timeEstimationInDays = undefined,
     startDate = undefined,
     endDate = undefined,
-    ownerUserId,
-    projectId,
-    storyId,
+    ownerUserId = undefined,
   }: TaskParameters) {
     this.id = crypto.randomUUID();
     this.name = name;
-    this.priority = TaskPriority.Mid;
+    this.storyId = storyId;
+    this.priority = priority;
+    this.projectId = projectId;
     this.timeEstimationInDays = timeEstimationInDays;
     this.status = TaskStatus.Todo;
     this.creationDate = new Date();
     this.startDate = startDate;
     this.endDate = endDate;
     this.ownerUserId = ownerUserId;
-    this.projectId = projectId;
-    this.storyId = storyId;
   }
 }
 

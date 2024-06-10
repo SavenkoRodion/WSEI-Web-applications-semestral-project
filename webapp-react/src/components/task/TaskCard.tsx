@@ -5,7 +5,7 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import { Task, TaskPriority, TaskStatus } from "../../model/Task";
+import { Task } from "../../model/Task";
 import IReadRepository from "../../repository/interfaces/IReadRepository";
 import UserRepository from "../../repository/UserRepository";
 import { User } from "../../model/User";
@@ -13,6 +13,10 @@ import { useState } from "react";
 import TaskRepository from "../../repository/TaskRepository";
 import IRepository from "../../repository/interfaces/IRepository";
 import TaskDeleteDialog from "./TaskDeleteDialog";
+import TaskEditDialog from "./TaskEditDialog";
+import { Story } from "../../model/Story";
+import StoryRepository from "../../repository/StoryRepository";
+import { useParams } from "react-router-dom";
 
 type TaskCardProps = {
   task: Task;
@@ -63,6 +67,12 @@ const TaskCard = ({ task }: TaskCardProps) => {
     window.location.reload();
   };
 
+  const { projectId } = useParams();
+  const storyRepository: IRepository<Story> = new StoryRepository();
+  const storyList = storyRepository
+    .getAll()
+    .filter((e) => e.projectId === projectId);
+
   return (
     <>
       <Card sx={{ boxShadow: "inset 2px 0px green" }}>
@@ -108,13 +118,13 @@ const TaskCard = ({ task }: TaskCardProps) => {
         />
       )}
       {isEditDialogOpen && (
-        // <TaskEditDialog
-        //   onClose={handleEditDialogClose}
-        //   onEdit={handleEdit}
-        //   task={task}
-        //   userList={userList}
-        // />
-        <></>
+        <TaskEditDialog
+          onClose={handleEditDialogClose}
+          onEdit={handleEdit}
+          task={task}
+          userList={userList}
+          storyList={storyList}
+        />
       )}
     </>
   );

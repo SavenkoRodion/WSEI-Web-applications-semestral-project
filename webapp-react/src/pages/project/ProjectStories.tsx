@@ -9,7 +9,7 @@ import { Story, StoryPriority, StoryStatus } from "../../model/Story";
 import { User } from "../../model/User";
 import UserRepository from "../../repository/UserRepository";
 import IReadRepository from "../../repository/interfaces/IReadRepository";
-import { Task } from "../../model/Task";
+import { Task, TaskPriority } from "../../model/Task";
 import TaskRepository from "../../repository/TaskRepository";
 import TaskCreateDialog from "../../components/task/TaskCreateDialog";
 
@@ -59,6 +59,7 @@ const ProjectStories = () => {
   const handleTaskCreateDialogCreate = (
     name: string,
     storyId: string,
+    priority: TaskPriority,
     timeEstimationInDays?: number,
     startDate?: Date,
     endDate?: Date,
@@ -67,6 +68,7 @@ const ProjectStories = () => {
     taskRepository.create(
       new Task({
         name: name,
+        priority: priority,
         timeEstimationInDays: timeEstimationInDays,
         startDate: startDate,
         endDate: endDate,
