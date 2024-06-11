@@ -6,7 +6,7 @@ import StoryRepository from "../../repository/StoryRepository";
 import { useParams } from "react-router-dom";
 import StoryCreateDialog from "../../components/story/StoryCreateDialog";
 import { Story, StoryPriority, StoryStatus } from "../../model/Story";
-import { User } from "../../model/User";
+import { User, UserRole } from "../../model/User";
 import UserRepository from "../../repository/UserRepository";
 import IReadRepository from "../../repository/interfaces/IReadRepository";
 import { Task, TaskPriority } from "../../model/Task";
@@ -60,19 +60,16 @@ const ProjectStories = () => {
     name: string,
     storyId: string,
     priority: TaskPriority,
-    timeEstimationInDays?: number,
-    startDate?: Date,
-    endDate?: Date,
-    ownerUserId?: string
+    timeEstimationInDays?: number
   ) => {
     taskRepository.create(
       new Task({
         name: name,
         priority: priority,
         timeEstimationInDays: timeEstimationInDays,
-        startDate: startDate,
-        endDate: endDate,
-        ownerUserId: ownerUserId,
+        startDate: undefined,
+        endDate: undefined,
+        ownerUserId: undefined,
         projectId: projectId!,
         storyId: storyId,
       })
@@ -85,7 +82,9 @@ const ProjectStories = () => {
     .getAll()
     .filter((e) => e.projectId === projectId);
 
-  const userList = userRepository.getAll();
+  const userList = userRepository
+    .getAll()
+    .filter((e) => e.role !== UserRole.Admin);
 
   return (
     <>
@@ -126,7 +125,6 @@ const ProjectStories = () => {
               <TaskCreateDialog
                 onClose={handleTaskCreateDialogClose}
                 onCreate={handleTaskCreateDialogCreate}
-                userList={userList}
                 storyList={storyList}
               />
             )}

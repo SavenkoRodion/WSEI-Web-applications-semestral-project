@@ -7,9 +7,15 @@ import {
   MenuItem,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { Task, TaskPriority, TaskPriorityValues } from "../../model/Task";
+import {
+  Task,
+  TaskPriority,
+  TaskPriorityValues,
+  TaskStatus,
+} from "../../model/Task";
 import { User } from "../../model/User";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Story } from "../../model/Story";
@@ -59,15 +65,20 @@ const TaskEditDialog = ({
       <DialogTitle>Task update</DialogTitle>
       <DialogContent>
         <Stack gap="15px" width="500px" sx={{ marginTop: "5px" }}>
-          <TextField
-            label="Task name"
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-            size="small"
-            required
-          />
+          <Stack>
+            <TextField label="Task id" value={task.id} size="small" disabled />
+          </Stack>
+          <Stack>
+            <TextField
+              label="Task name"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              size="small"
+              required
+            />
+          </Stack>
           <TextField
             label="Story"
             value={storyId}
@@ -108,9 +119,13 @@ const TaskEditDialog = ({
             size={"small"}
             onChange={(e) => {
               setUserId(e.target.value);
+              if (userId !== undefined) editedTask.status = TaskStatus.Doing;
+              if (userId === undefined) editedTask.status = TaskStatus.Todo;
+              console.log(e);
             }}
             select
           >
+            <MenuItem value={undefined}>Unassigned</MenuItem>
             {userList.map((e) => (
               <MenuItem
                 value={e.id}
@@ -130,6 +145,7 @@ const TaskEditDialog = ({
             }}
             minDate={new Date()}
             closeOnSelect
+            disabled
           />
           <DatePicker
             label="End date"
@@ -140,19 +156,27 @@ const TaskEditDialog = ({
               else if (e >= new Date()) setEndDate(e);
               console.log(startDate);
             }}
-            disabled={!startDate}
+            disabled
             minDate={startDate ?? new Date()}
             closeOnSelect
           />
-          <TextField
-            label="Estimation"
-            value={timeEstimation}
-            onChange={(e) =>
-              setTimeEstimation(e.target.value as unknown as number)
-            }
-            size="small"
-            type="number"
-          />
+          <Stack>
+            <TextField
+              label="Estimation"
+              value={timeEstimation}
+              onChange={(e) =>
+                setTimeEstimation(e.target.value as unknown as number)
+              }
+              size="small"
+              type="number"
+            />
+          </Stack>
+          <Divider />
+          <Stack>
+            <Typography>
+              Created: {new Date(task.creationDate).toLocaleDateString("en-GB")}
+            </Typography>
+          </Stack>
         </Stack>
       </DialogContent>
       <DialogContent>
@@ -161,7 +185,7 @@ const TaskEditDialog = ({
           <Button
             onClick={() => onEdit(getEditedTask())}
             variant="contained"
-            disabled={!name.trim() || !storyId || !userId}
+            disabled={!name.trim() || !storyId}
           >
             Update
           </Button>

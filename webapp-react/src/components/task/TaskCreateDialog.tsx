@@ -9,9 +9,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
-import { User } from "../../model/User";
 import { Story } from "../../model/Story";
-import { DatePicker } from "@mui/x-date-pickers";
 import { TaskPriority, TaskPriorityValues } from "../../model/Task";
 
 type TaskCreateDialogProps = {
@@ -20,28 +18,20 @@ type TaskCreateDialogProps = {
     name: string,
     storyId: string,
     priority: TaskPriority,
-    timeEstimationInDays?: number,
-    startDate?: Date,
-    endDate?: Date,
-    ownerUserId?: string
+    timeEstimationInDays?: number
   ) => void;
-  userList: User[];
   storyList: Story[];
 };
 
 const TaskCreateDialog = ({
   onClose,
   onCreate,
-  userList,
   storyList,
 }: TaskCreateDialogProps) => {
   const [name, setName] = useState("");
   const [storyId, setStoryId] = useState<string | undefined>();
   const [priority, setPriority] = useState<TaskPriority>(TaskPriority.Mid);
   const [timeEstimation, setTimeEstimation] = useState<number | undefined>();
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
-  const [userId, setUserId] = useState<string | undefined>();
 
   return (
     <Dialog open onClose={onClose}>
@@ -92,49 +82,7 @@ const TaskCreateDialog = ({
           </TextField>
           <Divider>Optional parameters</Divider>
           <TextField
-            label="Owner"
-            value={userId}
-            size={"small"}
-            onChange={(e) => {
-              setUserId(e.target.value);
-            }}
-            select
-          >
-            {userList.map((e) => (
-              <MenuItem
-                value={e.id}
-                key={e.id}
-              >{`${e.firstName} ${e.lastName}`}</MenuItem>
-            ))}
-          </TextField>
-          <DatePicker
-            label="Start date"
-            slotProps={{ textField: { size: "small" } }}
-            value={startDate}
-            onChange={(e) => {
-              if (e === null) setStartDate(null);
-              else if (e >= new Date(new Date().toDateString()))
-                setStartDate(e);
-              console.log(startDate);
-            }}
-            minDate={new Date()}
-            closeOnSelect
-          />
-          <DatePicker
-            label="End date"
-            slotProps={{ textField: { size: "small" } }}
-            value={endDate}
-            onChange={(e) => {
-              if (e === null) setEndDate(null);
-              else if (e >= new Date()) setEndDate(e);
-              console.log(startDate);
-            }}
-            disabled={!startDate}
-            minDate={startDate ?? new Date()}
-            closeOnSelect
-          />
-          <TextField
-            label="Estimation"
+            label="Time estimation in business days"
             value={timeEstimation}
             onChange={(e) =>
               setTimeEstimation(e.target.value as unknown as number)
@@ -148,19 +96,9 @@ const TaskCreateDialog = ({
         <Stack direction="row" justifyContent="space-between">
           <Button onClick={onClose}>Close</Button>
           <Button
-            onClick={() =>
-              onCreate(
-                name,
-                storyId!,
-                priority,
-                timeEstimation,
-                startDate ?? undefined,
-                endDate ?? undefined,
-                userId
-              )
-            }
+            onClick={() => onCreate(name, storyId!, priority, timeEstimation)}
             variant="contained"
-            disabled={!name.trim() || !storyId || !userId}
+            disabled={!name.trim() || !storyId}
           >
             Create
           </Button>

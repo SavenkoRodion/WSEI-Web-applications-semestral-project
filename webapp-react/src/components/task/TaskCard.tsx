@@ -5,10 +5,10 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import { Task } from "../../model/Task";
+import { Task, TaskPriority } from "../../model/Task";
 import IReadRepository from "../../repository/interfaces/IReadRepository";
 import UserRepository from "../../repository/UserRepository";
-import { User } from "../../model/User";
+import { User, UserRole } from "../../model/User";
 import { useState } from "react";
 import TaskRepository from "../../repository/TaskRepository";
 import IRepository from "../../repository/interfaces/IRepository";
@@ -25,7 +25,9 @@ type TaskCardProps = {
 const TaskCard = ({ task }: TaskCardProps) => {
   const userRepository: IReadRepository<User> = new UserRepository();
 
-  const userList = userRepository.getAll();
+  const userList = userRepository
+    .getAll()
+    .filter((e) => e.role !== UserRole.Admin);
 
   const taskOwner = userList.filter((e) => e.id === task.ownerUserId)[0];
 
@@ -83,7 +85,9 @@ const TaskCard = ({ task }: TaskCardProps) => {
           <Typography variant="h5" component="div">
             {task.name}
           </Typography>
-
+          <Typography sx={{ mt: 1.5 }} color="text.secondary">
+            {`Task priority: ${TaskPriority[task.priority]}`}
+          </Typography>
           {/* <Typography>{task.}</Typography>
           <Typography sx={{ mt: 1.5 }} color="text.secondary">
             {`Status: ${TaskStatus[task.status]}`}
@@ -98,8 +102,12 @@ const TaskCard = ({ task }: TaskCardProps) => {
           </Typography> */}
         </CardContent>
         <CardActions>
-          <Button size="small" onClick={handleEditDialogOpen}>
-            Details
+          <Button
+            size="small"
+            onClick={handleEditDialogOpen}
+            variant={"contained"}
+          >
+            Complete
           </Button>
           <Button size="small" onClick={handleEditDialogOpen}>
             Edit
