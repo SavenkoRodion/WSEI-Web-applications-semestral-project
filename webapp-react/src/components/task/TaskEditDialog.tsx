@@ -119,8 +119,10 @@ const TaskEditDialog = ({
             size={"small"}
             onChange={(e) => {
               setUserId(e.target.value);
-              if (userId !== undefined) editedTask.status = TaskStatus.Doing;
-              if (userId === undefined) editedTask.status = TaskStatus.Todo;
+              if (e.target.value !== undefined)
+                editedTask.status = TaskStatus.Doing;
+              else if (e.target.value === undefined)
+                editedTask.status = TaskStatus.Todo;
               console.log(e);
             }}
             select
