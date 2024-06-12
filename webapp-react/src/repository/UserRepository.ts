@@ -1,21 +1,28 @@
-import authorize from "../decorators/authorize";
-import localStorageConfigs from "../localStorageConfigs";
 import IReadRepository from "./interfaces/IReadRepository";
-import { User } from "../model/User";
+import { User, UserRole } from "../model/User";
 
 class UserRepository implements IReadRepository<User> {
-  @authorize()
   getAll() {
-    const fromStorage = localStorage.getItem(localStorageConfigs.user) ?? "[]";
-    const parsed: User[] = JSON.parse(fromStorage);
-    if (!parsed.length)
-      localStorage.setItem(
-        localStorageConfigs.user,
-        JSON.stringify([
-          new User("Adam", "Smith"),
-          new User("Usero", "Secundo"),
-        ])
-      );
+    const parsed: User[] = [
+      {
+        id: "43e4918c-14e5-472a-9e8b-ca377d71947e",
+        firstName: "Adam",
+        lastName: "Smith",
+        role: UserRole.Admin,
+      },
+      {
+        id: "18a0e6cb-ef2f-42a7-9f70-cfb3d0084de3",
+        firstName: "Usero",
+        lastName: "Secundo",
+        role: UserRole.Devops,
+      },
+      {
+        id: "b0739232-3d6d-406e-9577-90e788cb03d7",
+        firstName: "Developer",
+        lastName: "Guy",
+        role: UserRole.Developer,
+      },
+    ];
     return parsed;
   }
 }

@@ -5,26 +5,35 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import { Story, StoryPriority, StoryStatus } from "../../model/Story";
+import { Task, TaskPriority } from "../../model/Task";
 import IReadRepository from "../../repository/interfaces/IReadRepository";
 import UserRepository from "../../repository/UserRepository";
-import { User } from "../../model/User";
+import { User, UserRole } from "../../model/User";
 import { useState } from "react";
-import StoryDeleteDialog from "./StoryDeleteDialog";
-import StoryRepository from "../../repository/StoryRepository";
+import TaskRepository from "../../repository/TaskRepository";
 import IRepository from "../../repository/interfaces/IRepository";
-import StoryEditDialog from "./StoryEditDialog";
+import TaskDeleteDialog from "./TaskDeleteDialog";
+import TaskEditDialog from "./TaskEditDialog";
+import { Story } from "../../model/Story";
+import StoryRepository from "../../repository/StoryRepository";
+import { useParams } from "react-router-dom";
 
-type StoryCardProps = {
-  story: Story;
+type TaskCardProps = {
+  task: Task;
 };
 
-const StoryCard = ({ story }: StoryCardProps) => {
+const TaskCard = ({ task }: TaskCardProps) => {
   const userRepository: IReadRepository<User> = new UserRepository();
 
-  const userList = userRepository.getAll();
+  const userList = userRepository
+    .getAll()
+    .filter((e) => e.role !== UserRole.Admin);
 
-  const storyOwner = userList.filter((e) => e.id === story.ownerUserId)[0];
+  const taskOwner = userList.filter((e) => e.id === task.ownerUserId)[0];
+
+  const taskOwnerName = task.ownerUserId
+    ? `${taskOwner.firstName} ${taskOwner.lastName}`
+    : "Unassigned";
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
@@ -36,10 +45,10 @@ const StoryCard = ({ story }: StoryCardProps) => {
     setIsDeleteDialogOpen(true);
   };
 
-  const storyRepository: IRepository<Story> = new StoryRepository();
+  const taskRepository: IRepository<Task> = new TaskRepository();
 
   const handleDelete = () => {
-    storyRepository.delete(story.id);
+    taskRepository.delete(task.id);
     handleDeleteDialogClose();
     window.location.reload();
   };
@@ -54,37 +63,52 @@ const StoryCard = ({ story }: StoryCardProps) => {
     setIsEditDialogOpen(true);
   };
 
-  const handleEdit = (editedStory: Story) => {
-    storyRepository.replace(editedStory);
+  const handleEdit = (editedTask: Task) => {
+    taskRepository.replace(editedTask);
     handleDeleteDialogClose();
     window.location.reload();
   };
 
+  const { projectId } = useParams();
+  const storyRepository: IRepository<Story> = new StoryRepository();
+  const storyList = storyRepository
+    .getAll()
+    .filter((e) => e.projectId === projectId);
+
   return (
     <>
-      <Card sx={{ boxShadow: "inset 2px 0px blue" }}>
+      <Card sx={{ boxShadow: "inset 2px 0px green" }}>
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            {`Owner: ${storyOwner.firstName} ${storyOwner.lastName}`}
+            {`Owner: ${taskOwnerName}`}
           </Typography>
           <Typography variant="h5" component="div">
-            {story.name}
+            {task.name}
           </Typography>
-
-          <Typography>{story.description}</Typography>
           <Typography sx={{ mt: 1.5 }} color="text.secondary">
-            {`Status: ${StoryStatus[story.status]}`}
+            {`Task priority: ${TaskPriority[task.priority]}`}
+          </Typography>
+          {/* <Typography>{task.}</Typography>
+          <Typography sx={{ mt: 1.5 }} color="text.secondary">
+            {`Status: ${TaskStatus[task.status]}`}
           </Typography>
           <Typography color="text.secondary">
-            {`Priority: ${StoryPriority[story.priority]}`}
+            {`Priority: ${TaskPriority[task.priority]}`}
           </Typography>
           <Typography color="text.secondary">
-            {`Created: ${new Date(story.dateOfCreation).toLocaleDateString(
+            {`Created: ${new Date(task.dateOfCreation).toLocaleDateString(
               "en-GB"
             )}`}
-          </Typography>
+          </Typography> */}
         </CardContent>
         <CardActions>
+          <Button
+            size="small"
+            onClick={handleEditDialogOpen}
+            variant={"contained"}
+          >
+            Complete
+          </Button>
           <Button size="small" onClick={handleEditDialogOpen}>
             Edit
           </Button>
@@ -94,23 +118,24 @@ const StoryCard = ({ story }: StoryCardProps) => {
         </CardActions>
       </Card>
       {isDeleteDialogOpen && (
-        <StoryDeleteDialog
+        <TaskDeleteDialog
           onClose={handleDeleteDialogClose}
           onDelete={handleDelete}
-          id={story.id}
-          name={story.name}
+          id={task.id}
+          name={task.name}
         />
       )}
       {isEditDialogOpen && (
-        <StoryEditDialog
+        <TaskEditDialog
           onClose={handleEditDialogClose}
           onEdit={handleEdit}
-          story={story}
+          task={task}
           userList={userList}
+          storyList={storyList}
         />
       )}
     </>
   );
 };
 
-export default StoryCard;
+export default TaskCard;

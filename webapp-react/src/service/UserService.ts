@@ -1,4 +1,4 @@
-import { User } from "../model/User";
+import { User, UserRole } from "../model/User";
 
 export interface IUserService {
   getLoggedUser: () => User | null;
@@ -6,6 +6,11 @@ export interface IUserService {
 
 export class UserService implements IUserService {
   getLoggedUser = () => {
-    return new User("Adam", "Smith");
+    return {
+      id: "43e4918c-14e5-472a-9e8b-ca377d71947e",
+      firstName: "Adam",
+      lastName: "Smith",
+      role: UserRole.Admin,
+    };
   };
 }

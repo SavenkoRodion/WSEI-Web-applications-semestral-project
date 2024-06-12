@@ -6,7 +6,7 @@ import ProjectRepository from "../../repository/ProjectRepository";
 import IRepository from "../../repository/interfaces/IRepository";
 import ProjectDeleteDialog from "./ProjectDeleteDialog";
 import ProjectEditDialog from "./ProjectEditDialog";
-import { TProjectContext } from "../../pages/layout/Layout";
+import { TProjectContext } from "../layout/Layout";
 
 type ProjectTableProps = {
   context: TProjectContext;

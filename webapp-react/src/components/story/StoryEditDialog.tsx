@@ -69,22 +69,6 @@ const StoryEditDialog = ({
             required
           />
           <TextField
-            label="Priority"
-            value={priority}
-            size="small"
-            onChange={(e) => {
-              setPriority(e.target.value as unknown as StoryPriority);
-            }}
-            required
-            select
-          >
-            {Object.entries(StoryPriorityValues).map(([key, value]) => (
-              <MenuItem value={value} key={key}>
-                {key}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
             label="Status"
             value={status}
             size={"small"}
@@ -100,6 +84,23 @@ const StoryEditDialog = ({
               </MenuItem>
             ))}
           </TextField>
+          <TextField
+            label="Priority"
+            value={priority}
+            size="small"
+            onChange={(e) => {
+              setPriority(e.target.value as unknown as StoryPriority);
+            }}
+            required
+            select
+          >
+            {Object.entries(StoryPriorityValues).map(([key, value]) => (
+              <MenuItem value={value} key={key}>
+                {key}
+              </MenuItem>
+            ))}
+          </TextField>
+
           <TextField
             label="Owner"
             value={userId}

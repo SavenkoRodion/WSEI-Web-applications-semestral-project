@@ -6,19 +6,22 @@ import StoryRepository from "../../repository/StoryRepository";
 import { useParams } from "react-router-dom";
 import StoryCreateDialog from "../../components/story/StoryCreateDialog";
 import { Story, StoryPriority, StoryStatus } from "../../model/Story";
-import { User } from "../../model/User";
+import { User, UserRole } from "../../model/User";
 import UserRepository from "../../repository/UserRepository";
 import IReadRepository from "../../repository/interfaces/IReadRepository";
+import { Task, TaskPriority } from "../../model/Task";
+import TaskRepository from "../../repository/TaskRepository";
+import TaskCreateDialog from "../../components/task/TaskCreateDialog";
 
 const ProjectStories = () => {
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [isStoryCreateDialogOpen, setIsStoryCreateDialogOpen] = useState(false);
 
-  const handleCreateDialogClose = () => {
-    setIsCreateDialogOpen(false);
+  const handleStoryCreateDialogClose = () => {
+    setIsStoryCreateDialogOpen(false);
   };
 
-  const handleCreateDialogOpen = () => {
-    setIsCreateDialogOpen(true);
+  const handleStoryCreateDialogOpen = () => {
+    setIsStoryCreateDialogOpen(true);
   };
 
   const storyRepository: IRepository<Story> = new StoryRepository();
@@ -27,7 +30,7 @@ const ProjectStories = () => {
 
   const userRepository: IReadRepository<User> = new UserRepository();
 
-  const handleCreateDialogCreate = (
+  const handleStoryCreateDialogCreate = (
     name: string,
     description: string,
     priority: StoryPriority,
@@ -37,9 +40,51 @@ const ProjectStories = () => {
     storyRepository.create(
       new Story(name, description, priority, projectId!, status, ownerUserId)
     );
-    setIsCreateDialogOpen(false);
+    setIsStoryCreateDialogOpen(false);
     window.location.reload();
   };
+
+  const taskRepository: IRepository<Task> = new TaskRepository();
+
+  const [isTaskCreateDialogOpen, setIsTaskCreateDialogOpen] = useState(false);
+
+  const handleTaskCreateDialogClose = () => {
+    setIsTaskCreateDialogOpen(false);
+  };
+
+  const handleTaskCreateDialogOpen = () => {
+    setIsTaskCreateDialogOpen(true);
+  };
+
+  const handleTaskCreateDialogCreate = (
+    name: string,
+    storyId: string,
+    priority: TaskPriority,
+    timeEstimationInDays?: number
+  ) => {
+    taskRepository.create(
+      new Task({
+        name: name,
+        priority: priority,
+        timeEstimationInDays: timeEstimationInDays,
+        startDate: undefined,
+        endDate: undefined,
+        ownerUserId: undefined,
+        projectId: projectId!,
+        storyId: storyId,
+      })
+    );
+    setIsStoryCreateDialogOpen(false);
+    window.location.reload();
+  };
+
+  const storyList = storyRepository
+    .getAll()
+    .filter((e) => e.projectId === projectId);
+
+  const userList = userRepository
+    .getAll()
+    .filter((e) => e.role !== UserRole.Admin);
 
   return (
     <>
@@ -50,25 +95,37 @@ const ProjectStories = () => {
               <Button
                 sx={{ color: "white", textDecoration: "underline" }}
                 size="small"
-                onClick={handleCreateDialogOpen}
+                onClick={handleStoryCreateDialogOpen}
               >
                 Create story
               </Button>
+              {!!storyList.length && (
+                <Button
+                  sx={{ color: "white", textDecoration: "underline" }}
+                  size="small"
+                  onClick={handleTaskCreateDialogOpen}
+                >
+                  Create task
+                </Button>
+              )}
             </Toolbar>
           </AppBar>
           <Box>
             <Stack>
-              <StoryGrid
-                data={storyRepository
-                  .getAll()
-                  .filter((e) => e.projectId === projectId)}
-              />
+              <StoryGrid stories={storyList} tasks={taskRepository.getAll()} />
             </Stack>
-            {isCreateDialogOpen && (
+            {isStoryCreateDialogOpen && (
               <StoryCreateDialog
-                onClose={handleCreateDialogClose}
-                onCreate={handleCreateDialogCreate}
-                userList={userRepository.getAll()}
+                onClose={handleStoryCreateDialogClose}
+                onCreate={handleStoryCreateDialogCreate}
+                userList={userList}
+              />
+            )}
+            {isTaskCreateDialogOpen && (
+              <TaskCreateDialog
+                onClose={handleTaskCreateDialogClose}
+                onCreate={handleTaskCreateDialogCreate}
+                storyList={storyList}
               />
             )}
           </Box>

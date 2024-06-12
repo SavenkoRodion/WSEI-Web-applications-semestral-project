@@ -12,6 +12,9 @@ import ProjectRepository from "../../repository/ProjectRepository";
 import IRepository from "../../repository/interfaces/IRepository";
 import { useEffect, useMemo, useState } from "react";
 import SelectedProjectRepository from "../../repository/SelectedProjectRepository";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
+import { enGB } from "date-fns/locale";
 
 export type TProjectContext = {
   projects: Project[];
@@ -44,47 +47,52 @@ const Layout = () => {
   useEffect(() => {
     selectedProjectRepository.create(new SelectedProjectId(selectedProjectId));
     setSelectedProject(projects.filter((e) => e.id === selectedProjectId)[0]);
-  }, [selectedProjectId, selectedProjectRepository, projects]);
+  }, [selectedProjectId]);
 
   return (
     <Box>
       <CssBaseline />
-      <AppBar position="sticky">
-        <Toolbar variant="dense">
-          <Typography>
-            <Link href="/" sx={{ color: "white", textDecoration: "underline" }}>
-              Home
-            </Link>
-          </Typography>
-          <Typography>
-            <Link
-              href="/project"
-              sx={{
-                color: "white",
-                textDecoration: "underline",
-                marginLeft: "16px",
-              }}
-            >
-              Project list
-            </Link>
-          </Typography>
-          <Typography>
-            <Link
-              href={`/project/${selectedProject?.id ?? ""}`}
-              sx={{
-                color: "white",
-                textDecoration: "underline",
-                marginLeft: "16px",
-              }}
-            >
-              Selected project: {selectedProject?.name ?? "none"}
-            </Link>
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Box>
-        <Outlet context={context} />
-      </Box>
+      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
+        <AppBar position="sticky">
+          <Toolbar variant="dense">
+            <Typography>
+              <Link
+                href="/"
+                sx={{ color: "white", textDecoration: "underline" }}
+              >
+                Home
+              </Link>
+            </Typography>
+            <Typography>
+              <Link
+                href="/project"
+                sx={{
+                  color: "white",
+                  textDecoration: "underline",
+                  marginLeft: "16px",
+                }}
+              >
+                Project list
+              </Link>
+            </Typography>
+            <Typography>
+              <Link
+                href={`/project/${selectedProject?.id ?? ""}`}
+                sx={{
+                  color: "white",
+                  textDecoration: "underline",
+                  marginLeft: "16px",
+                }}
+              >
+                Selected project: {selectedProject?.name ?? "none"}
+              </Link>
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Box>
+          <Outlet context={context} />
+        </Box>
+      </LocalizationProvider>
     </Box>
   );
 };
