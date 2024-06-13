@@ -5,7 +5,7 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import { Task, TaskPriority } from "../../model/Task";
+import { Task, TaskPriority, TaskStatus } from "../../model/Task";
 import IReadRepository from "../../repository/interfaces/IReadRepository";
 import UserRepository from "../../repository/UserRepository";
 import { User, UserRole } from "../../model/User";
@@ -75,6 +75,13 @@ const TaskCard = ({ task }: TaskCardProps) => {
     .getAll()
     .filter((e) => e.projectId === projectId);
 
+  const handleTaskComplete = () => {
+    const editedTask = task;
+    editedTask.status = TaskStatus.Done;
+    taskRepository.replace(editedTask);
+    window.location.reload();
+  };
+
   return (
     <>
       <Card sx={{ boxShadow: "inset 2px 0px green" }}>
@@ -104,7 +111,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
         <CardActions>
           <Button
             size="small"
-            onClick={handleEditDialogOpen}
+            onClick={handleTaskComplete}
             variant={"contained"}
           >
             Complete

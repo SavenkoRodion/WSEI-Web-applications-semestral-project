@@ -7,7 +7,6 @@ class TaskRepository implements IRepository<Task> {
   @authorize()
   create(task: Task) {
     const taskList: Task[] = this.getAll();
-    console.log(task);
     taskList.push(task);
 
     localStorage.setItem(localStorageConfigs.task, JSON.stringify(taskList));
