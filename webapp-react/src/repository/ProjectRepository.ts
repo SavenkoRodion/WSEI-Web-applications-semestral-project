@@ -7,7 +7,6 @@ class ProjectRepository implements IRepository<Project> {
   @authorize()
   create(project: Project) {
     const projectList: Project[] = this.getAll();
-    console.log(projectList);
     projectList.push(project);
 
     localStorage.setItem(

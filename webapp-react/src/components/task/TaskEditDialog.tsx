@@ -123,7 +123,6 @@ const TaskEditDialog = ({
                 editedTask.status = TaskStatus.Doing;
               else if (e.target.value === undefined)
                 editedTask.status = TaskStatus.Todo;
-              console.log(e);
             }}
             select
           >
@@ -143,7 +142,6 @@ const TaskEditDialog = ({
               if (e === null) setStartDate(null);
               else if (e >= new Date(new Date().toDateString()))
                 setStartDate(e);
-              console.log(startDate);
             }}
             minDate={new Date()}
             closeOnSelect
@@ -156,7 +154,6 @@ const TaskEditDialog = ({
             onChange={(e) => {
               if (e === null) setEndDate(null);
               else if (e >= new Date()) setEndDate(e);
-              console.log(startDate);
             }}
             disabled
             minDate={startDate ?? new Date()}
