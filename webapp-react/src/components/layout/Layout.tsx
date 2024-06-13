@@ -3,8 +3,12 @@ import {
   Box,
   CssBaseline,
   Link,
+  Stack,
+  Switch,
+  ThemeProvider,
   Toolbar,
   Typography,
+  createTheme,
 } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { Project, SelectedProjectId } from "../../model/Project";
@@ -49,50 +53,87 @@ const Layout = () => {
     setSelectedProject(projects.filter((e) => e.id === selectedProjectId)[0]);
   }, [selectedProjectId]);
 
+  const fromStorage: boolean = JSON.parse(
+    localStorage.getItem("react_theme") ?? "false"
+  );
+
+  const [isDarkTheme, setIsDarkTheme] = useState(fromStorage);
+
+  console.log(isDarkTheme);
+  useEffect(() => {
+    localStorage.setItem("react_theme", JSON.stringify(isDarkTheme));
+  }, [isDarkTheme]);
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: isDarkTheme ? "#212121" : "#3f50b5",
+      },
+    },
+  });
+
   return (
     <Box>
-      <CssBaseline />
-      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
-        <AppBar position="sticky">
-          <Toolbar variant="dense">
-            <Typography>
-              <Link
-                href="/"
-                sx={{ color: "white", textDecoration: "underline" }}
-              >
-                Home
-              </Link>
-            </Typography>
-            <Typography>
-              <Link
-                href="/project"
-                sx={{
-                  color: "white",
-                  textDecoration: "underline",
-                  marginLeft: "16px",
-                }}
-              >
-                Project list
-              </Link>
-            </Typography>
-            <Typography>
-              <Link
-                href={`/project/${selectedProject?.id ?? ""}`}
-                sx={{
-                  color: "white",
-                  textDecoration: "underline",
-                  marginLeft: "16px",
-                }}
-              >
-                Selected project: {selectedProject?.name ?? "none"}
-              </Link>
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Box>
-          <Outlet context={context} />
-        </Box>
-      </LocalizationProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
+          <AppBar position="sticky">
+            <Toolbar
+              variant="dense"
+              sx={{ display: "flex", justifyContent: "space-between" }}
+            >
+              <Stack flexDirection={"row"}>
+                <Typography>
+                  <Link
+                    href="/"
+                    sx={{ color: "white", textDecoration: "underline" }}
+                  >
+                    Home
+                  </Link>
+                </Typography>
+                <Typography>
+                  <Link
+                    href="/project"
+                    sx={{
+                      color: "white",
+                      textDecoration: "underline",
+                      marginLeft: "16px",
+                    }}
+                  >
+                    Project list
+                  </Link>
+                </Typography>
+                <Typography>
+                  <Link
+                    href={`/project/${selectedProject?.id ?? ""}`}
+                    sx={{
+                      color: "white",
+                      textDecoration: "underline",
+                      marginLeft: "16px",
+                    }}
+                  >
+                    Selected project: {selectedProject?.name ?? "none"}
+                  </Link>
+                </Typography>
+              </Stack>
+              <Stack>
+                <Switch
+                  value={isDarkTheme}
+                  onChange={(e) => {
+                    console.log(isDarkTheme);
+                    setIsDarkTheme(e.target.checked);
+                  }}
+                  defaultChecked={isDarkTheme}
+                  color="info"
+                />
+              </Stack>
+            </Toolbar>
+          </AppBar>
+          <Box>
+            <Outlet context={context} />
+          </Box>
+        </LocalizationProvider>
+      </ThemeProvider>
     </Box>
   );
 };
