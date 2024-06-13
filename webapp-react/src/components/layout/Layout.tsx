@@ -59,7 +59,6 @@ const Layout = () => {
 
   const [isDarkTheme, setIsDarkTheme] = useState(fromStorage);
 
-  console.log(isDarkTheme);
   useEffect(() => {
     localStorage.setItem("react_theme", JSON.stringify(isDarkTheme));
   }, [isDarkTheme]);
@@ -120,7 +119,6 @@ const Layout = () => {
                 <Switch
                   value={isDarkTheme}
                   onChange={(e) => {
-                    console.log(isDarkTheme);
                     setIsDarkTheme(e.target.checked);
                   }}
                   defaultChecked={isDarkTheme}
