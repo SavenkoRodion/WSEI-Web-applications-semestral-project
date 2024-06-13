@@ -7,7 +7,6 @@ class StoryRepository implements IRepository<Story> {
   @authorize()
   create(story: Story) {
     const storyList: Story[] = this.getAll();
-    console.log(story);
     storyList.push(story);
 
     localStorage.setItem(localStorageConfigs.story, JSON.stringify(storyList));

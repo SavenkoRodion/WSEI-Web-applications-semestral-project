@@ -55,7 +55,6 @@ const ProjectTable = ({ context }: ProjectTableProps) => {
       headerName: "Edit",
       flex: 0.25,
       renderCell: ({ row }: { row: Project }) => {
-        console.log(row);
         return <Button onClick={() => handleEdit(row)}>Edit</Button>;
       },
     },
