@@ -11,7 +11,10 @@ import {
   createTheme,
 } from "@mui/material";
 import { Outlet } from "react-router-dom";
-import { Project, SelectedProjectId } from "../../model/Project";
+import {
+  Project,
+  SelectedProjectId,
+} from "@savenkorodion/webapp-model/Project";
 import ProjectRepository from "../../repository/ProjectRepository";
 import { useEffect, useMemo, useState } from "react";
 import SelectedProjectRepository from "../../repository/SelectedProjectRepository";

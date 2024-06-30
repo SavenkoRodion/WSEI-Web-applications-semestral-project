@@ -14,8 +14,8 @@ import {
   StoryPriorityValues,
   StoryStatus,
   StoryStatusValues,
-} from "../../model/Story";
-import { User } from "../../model/User";
+} from "@savenkorodion/webapp-model/Story";
+import { User } from "@savenkorodion/webapp-model/User";
 
 type StoryEditDialogProps = {
   onClose: () => void;

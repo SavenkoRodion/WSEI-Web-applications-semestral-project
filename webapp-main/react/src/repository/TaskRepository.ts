@@ -1,7 +1,7 @@
 import IRepository from "@savenkorodion/repository-interfaces/IRepository";
 import authorize from "../decorators/authorize";
 import localStorageConfigs from "../localStorageConfigs";
-import { Task } from "../model/Task";
+import { Task } from "@savenkorodion/webapp-model/Task";
 
 class TaskRepository implements IRepository<Task> {
   @authorize()

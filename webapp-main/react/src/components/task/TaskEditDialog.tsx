@@ -15,10 +15,10 @@ import {
   TaskPriority,
   TaskPriorityValues,
   TaskStatus,
-} from "../../model/Task";
-import { User } from "../../model/User";
+} from "@savenkorodion/webapp-model/Task";
+import { User } from "@savenkorodion/webapp-model/User";
 import { DatePicker } from "@mui/x-date-pickers";
-import { Story } from "../../model/Story";
+import { Story } from "@savenkorodion/webapp-model/Story";
 
 type TaskEditDialogProps = {
   onClose: () => void;

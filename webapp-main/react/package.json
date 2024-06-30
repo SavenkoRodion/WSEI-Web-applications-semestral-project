@@ -17,6 +17,7 @@
     "@mui/x-data-grid": "^7.3.2",
     "@mui/x-date-pickers": "^7.6.2",
     "@savenkorodion/repository-interfaces": "^1.1.0",
+    "@savenkorodion/webapp-model": "^1.0.0",
     "date-fns": "^3.6.0",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",

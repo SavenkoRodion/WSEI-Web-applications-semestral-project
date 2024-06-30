@@ -4,10 +4,14 @@ import StoryGrid from "../../components/story/StoryGrid";
 import StoryRepository from "../../repository/StoryRepository";
 import { useParams } from "react-router-dom";
 import StoryCreateDialog from "../../components/story/StoryCreateDialog";
-import { Story, StoryPriority, StoryStatus } from "../../model/Story";
-import { User, UserRole } from "../../model/User";
+import {
+  Story,
+  StoryPriority,
+  StoryStatus,
+} from "@savenkorodion/webapp-model/Story";
+import { User, UserRole } from "@savenkorodion/webapp-model/User";
 import UserRepository from "../../repository/UserRepository";
-import { Task, TaskPriority } from "../../model/Task";
+import { Task, TaskPriority } from "@savenkorodion/webapp-model/Task";
 import TaskRepository from "../../repository/TaskRepository";
 import TaskCreateDialog from "../../components/task/TaskCreateDialog";
 import IRepository from "@savenkorodion/repository-interfaces/IRepository";

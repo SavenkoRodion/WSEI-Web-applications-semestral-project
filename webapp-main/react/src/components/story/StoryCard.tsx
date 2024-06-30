@@ -5,9 +5,13 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import { Story, StoryPriority, StoryStatus } from "../../model/Story";
+import {
+  Story,
+  StoryPriority,
+  StoryStatus,
+} from "@savenkorodion/webapp-model/Story";
 import UserRepository from "../../repository/UserRepository";
-import { User } from "../../model/User";
+import { User } from "@savenkorodion/webapp-model/User";
 import { useState } from "react";
 import StoryDeleteDialog from "./StoryDeleteDialog";
 import StoryRepository from "../../repository/StoryRepository";

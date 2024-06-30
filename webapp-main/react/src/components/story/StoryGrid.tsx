@@ -1,8 +1,8 @@
 import { Box, Stack, Typography } from "@mui/material";
 import styles from "./styles";
 import StoryCard from "./StoryCard";
-import { Story } from "../../model/Story";
-import { Task, TaskStatus } from "../../model/Task";
+import { Story } from "@savenkorodion/webapp-model/Story";
+import { Task, TaskStatus } from "@savenkorodion/webapp-model/Task";
 import TaskCard from "../task/TaskCard";
 
 type StoryGridProps = {

@@ -1,4 +1,4 @@
-import { User, UserRole } from "../model/User";
+import { User, UserRole } from "@savenkorodion/webapp-model/User";
 
 export interface IUserService {
   getLoggedUser: () => User | null;

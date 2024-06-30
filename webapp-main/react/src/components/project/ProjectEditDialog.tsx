@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { Project } from "../../model/Project";
+import { Project } from "@savenkorodion/webapp-model/Project";
 import { useState } from "react";
 
 type ProjectEditDialogProps = {

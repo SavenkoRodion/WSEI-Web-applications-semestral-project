@@ -1,5 +1,5 @@
 import authorize from "../decorators/authorize";
-import { SelectedProjectId } from "../model/Project";
+import { SelectedProjectId } from "@savenkorodion/webapp-model/Project";
 import localStorageConfigs from "../localStorageConfigs";
 import IRepository from "@savenkorodion/repository-interfaces/IRepository";
 

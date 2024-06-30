@@ -2,7 +2,7 @@ import { AppBar, Box, Button, Stack, Toolbar } from "@mui/material";
 import { useOutletContext } from "react-router-dom";
 import ProjectTable from "../../components/project/ProjectTable";
 import { useState } from "react";
-import { Project } from "../../model/Project";
+import { Project } from "@savenkorodion/webapp-model/Project";
 import ProjectCreateDialog from "../../components/project/ProjectCreateDialog";
 import ProjectRepository from "../../repository/ProjectRepository";
 import { TProjectContext } from "../../components/layout/Layout";

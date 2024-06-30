@@ -1,5 +1,5 @@
 import { DataGrid, GridColDef, GridRowId } from "@mui/x-data-grid";
-import { Project } from "../../model/Project";
+import { Project } from "@savenkorodion/webapp-model/Project";
 import { Button } from "@mui/material";
 import { useState } from "react";
 import ProjectRepository from "../../repository/ProjectRepository";

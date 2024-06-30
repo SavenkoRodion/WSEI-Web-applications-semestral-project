@@ -5,14 +5,18 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import { Task, TaskPriority, TaskStatus } from "../../model/Task";
+import {
+  Task,
+  TaskPriority,
+  TaskStatus,
+} from "@savenkorodion/webapp-model/Task";
 import UserRepository from "../../repository/UserRepository";
-import { User, UserRole } from "../../model/User";
+import { User, UserRole } from "@savenkorodion/webapp-model/User";
 import { useState } from "react";
 import TaskRepository from "../../repository/TaskRepository";
 import TaskDeleteDialog from "./TaskDeleteDialog";
 import TaskEditDialog from "./TaskEditDialog";
-import { Story } from "../../model/Story";
+import { Story } from "@savenkorodion/webapp-model/Story";
 import StoryRepository from "../../repository/StoryRepository";
 import { useParams } from "react-router-dom";
 import IReadRepository from "@savenkorodion/repository-interfaces/IReadRepository";
