@@ -1,3 +1,14 @@
+export type Story = {
+  id: string;
+  name: string;
+  description: string;
+  priority: StoryPriority;
+  projectId: string;
+  dateOfCreation: Date;
+  status: StoryStatus;
+  ownerUserId: string;
+};
+
 export enum StoryPriority {
   Low,
   Mid,

@@ -1,4 +1,4 @@
-import Project from "@savenkorodion/webapp-model/entities/Project";
+import { Project } from "@savenkorodion/webapp-model/entities/Project";
 import IAsyncCrudRepository from "@savenkorodion/repository-interfaces/async/IAsyncCrudRepository";
 import axios from "axios";
 import CreateProjectRequest from "@savenkorodion/webapp-model/requests/CreateProjectRequest";

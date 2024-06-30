@@ -1,9 +1,9 @@
 import authorize from "../../decorators/authorize";
-import { Project } from "@savenkorodion/webapp-model/Project";
+import { Project } from "@savenkorodion/webapp-model/entities/Project";
 import localStorageConfigs from "../../localStorageConfigs";
-import IRepository from "@savenkorodion/repository-interfaces/IRepository";
+import ICrudRepository from "@savenkorodion/repository-interfaces/sync/ICrudRepository";
 
-class ProjectRepository implements IRepository<Project> {
+class ProjectRepository implements ICrudRepository<Project> {
   @authorize()
   create(project: Project) {
     const projectList: Project[] = this.getAll();

@@ -1,3 +1,3 @@
-type Project = { name: string; description: string; id: string };
+export type Project = { name: string; description: string; id: string };
 
-export default Project;
+export type SelectedProjectId = { id: string | null };

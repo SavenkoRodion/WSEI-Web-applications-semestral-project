@@ -1,5 +1,5 @@
-import IReadRepository from "@savenkorodion/repository-interfaces/IReadRepository";
-import { User, UserRole } from "@savenkorodion/webapp-model/User";
+import IReadRepository from "@savenkorodion/repository-interfaces/sync/IReadRepository";
+import { User, UserRole } from "@savenkorodion/webapp-model/entities/User";
 
 class UserRepository implements IReadRepository<User> {
   getAll() {

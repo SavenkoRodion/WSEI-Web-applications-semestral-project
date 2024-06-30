@@ -1,3 +1,17 @@
+export type Task = {
+  id: string;
+  name: string;
+  priority: TaskPriority;
+  timeEstimationInDays?: number;
+  status: TaskStatus;
+  creationDate: Date;
+  startDate?: Date;
+  endDate?: Date;
+  ownerUserId?: string;
+  projectId: string;
+  storyId: string;
+};
+
 export type CreateTaskRequest = {
   name: string;
   storyId: string;
