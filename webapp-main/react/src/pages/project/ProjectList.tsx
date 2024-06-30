@@ -4,9 +4,9 @@ import ProjectTable from "../../components/project/ProjectTable";
 import { useState } from "react";
 import { Project } from "../../model/Project";
 import ProjectCreateDialog from "../../components/project/ProjectCreateDialog";
-import IRepository from "../../repository/interfaces/IRepository";
 import ProjectRepository from "../../repository/ProjectRepository";
 import { TProjectContext } from "../../components/layout/Layout";
+import IRepository from "@savenkorodion/repository-interfaces/IRepository";
 
 const ProjectList = () => {
   const context: TProjectContext = useOutletContext();
