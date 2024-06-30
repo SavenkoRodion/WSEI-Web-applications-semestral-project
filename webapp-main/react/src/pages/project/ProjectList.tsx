@@ -4,7 +4,7 @@ import ProjectTable from "../../components/project/ProjectTable";
 import { useState } from "react";
 import { Project } from "@savenkorodion/webapp-model/Project";
 import ProjectCreateDialog from "../../components/project/ProjectCreateDialog";
-import ProjectRepository from "../../repository/ProjectRepository";
+import ProjectRepository from "../../repository/localstorage/ProjectRepository";
 import { TProjectContext } from "../../components/layout/Layout";
 import IRepository from "@savenkorodion/repository-interfaces/IRepository";
 

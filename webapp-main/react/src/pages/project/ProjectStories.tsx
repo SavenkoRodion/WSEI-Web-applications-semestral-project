@@ -1,7 +1,7 @@
 import { AppBar, Box, Button, Stack, Toolbar } from "@mui/material";
 import { useState } from "react";
 import StoryGrid from "../../components/story/StoryGrid";
-import StoryRepository from "../../repository/StoryRepository";
+import StoryRepository from "../../repository/localstorage/StoryRepository";
 import { useParams } from "react-router-dom";
 import StoryCreateDialog from "../../components/story/StoryCreateDialog";
 import {
@@ -10,9 +10,9 @@ import {
   StoryStatus,
 } from "@savenkorodion/webapp-model/Story";
 import { User, UserRole } from "@savenkorodion/webapp-model/User";
-import UserRepository from "../../repository/UserRepository";
+import UserRepository from "../../repository/localstorage/UserRepository";
 import { Task, TaskPriority } from "@savenkorodion/webapp-model/Task";
-import TaskRepository from "../../repository/TaskRepository";
+import TaskRepository from "../../repository/localstorage/TaskRepository";
 import TaskCreateDialog from "../../components/task/TaskCreateDialog";
 import IRepository from "@savenkorodion/repository-interfaces/IRepository";
 import IReadRepository from "@savenkorodion/repository-interfaces/IReadRepository";

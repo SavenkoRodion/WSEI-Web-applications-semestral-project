@@ -2,7 +2,7 @@ import { DataGrid, GridColDef, GridRowId } from "@mui/x-data-grid";
 import { Project } from "@savenkorodion/webapp-model/Project";
 import { Button } from "@mui/material";
 import { useState } from "react";
-import ProjectRepository from "../../repository/ProjectRepository";
+import ProjectRepository from "../../repository/localstorage/ProjectRepository";
 import ProjectDeleteDialog from "./ProjectDeleteDialog";
 import ProjectEditDialog from "./ProjectEditDialog";
 import { TProjectContext } from "../layout/Layout";

@@ -15,9 +15,9 @@ import {
   Project,
   SelectedProjectId,
 } from "@savenkorodion/webapp-model/Project";
-import ProjectRepository from "../../repository/ProjectRepository";
+import ProjectRepository from "../../repository/localstorage/ProjectRepository";
 import { useEffect, useMemo, useState } from "react";
-import SelectedProjectRepository from "../../repository/SelectedProjectRepository";
+import SelectedProjectRepository from "../../repository/localstorage/SelectedProjectRepository";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { enGB } from "date-fns/locale";

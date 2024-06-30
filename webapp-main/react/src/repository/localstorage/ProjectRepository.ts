@@ -1,6 +1,6 @@
-import authorize from "../decorators/authorize";
+import authorize from "../../decorators/authorize";
 import { Project } from "@savenkorodion/webapp-model/Project";
-import localStorageConfigs from "../localStorageConfigs";
+import localStorageConfigs from "../../localStorageConfigs";
 import IRepository from "@savenkorodion/repository-interfaces/IRepository";
 
 class ProjectRepository implements IRepository<Project> {

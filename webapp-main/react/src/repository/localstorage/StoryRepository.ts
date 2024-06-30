@@ -1,6 +1,6 @@
 import IRepository from "@savenkorodion/repository-interfaces/IRepository";
-import authorize from "../decorators/authorize";
-import localStorageConfigs from "../localStorageConfigs";
+import authorize from "../../decorators/authorize";
+import localStorageConfigs from "../../localStorageConfigs";
 import { Story } from "@savenkorodion/webapp-model/Story";
 
 class StoryRepository implements IRepository<Story> {

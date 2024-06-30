@@ -1,17 +1,11 @@
 import { Box } from "@mui/material";
 import axios from "axios";
+import CreateProjectRequest from "@savenkorodion/webapp-model/requests/CreateProjectRequest";
+import ProjectRepository from "../../repository/backend/ProjectRepository";
 
 const Home = () => {
-  axios({
-    method: "get",
-    url: "http://localhost:3000/project/all",
-    responseType: "json",
-  }).then((e) => console.log(e));
-  axios({
-    method: "post",
-    url: "http://localhost:3000/project/",
-    data: { test: "lol" },
-  });
+  const lol = new ProjectRepository();
+  lol.getAll().then((e) => console.log(e));
   return <Box>Welcome to home page</Box>;
 };
 

@@ -10,11 +10,11 @@ import {
   StoryPriority,
   StoryStatus,
 } from "@savenkorodion/webapp-model/Story";
-import UserRepository from "../../repository/UserRepository";
+import UserRepository from "../../repository/localstorage/UserRepository";
 import { User } from "@savenkorodion/webapp-model/User";
 import { useState } from "react";
 import StoryDeleteDialog from "./StoryDeleteDialog";
-import StoryRepository from "../../repository/StoryRepository";
+import StoryRepository from "../../repository/localstorage/StoryRepository";
 import StoryEditDialog from "./StoryEditDialog";
 import IReadRepository from "@savenkorodion/repository-interfaces/IReadRepository";
 import IRepository from "@savenkorodion/repository-interfaces/IRepository";

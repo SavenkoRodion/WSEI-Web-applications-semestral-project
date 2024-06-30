@@ -10,14 +10,14 @@ import {
   TaskPriority,
   TaskStatus,
 } from "@savenkorodion/webapp-model/Task";
-import UserRepository from "../../repository/UserRepository";
+import UserRepository from "../../repository/localstorage/UserRepository";
 import { User, UserRole } from "@savenkorodion/webapp-model/User";
 import { useState } from "react";
-import TaskRepository from "../../repository/TaskRepository";
+import TaskRepository from "../../repository/localstorage/TaskRepository";
 import TaskDeleteDialog from "./TaskDeleteDialog";
 import TaskEditDialog from "./TaskEditDialog";
 import { Story } from "@savenkorodion/webapp-model/Story";
-import StoryRepository from "../../repository/StoryRepository";
+import StoryRepository from "../../repository/localstorage/StoryRepository";
 import { useParams } from "react-router-dom";
 import IReadRepository from "@savenkorodion/repository-interfaces/IReadRepository";
 import IRepository from "@savenkorodion/repository-interfaces/IRepository";
