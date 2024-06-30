@@ -1,7 +1,7 @@
 import { Express } from "express";
 import jwt from "jsonwebtoken";
 
-const authEndpoints = (app: Express) => {
+const getAuthEndpoints = (app: Express) => {
   const tokenSecret = process.env.TOKEN_SECRET as string;
   let refreshToken: string;
 
@@ -60,4 +60,4 @@ const authEndpoints = (app: Express) => {
   }
 };
 
-export default authEndpoints;
+export default getAuthEndpoints;

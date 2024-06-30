@@ -3,23 +3,24 @@ import express from "express";
 import "dotenv/config";
 import cors from "cors";
 import { MongoClient, ServerApiVersion } from "mongodb";
-import authEndpoints from "./endpoints/auth";
+import getAuthEndpoints from "./endpoints/auth";
+import getProjectEndpoints from "./endpoints/project";
+import credentials from "./credentials";
 
 const app = express();
 const port = 3000;
 
 app.use(cors());
 app.use(express.json());
-authEndpoints(app);
+getAuthEndpoints(app);
+getProjectEndpoints(app);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
-// Replace the placeholder with your Atlas connection string
-const uri =
-  "mongodb+srv://savenko662:Hard1324@cluster0.woisraq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const uri = `mongodb+srv://${credentials}@cluster0.woisraq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
