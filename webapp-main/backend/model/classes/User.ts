@@ -1,3 +1,5 @@
+import { UserRole } from "@savenkorodion/webapp-model/entities/User";
+
 export class User {
   firstName: string;
   lastName: string;
@@ -9,10 +11,4 @@ export class User {
     this.lastName = lastName;
     this.role = role;
   }
-}
-
-export enum UserRole {
-  Admin,
-  Devops,
-  Developer,
 }

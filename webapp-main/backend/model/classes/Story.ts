@@ -1,3 +1,8 @@
+import {
+  StoryPriority,
+  StoryStatus,
+} from "@savenkorodion/webapp-model/entities/Story";
+
 export class Story {
   id: string;
   name: string;
@@ -26,27 +31,3 @@ export class Story {
     this.ownerUserId = ownerUserId;
   }
 }
-
-export enum StoryPriority {
-  Low,
-  Mid,
-  High,
-}
-
-export const StoryPriorityValues = {
-  Low: StoryPriority.Low,
-  Mid: StoryPriority.Mid,
-  High: StoryPriority.High,
-};
-
-export enum StoryStatus {
-  Todo,
-  Doing,
-  Done,
-}
-
-export const StoryStatusValues = {
-  Todo: StoryStatus.Todo,
-  Doing: StoryStatus.Doing,
-  Done: StoryStatus.Done,
-};
