@@ -3,10 +3,10 @@ import { Project } from "../../model/Project";
 import { Button } from "@mui/material";
 import { useState } from "react";
 import ProjectRepository from "../../repository/ProjectRepository";
-import IRepository from "../../repository/interfaces/IRepository";
 import ProjectDeleteDialog from "./ProjectDeleteDialog";
 import ProjectEditDialog from "./ProjectEditDialog";
 import { TProjectContext } from "../layout/Layout";
+import IRepository from "@savenkorodion/repository-interfaces/IRepository";
 
 type ProjectTableProps = {
   context: TProjectContext;

@@ -6,17 +6,17 @@ import {
   Typography,
 } from "@mui/material";
 import { Task, TaskPriority, TaskStatus } from "../../model/Task";
-import IReadRepository from "../../repository/interfaces/IReadRepository";
 import UserRepository from "../../repository/UserRepository";
 import { User, UserRole } from "../../model/User";
 import { useState } from "react";
 import TaskRepository from "../../repository/TaskRepository";
-import IRepository from "../../repository/interfaces/IRepository";
 import TaskDeleteDialog from "./TaskDeleteDialog";
 import TaskEditDialog from "./TaskEditDialog";
 import { Story } from "../../model/Story";
 import StoryRepository from "../../repository/StoryRepository";
 import { useParams } from "react-router-dom";
+import IReadRepository from "@savenkorodion/repository-interfaces/IReadRepository";
+import IRepository from "@savenkorodion/repository-interfaces/IRepository";
 
 type TaskCardProps = {
   task: Task;

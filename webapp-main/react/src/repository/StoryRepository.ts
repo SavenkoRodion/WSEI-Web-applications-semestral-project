@@ -1,4 +1,4 @@
-import { IRepository } from "@savenkorodion/repository-interfaces";
+import IRepository from "@savenkorodion/repository-interfaces/IRepository";
 import authorize from "../decorators/authorize";
 import localStorageConfigs from "../localStorageConfigs";
 import { Story } from "../model/Story";

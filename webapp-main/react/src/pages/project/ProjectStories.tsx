@@ -1,17 +1,17 @@
 import { AppBar, Box, Button, Stack, Toolbar } from "@mui/material";
 import { useState } from "react";
 import StoryGrid from "../../components/story/StoryGrid";
-import IRepository from "../../repository/interfaces/IRepository";
 import StoryRepository from "../../repository/StoryRepository";
 import { useParams } from "react-router-dom";
 import StoryCreateDialog from "../../components/story/StoryCreateDialog";
 import { Story, StoryPriority, StoryStatus } from "../../model/Story";
 import { User, UserRole } from "../../model/User";
 import UserRepository from "../../repository/UserRepository";
-import IReadRepository from "../../repository/interfaces/IReadRepository";
 import { Task, TaskPriority } from "../../model/Task";
 import TaskRepository from "../../repository/TaskRepository";
 import TaskCreateDialog from "../../components/task/TaskCreateDialog";
+import IRepository from "@savenkorodion/repository-interfaces/IRepository";
+import IReadRepository from "@savenkorodion/repository-interfaces/IReadRepository";
 
 const ProjectStories = () => {
   const [isStoryCreateDialogOpen, setIsStoryCreateDialogOpen] = useState(false);

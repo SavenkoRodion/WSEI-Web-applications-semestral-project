@@ -1,4 +1,4 @@
-import { IReadRepository } from "@savenkorodion/repository-interfaces";
+import IReadRepository from "@savenkorodion/repository-interfaces/IReadRepository";
 import { User, UserRole } from "../model/User";
 
 class UserRepository implements IReadRepository<User> {

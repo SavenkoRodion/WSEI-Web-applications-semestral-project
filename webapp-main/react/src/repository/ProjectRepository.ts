@@ -1,7 +1,7 @@
 import authorize from "../decorators/authorize";
 import { Project } from "../model/Project";
 import localStorageConfigs from "../localStorageConfigs";
-import { IRepository } from "repository-interfaces-by-savenko";
+import IRepository from "@savenkorodion/repository-interfaces/IRepository";
 
 class ProjectRepository implements IRepository<Project> {
   @authorize()

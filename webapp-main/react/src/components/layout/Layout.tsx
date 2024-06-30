@@ -13,12 +13,12 @@ import {
 import { Outlet } from "react-router-dom";
 import { Project, SelectedProjectId } from "../../model/Project";
 import ProjectRepository from "../../repository/ProjectRepository";
-import IRepository from "../../repository/interfaces/IRepository";
 import { useEffect, useMemo, useState } from "react";
 import SelectedProjectRepository from "../../repository/SelectedProjectRepository";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { enGB } from "date-fns/locale";
+import IRepository from "@savenkorodion/repository-interfaces/IRepository";
 
 export type TProjectContext = {
   projects: Project[];

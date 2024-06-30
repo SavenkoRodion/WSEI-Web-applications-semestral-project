@@ -6,14 +6,14 @@ import {
   Typography,
 } from "@mui/material";
 import { Story, StoryPriority, StoryStatus } from "../../model/Story";
-import IReadRepository from "../../repository/interfaces/IReadRepository";
 import UserRepository from "../../repository/UserRepository";
 import { User } from "../../model/User";
 import { useState } from "react";
 import StoryDeleteDialog from "./StoryDeleteDialog";
 import StoryRepository from "../../repository/StoryRepository";
-import IRepository from "../../repository/interfaces/IRepository";
 import StoryEditDialog from "./StoryEditDialog";
+import IReadRepository from "@savenkorodion/repository-interfaces/IReadRepository";
+import IRepository from "@savenkorodion/repository-interfaces/IRepository";
 
 type StoryCardProps = {
   story: Story;
