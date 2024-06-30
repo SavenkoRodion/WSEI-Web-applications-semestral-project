@@ -8,14 +8,13 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
-import {
-  Story,
+import Story, {
   StoryPriority,
   StoryPriorityValues,
   StoryStatus,
   StoryStatusValues,
-} from "@savenkorodion/webapp-model/Story";
-import { User } from "@savenkorodion/webapp-model/User";
+} from "@savenkorodion/webapp-model/entities/Story";
+import User from "@savenkorodion/webapp-model/entities/User";
 
 type StoryEditDialogProps = {
   onClose: () => void;

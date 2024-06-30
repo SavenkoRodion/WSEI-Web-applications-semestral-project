@@ -11,17 +11,15 @@ import {
   createTheme,
 } from "@mui/material";
 import { Outlet } from "react-router-dom";
-import {
-  Project,
-  SelectedProjectId,
-} from "@savenkorodion/webapp-model/Project";
+
 import ProjectRepository from "../../repository/localstorage/ProjectRepository";
 import { useEffect, useMemo, useState } from "react";
 import SelectedProjectRepository from "../../repository/localstorage/SelectedProjectRepository";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { enGB } from "date-fns/locale";
-import IRepository from "@savenkorodion/repository-interfaces/IRepository";
+import ICrudRepository from "@savenkorodion/repository-interfaces/sync/ICrudRepository";
+import Project from "@savenkorodion/webapp-model/entities/Project";
 
 export type TProjectContext = {
   projects: Project[];
@@ -30,10 +28,10 @@ export type TProjectContext = {
 };
 
 const Layout = () => {
-  const projectRepository: IRepository<Project> = new ProjectRepository();
+  const projectRepository: ICrudRepository<Project> = new ProjectRepository();
   const projects = projectRepository.getAll();
 
-  const selectedProjectRepository: IRepository<SelectedProjectId> = useMemo(
+  const selectedProjectRepository = useMemo(
     () => new SelectedProjectRepository(),
     []
   );
@@ -52,7 +50,7 @@ const Layout = () => {
   };
 
   useEffect(() => {
-    selectedProjectRepository.create(new SelectedProjectId(selectedProjectId));
+    selectedProjectRepository.create({ id: null });
     setSelectedProject(projects.filter((e) => e.id === selectedProjectId)[0]);
   }, [selectedProjectId]);
 

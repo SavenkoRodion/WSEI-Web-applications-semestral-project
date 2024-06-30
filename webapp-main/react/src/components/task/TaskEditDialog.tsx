@@ -10,15 +10,14 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import {
-  Task,
+import Task, {
   TaskPriority,
   TaskPriorityValues,
   TaskStatus,
-} from "@savenkorodion/webapp-model/Task";
-import { User } from "@savenkorodion/webapp-model/User";
+} from "@savenkorodion/webapp-model/entities/Task";
+import User from "@savenkorodion/webapp-model/entities/User";
 import { DatePicker } from "@mui/x-date-pickers";
-import { Story } from "@savenkorodion/webapp-model/Story";
+import Story from "@savenkorodion/webapp-model/entities/Story";
 
 type TaskEditDialogProps = {
   onClose: () => void;

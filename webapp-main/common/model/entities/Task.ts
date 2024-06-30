@@ -1,4 +1,4 @@
-export type Task = {
+type Task = {
   id: string;
   name: string;
   priority: TaskPriority;
@@ -46,3 +46,5 @@ export const TaskStatusValues = {
   Doing: TaskStatus.Doing,
   Done: TaskStatus.Done,
 };
+
+export default Task;

@@ -5,19 +5,18 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import {
-  Story,
+import Story, {
   StoryPriority,
   StoryStatus,
-} from "@savenkorodion/webapp-model/Story";
+} from "@savenkorodion/webapp-model/entities/Story";
 import UserRepository from "../../repository/localstorage/UserRepository";
-import { User } from "@savenkorodion/webapp-model/User";
+import User from "@savenkorodion/webapp-model/entities/User";
 import { useState } from "react";
 import StoryDeleteDialog from "./StoryDeleteDialog";
 import StoryRepository from "../../repository/localstorage/StoryRepository";
 import StoryEditDialog from "./StoryEditDialog";
-import IReadRepository from "@savenkorodion/repository-interfaces/IReadRepository";
-import IRepository from "@savenkorodion/repository-interfaces/IRepository";
+import IReadRepository from "@savenkorodion/repository-interfaces/sync/IReadRepository";
+import ICrudRepository from "@savenkorodion/repository-interfaces/sync/ICrudRepository";
 
 type StoryCardProps = {
   story: Story;
@@ -40,7 +39,7 @@ const StoryCard = ({ story }: StoryCardProps) => {
     setIsDeleteDialogOpen(true);
   };
 
-  const storyRepository: IRepository<Story> = new StoryRepository();
+  const storyRepository: ICrudRepository<Story> = new StoryRepository();
 
   const handleDelete = () => {
     storyRepository.delete(story.id);

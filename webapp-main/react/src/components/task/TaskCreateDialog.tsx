@@ -9,11 +9,11 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
-import { Story } from "@savenkorodion/webapp-model/Story";
+import Story from "@savenkorodion/webapp-model/entities/Story";
 import {
   TaskPriority,
   TaskPriorityValues,
-} from "@savenkorodion/webapp-model/Task";
+} from "@savenkorodion/webapp-model/entities/Task";
 
 type TaskCreateDialogProps = {
   onClose: () => void;

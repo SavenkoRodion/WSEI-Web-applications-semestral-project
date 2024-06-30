@@ -5,22 +5,21 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import {
-  Task,
+import Task, {
   TaskPriority,
   TaskStatus,
-} from "@savenkorodion/webapp-model/Task";
+} from "@savenkorodion/webapp-model/entities/Task";
 import UserRepository from "../../repository/localstorage/UserRepository";
-import { User, UserRole } from "@savenkorodion/webapp-model/User";
+import User, { UserRole } from "@savenkorodion/webapp-model/entities/User";
 import { useState } from "react";
 import TaskRepository from "../../repository/localstorage/TaskRepository";
 import TaskDeleteDialog from "./TaskDeleteDialog";
 import TaskEditDialog from "./TaskEditDialog";
-import { Story } from "@savenkorodion/webapp-model/Story";
+import Story from "@savenkorodion/webapp-model/entities/Story";
 import StoryRepository from "../../repository/localstorage/StoryRepository";
 import { useParams } from "react-router-dom";
-import IReadRepository from "@savenkorodion/repository-interfaces/IReadRepository";
-import IRepository from "@savenkorodion/repository-interfaces/IRepository";
+import IReadRepository from "@savenkorodion/repository-interfaces/sync/IReadRepository";
+import ICrudRepository from "@savenkorodion/repository-interfaces/sync/ICrudRepository";
 
 type TaskCardProps = {
   task: Task;
@@ -49,7 +48,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
     setIsDeleteDialogOpen(true);
   };
 
-  const taskRepository: IRepository<Task> = new TaskRepository();
+  const taskRepository: ICrudRepository<Task> = new TaskRepository();
 
   const handleDelete = () => {
     taskRepository.delete(task.id);
@@ -74,7 +73,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
   };
 
   const { projectId } = useParams();
-  const storyRepository: IRepository<Story> = new StoryRepository();
+  const storyRepository: ICrudRepository<Story> = new StoryRepository();
   const storyList = storyRepository
     .getAll()
     .filter((e) => e.projectId === projectId);
@@ -99,18 +98,6 @@ const TaskCard = ({ task }: TaskCardProps) => {
           <Typography sx={{ mt: 1.5 }} color="text.secondary">
             {`Task priority: ${TaskPriority[task.priority]}`}
           </Typography>
-          {/* <Typography>{task.}</Typography>
-          <Typography sx={{ mt: 1.5 }} color="text.secondary">
-            {`Status: ${TaskStatus[task.status]}`}
-          </Typography>
-          <Typography color="text.secondary">
-            {`Priority: ${TaskPriority[task.priority]}`}
-          </Typography>
-          <Typography color="text.secondary">
-            {`Created: ${new Date(task.dateOfCreation).toLocaleDateString(
-              "en-GB"
-            )}`}
-          </Typography> */}
         </CardContent>
         <CardActions>
           <Button

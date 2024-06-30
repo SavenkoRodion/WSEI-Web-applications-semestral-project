@@ -1,4 +1,4 @@
-export type Story = {
+type Story = {
   id: string;
   name: string;
   description: string;
@@ -32,3 +32,5 @@ export const StoryStatusValues = {
   Doing: StoryStatus.Doing,
   Done: StoryStatus.Done,
 };
+
+export default Story;

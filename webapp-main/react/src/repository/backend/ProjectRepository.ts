@@ -1,16 +1,18 @@
-import { Project } from "@savenkorodion/webapp-model/entities/Project";
+import Project from "@savenkorodion/webapp-model/entities/Project";
 import IAsyncCrudRepository from "@savenkorodion/repository-interfaces/async/IAsyncCrudRepository";
 import axios from "axios";
 import CreateProjectRequest from "@savenkorodion/webapp-model/requests/CreateProjectRequest";
 
-class ProjectRepository implements IAsyncCrudRepository<Project> {
+class ProjectRepository
+  implements IAsyncCrudRepository<CreateProjectRequest, Project>
+{
   async getAll() {
-    const response: Project[] = await axios({
+    const response = await axios({
       method: "get",
       url: "http://localhost:3000/project/all",
       responseType: "json",
     });
-    return response;
+    return response.data as Project[];
   }
 
   async create(project: CreateProjectRequest) {
@@ -31,7 +33,7 @@ class ProjectRepository implements IAsyncCrudRepository<Project> {
     return true;
   }
 
-  async replace(project: Project) {
+  async replace(project: CreateProjectRequest) {
     await axios({
       method: "put",
       url: "http://localhost:3000/project/",

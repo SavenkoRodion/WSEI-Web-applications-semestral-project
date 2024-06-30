@@ -1,12 +1,12 @@
 import { DataGrid, GridColDef, GridRowId } from "@mui/x-data-grid";
-import { Project } from "@savenkorodion/webapp-model/Project";
+import Project from "@savenkorodion/webapp-model/entities/Project";
 import { Button } from "@mui/material";
 import { useState } from "react";
 import ProjectRepository from "../../repository/localstorage/ProjectRepository";
 import ProjectDeleteDialog from "./ProjectDeleteDialog";
 import ProjectEditDialog from "./ProjectEditDialog";
 import { TProjectContext } from "../layout/Layout";
-import IRepository from "@savenkorodion/repository-interfaces/IRepository";
+import ICrudRepository from "@savenkorodion/repository-interfaces/sync/ICrudRepository";
 
 type ProjectTableProps = {
   context: TProjectContext;
@@ -21,7 +21,7 @@ const ProjectTable = ({ context }: ProjectTableProps) => {
   };
 
   const handleEditDialogSave = (projectToEdit: Project) => {
-    const projectRepository: IRepository<Project> = new ProjectRepository();
+    const projectRepository: ICrudRepository<Project> = new ProjectRepository();
     projectRepository.replace(projectToEdit);
     setProjectToEdit(null);
     window.location.reload();
@@ -32,7 +32,7 @@ const ProjectTable = ({ context }: ProjectTableProps) => {
   };
 
   const handleDeleteDialogDelete = (projectId: string) => {
-    const projectRepository: IRepository<Project> = new ProjectRepository();
+    const projectRepository: ICrudRepository<Project> = new ProjectRepository();
     projectRepository.delete(projectId);
     setProjectToDelete(null);
     window.location.reload();

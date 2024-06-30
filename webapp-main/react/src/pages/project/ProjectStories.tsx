@@ -4,18 +4,17 @@ import StoryGrid from "../../components/story/StoryGrid";
 import StoryRepository from "../../repository/localstorage/StoryRepository";
 import { useParams } from "react-router-dom";
 import StoryCreateDialog from "../../components/story/StoryCreateDialog";
-import {
-  Story,
+import Story, {
   StoryPriority,
   StoryStatus,
-} from "@savenkorodion/webapp-model/Story";
-import { User, UserRole } from "@savenkorodion/webapp-model/User";
+} from "@savenkorodion/webapp-model/entities/Story";
+import User, { UserRole } from "@savenkorodion/webapp-model/entities/User";
 import UserRepository from "../../repository/localstorage/UserRepository";
-import { Task, TaskPriority } from "@savenkorodion/webapp-model/Task";
+import Task, { TaskPriority } from "@savenkorodion/webapp-model/entities/Task";
 import TaskRepository from "../../repository/localstorage/TaskRepository";
 import TaskCreateDialog from "../../components/task/TaskCreateDialog";
-import IRepository from "@savenkorodion/repository-interfaces/IRepository";
-import IReadRepository from "@savenkorodion/repository-interfaces/IReadRepository";
+import ICrudRepository from "@savenkorodion/repository-interfaces/sync/ICrudRepository";
+import IReadRepository from "@savenkorodion/repository-interfaces/sync/IReadRepository";
 
 const ProjectStories = () => {
   const [isStoryCreateDialogOpen, setIsStoryCreateDialogOpen] = useState(false);
@@ -28,7 +27,7 @@ const ProjectStories = () => {
     setIsStoryCreateDialogOpen(true);
   };
 
-  const storyRepository: IRepository<Story> = new StoryRepository();
+  const storyRepository: ICrudRepository<Story> = new StoryRepository();
 
   const { projectId } = useParams();
 
@@ -41,14 +40,21 @@ const ProjectStories = () => {
     status: StoryStatus,
     ownerUserId: string
   ) => {
-    storyRepository.create(
-      new Story(name, description, priority, projectId!, status, ownerUserId)
-    );
+    storyRepository.create({
+      name: name,
+      description: description,
+      priority: priority,
+      projectId: projectId!,
+      status: status,
+      ownerUserId: ownerUserId,
+      id: "",
+      dateOfCreation: new Date(),
+    });
     setIsStoryCreateDialogOpen(false);
     window.location.reload();
   };
 
-  const taskRepository: IRepository<Task> = new TaskRepository();
+  const taskRepository: ICrudRepository<Task> = new TaskRepository();
 
   const [isTaskCreateDialogOpen, setIsTaskCreateDialogOpen] = useState(false);
 
@@ -66,18 +72,17 @@ const ProjectStories = () => {
     priority: TaskPriority,
     timeEstimationInDays?: number
   ) => {
-    taskRepository.create(
-      new Task({
-        name: name,
-        priority: priority,
-        timeEstimationInDays: timeEstimationInDays,
-        startDate: undefined,
-        endDate: undefined,
-        ownerUserId: undefined,
-        projectId: projectId!,
-        storyId: storyId,
-      })
-    );
+    taskRepository.create({
+      name: name,
+      priority: priority,
+      timeEstimationInDays: timeEstimationInDays,
+      startDate: undefined,
+      endDate: undefined,
+      ownerUserId: undefined,
+      projectId: projectId!,
+      storyId: storyId,
+      id: "",
+    } as any);
     setIsStoryCreateDialogOpen(false);
     window.location.reload();
   };

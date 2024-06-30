@@ -1,4 +1,4 @@
-export type User = {
+type User = {
   firstName: string;
   lastName: string;
   id: string;
@@ -10,3 +10,5 @@ export enum UserRole {
   Devops,
   Developer,
 }
+
+export default User;

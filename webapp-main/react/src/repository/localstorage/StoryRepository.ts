@@ -1,7 +1,7 @@
 import IRepository from "@savenkorodion/repository-interfaces/sync/ICrudRepository";
 import authorize from "../../decorators/authorize";
 import localStorageConfigs from "../../localStorageConfigs";
-import { Story } from "@savenkorodion/webapp-model/entities/Story";
+import Story from "@savenkorodion/webapp-model/entities/Story";
 
 class StoryRepository implements IRepository<Story> {
   @authorize()

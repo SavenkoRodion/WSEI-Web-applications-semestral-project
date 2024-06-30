@@ -13,8 +13,8 @@ import {
   StoryPriorityValues,
   StoryStatus,
   StoryStatusValues,
-} from "@savenkorodion/webapp-model/Story";
-import { User } from "@savenkorodion/webapp-model/User";
+} from "@savenkorodion/webapp-model/entities/Story";
+import User from "@savenkorodion/webapp-model/entities/User";
 
 type CreateDialogProps = {
   onClose: () => void;

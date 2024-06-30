@@ -1,4 +1,4 @@
-import { User, UserRole } from "@savenkorodion/webapp-model/entities/User";
+import User, { UserRole } from "@savenkorodion/webapp-model/entities/User";
 
 export interface IUserService {
   getLoggedUser: () => User | null;
