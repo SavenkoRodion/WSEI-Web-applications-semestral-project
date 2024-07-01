@@ -1,34 +1,34 @@
-import Project from "@savenkorodion/webapp-model/entities/Project";
+import { SelectedProjectId } from "@savenkorodion/webapp-model/entities/Project";
 import axios from "axios";
 import CreateProjectRequest from "@savenkorodion/webapp-model/requests/CreateProjectRequest";
 import IAsyncCrudRepository from "../interfaces/async/IAsyncCrudRepository";
 
-class ProjectRepository
-  implements IAsyncCrudRepository<CreateProjectRequest, Project>
+class SelectedProjectRepository
+  implements IAsyncCrudRepository<CreateProjectRequest, SelectedProjectId>
 {
   async getAll() {
     const response = await axios({
       method: "get",
-      url: "http://localhost:3000/project/all",
+      url: "http://localhost:3000/project/selected/all",
       responseType: "json",
     });
-    return response.data as Project[];
+    return response.data as SelectedProjectId[];
   }
 
   async get(id: string) {
     const response = await axios({
       method: "get",
-      url: "http://localhost:3000/project",
+      url: "http://localhost:3000/project/selected",
       responseType: "json",
       params: id,
     });
-    return response.data as Project | null;
+    return response.data as SelectedProjectId | null;
   }
 
   async create(project: CreateProjectRequest) {
     await axios({
       method: "post",
-      url: "http://localhost:3000/project",
+      url: "http://localhost:3000/project/selected",
       data: project,
     });
     return true;
@@ -37,7 +37,7 @@ class ProjectRepository
   async delete(id: string) {
     await axios({
       method: "delete",
-      url: "http://localhost:3000/project",
+      url: "http://localhost:3000/project/selected",
       params: id,
     });
     return true;
@@ -46,11 +46,11 @@ class ProjectRepository
   async replace(project: CreateProjectRequest) {
     await axios({
       method: "put",
-      url: "http://localhost:3000/project",
+      url: "http://localhost:3000/project/selected",
       data: project,
     });
     return true;
   }
 }
 
-export default ProjectRepository;
+export default SelectedProjectRepository;

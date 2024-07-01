@@ -1,9 +1,9 @@
-import IRepository from "@savenkorodion/repository-interfaces/sync/ICrudRepository";
 import authorize from "../../decorators/authorize";
 import localStorageConfigs from "../../localStorageConfigs";
 import Story from "@savenkorodion/webapp-model/entities/Story";
+import ICrudRepository from "../interfaces/sync/ICrudRepository";
 
-class StoryRepository implements IRepository<Story> {
+class StoryRepository implements ICrudRepository<Story> {
   @authorize()
   create(story: Story) {
     const storyList: Story[] = this.getAll();

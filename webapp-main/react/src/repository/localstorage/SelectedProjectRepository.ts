@@ -1,7 +1,7 @@
 import authorize from "../../decorators/authorize";
 import { SelectedProjectId } from "@savenkorodion/webapp-model/entities/Project";
 import localStorageConfigs from "../../localStorageConfigs";
-import ICrudRepository from "@savenkorodion/repository-interfaces/sync/ICrudRepository";
+import ICrudRepository from "../interfaces/sync/ICrudRepository";
 
 class SelectedProjectRepository implements ICrudRepository<SelectedProjectId> {
   @authorize()
