@@ -1,15 +1,14 @@
-import Task from "@savenkorodion/webapp-model/entities/Task";
+import Task, {
+  CreateTaskRequest,
+} from "@savenkorodion/webapp-model/entities/Task";
 import axios from "axios";
-import CreateProjectRequest from "@savenkorodion/webapp-model/requests/CreateProjectRequest";
 import IAsyncCrudRepository from "../interfaces/async/IAsyncCrudRepository";
 
-class TaskRepository
-  implements IAsyncCrudRepository<CreateProjectRequest, Task>
-{
+class TaskRepository implements IAsyncCrudRepository<CreateTaskRequest, Task> {
   async getAll() {
     const response = await axios({
       method: "get",
-      url: "http://localhost:3000/project/selected/all",
+      url: "http://localhost:3000/task/all",
       responseType: "json",
     });
     return response.data as Task[];
@@ -18,17 +17,17 @@ class TaskRepository
   async get(id: string) {
     const response = await axios({
       method: "get",
-      url: "http://localhost:3000/project/selected",
+      url: "http://localhost:3000/task",
       responseType: "json",
       params: id,
     });
     return response.data as Task | null;
   }
 
-  async create(project: CreateProjectRequest) {
+  async create(project: CreateTaskRequest) {
     await axios({
       method: "post",
-      url: "http://localhost:3000/project/selected",
+      url: "http://localhost:3000/task",
       data: project,
     });
     return true;
@@ -37,16 +36,16 @@ class TaskRepository
   async delete(id: string) {
     await axios({
       method: "delete",
-      url: "http://localhost:3000/project/selected",
+      url: "http://localhost:3000/task",
       params: id,
     });
     return true;
   }
 
-  async replace(project: CreateProjectRequest) {
+  async replace(project: CreateTaskRequest) {
     await axios({
       method: "put",
-      url: "http://localhost:3000/project/selected",
+      url: "http://localhost:3000/task",
       data: project,
     });
     return true;

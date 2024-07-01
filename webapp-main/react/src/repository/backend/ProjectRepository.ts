@@ -20,8 +20,13 @@ class ProjectRepository
       method: "get",
       url: "http://localhost:3000/project",
       responseType: "json",
-      params: id,
+      params: { id },
     });
+    // const response = await axios.get("http://localhost:3000/project", {
+    //   params: {
+    //     id,
+    //   },
+    // });
     return response.data as Project | null;
   }
 

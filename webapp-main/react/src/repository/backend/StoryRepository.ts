@@ -1,10 +1,10 @@
 import Story from "@savenkorodion/webapp-model/entities/Story";
 import axios from "axios";
-import CreateProjectRequest from "@savenkorodion/webapp-model/requests/CreateProjectRequest";
+import CreateStoryRequest from "@savenkorodion/webapp-model/requests/CreateStoryRequest";
 import IAsyncCrudRepository from "../interfaces/async/IAsyncCrudRepository";
 
 class StoryRepository
-  implements IAsyncCrudRepository<CreateProjectRequest, Story>
+  implements IAsyncCrudRepository<CreateStoryRequest, Story>
 {
   async getAll() {
     const response = await axios({
@@ -25,7 +25,7 @@ class StoryRepository
     return response.data as Story | null;
   }
 
-  async create(project: CreateProjectRequest) {
+  async create(project: CreateStoryRequest) {
     await axios({
       method: "post",
       url: "http://localhost:3000/story",
@@ -43,7 +43,7 @@ class StoryRepository
     return true;
   }
 
-  async replace(project: CreateProjectRequest) {
+  async replace(project: CreateStoryRequest) {
     await axios({
       method: "put",
       url: "http://localhost:3000/story",

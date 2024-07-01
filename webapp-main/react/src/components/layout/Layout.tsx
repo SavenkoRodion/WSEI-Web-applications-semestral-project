@@ -33,7 +33,9 @@ const Layout = () => {
     new ProjectRepository();
   const [projects, setProjects] = useState<Project[]>([]);
 
-  projectRepository.getAll().then((p) => setProjects(p));
+  useEffect(() => {
+    projectRepository.getAll().then((p) => setProjects(p));
+  }, []);
 
   const selectedProjectRepository = new SelectedProjectRepository();
 

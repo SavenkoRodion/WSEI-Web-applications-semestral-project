@@ -12,17 +12,6 @@ type Task = {
   storyId: string;
 };
 
-export type CreateTaskRequest = {
-  name: string;
-  storyId: string;
-  priority: TaskPriority;
-  projectId: string;
-  timeEstimationInDays: number | undefined;
-  startDate: Date | undefined;
-  endDate: Date | undefined;
-  ownerUserId: string | undefined;
-};
-
 export enum TaskPriority {
   Low,
   Mid,

@@ -6,7 +6,7 @@ class UserRepository implements IAsyncReadRepository<User> {
   async getAll() {
     const response = await axios({
       method: "get",
-      url: "http://localhost:3000/project/selected/all",
+      url: "http://localhost:3000/user/all",
       responseType: "json",
     });
     return response.data as User[];
@@ -15,7 +15,7 @@ class UserRepository implements IAsyncReadRepository<User> {
   async get(id: string) {
     const response = await axios({
       method: "get",
-      url: "http://localhost:3000/project/selected",
+      url: "http://localhost:3000/user",
       responseType: "json",
       params: id,
     });

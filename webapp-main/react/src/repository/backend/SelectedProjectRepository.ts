@@ -1,10 +1,11 @@
 import { SelectedProjectId } from "@savenkorodion/webapp-model/entities/Project";
 import axios from "axios";
-import CreateProjectRequest from "@savenkorodion/webapp-model/requests/CreateProjectRequest";
+import CreateSelectedProjectRequest from "@savenkorodion/webapp-model/requests/CreateSelectedProjectRequest";
 import IAsyncCrudRepository from "../interfaces/async/IAsyncCrudRepository";
 
 class SelectedProjectRepository
-  implements IAsyncCrudRepository<CreateProjectRequest, SelectedProjectId>
+  implements
+    IAsyncCrudRepository<CreateSelectedProjectRequest, SelectedProjectId>
 {
   async getAll() {
     const response = await axios({
@@ -25,7 +26,7 @@ class SelectedProjectRepository
     return response.data as SelectedProjectId | null;
   }
 
-  async create(project: CreateProjectRequest) {
+  async create(project: CreateSelectedProjectRequest) {
     await axios({
       method: "post",
       url: "http://localhost:3000/project/selected",
@@ -43,7 +44,7 @@ class SelectedProjectRepository
     return true;
   }
 
-  async replace(project: CreateProjectRequest) {
+  async replace(project: CreateSelectedProjectRequest) {
     await axios({
       method: "put",
       url: "http://localhost:3000/project/selected",
