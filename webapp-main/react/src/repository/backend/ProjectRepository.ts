@@ -15,6 +15,16 @@ class ProjectRepository
     return response.data as Project[];
   }
 
+  async get(id: string) {
+    const response = await axios({
+      method: "get",
+      url: "http://localhost:3000/project/",
+      responseType: "json",
+      params: id,
+    });
+    return response.data as Project | null;
+  }
+
   async create(project: CreateProjectRequest) {
     await axios({
       method: "post",

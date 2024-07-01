@@ -1,6 +1,6 @@
 {
   "name": "@savenkorodion/repository-interfaces",
-  "version": "3.1.0",
+  "version": "3.3.0",
   "description": "",
   "main": "index.ts",
   "scripts": {

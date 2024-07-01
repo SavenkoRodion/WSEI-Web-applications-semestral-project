@@ -12,14 +12,15 @@ import {
 } from "@mui/material";
 import { Outlet } from "react-router-dom";
 
-import ProjectRepository from "../../repository/localstorage/ProjectRepository";
 import { useEffect, useMemo, useState } from "react";
 import SelectedProjectRepository from "../../repository/localstorage/SelectedProjectRepository";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { enGB } from "date-fns/locale";
-import ICrudRepository from "@savenkorodion/repository-interfaces/sync/ICrudRepository";
+import IAsyncCrudRepository from "@savenkorodion/repository-interfaces/async/IAsyncCrudRepository";
 import Project from "@savenkorodion/webapp-model/entities/Project";
+import ProjectRepository from "../../repository/backend/ProjectRepository";
+import CreateProjectRequest from "@savenkorodion/webapp-model/requests/CreateProjectRequest";
 
 export type TProjectContext = {
   projects: Project[];
@@ -28,8 +29,11 @@ export type TProjectContext = {
 };
 
 const Layout = () => {
-  const projectRepository: ICrudRepository<Project> = new ProjectRepository();
-  const projects = projectRepository.getAll();
+  const projectRepository: IAsyncCrudRepository<CreateProjectRequest, Project> =
+    new ProjectRepository();
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  projectRepository.getAll().then((p) => setProjects(p));
 
   const selectedProjectRepository = useMemo(
     () => new SelectedProjectRepository(),
