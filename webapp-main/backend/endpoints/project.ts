@@ -1,5 +1,6 @@
+import CreateProjectRequest from "@savenkorodion/webapp-model/requests/CreateProjectRequest";
 import { Express } from "express";
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 
 const mapProjectEndpoints = (app: Express, mongoClient: MongoClient) => {
   app.get("/project/all", async (req, res) => {
@@ -8,30 +9,31 @@ const mapProjectEndpoints = (app: Express, mongoClient: MongoClient) => {
     const result = await db.collection("projects").find({}).toArray();
     res.send(JSON.stringify(result));
   });
+
   app.get("/project", async (req, res) => {
-    console.log("HERE");
-    console.log(req.query);
+    const id = req.query.id as string;
+
     await mongoClient.connect();
     const db = mongoClient.db("webapp");
-    const result = await db.collection("projects").findOne({ _id: req.params });
-    console.log(result);
+    const result = await db
+      .collection("projects")
+      .findOne({ _id: new ObjectId(id) });
+
     res.send(JSON.stringify(result));
   });
+
   app.post("/project/", async (req, res) => {
-    console.log(req.body);
+    const requestObject: CreateProjectRequest = req.body;
     try {
       await mongoClient.connect();
       const db = mongoClient.db("webapp");
       const lol = db.collection("projects");
-      const lolek = await lol.insertOne(req.body);
-      console.log(lolek);
-    } catch (e) {
-      console.log(e);
-    }
+      await lol.insertOne(requestObject);
+    } catch {}
     res.send(JSON.stringify(true));
   });
   app.put("/project/", async (req, res) => {
-    console.log(req.body);
+    const requestObject: CreateProjectRequest = req.body;
     try {
       await mongoClient.connect();
       const db = mongoClient.db("webapp");
