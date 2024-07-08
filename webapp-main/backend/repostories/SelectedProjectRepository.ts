@@ -1,5 +1,6 @@
 import Project from "@savenkorodion/webapp-model/entities/Project";
 import { MongoClient, ObjectId } from "mongodb";
+import getMongoClient from "../getMongoClient";
 
 class SelectedProjectRepository {
   #mongoClient: MongoClient;
@@ -10,14 +11,13 @@ class SelectedProjectRepository {
 
   async getAll() {
     await this.#mongoClient.connect();
-
     const result = await this.#mongoClient
       .db("webapp")
       .collection("selectedProject")
       .find<Project>({})
       .toArray();
 
-    await this.#mongoClient.close();
+    //await this.#mongoClient.close();
 
     return result;
   }
@@ -37,7 +37,6 @@ class SelectedProjectRepository {
 
   async replace(id: string | null) {
     await this.#mongoClient.connect();
-
     let result = (
       await this.#mongoClient
         .db("webapp")
@@ -54,7 +53,7 @@ class SelectedProjectRepository {
       ).acknowledged;
     }
 
-    await this.#mongoClient.close();
+    //await this.#mongoClient.close();
 
     return result;
   }

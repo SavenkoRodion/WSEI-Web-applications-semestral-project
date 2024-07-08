@@ -4,13 +4,15 @@ import ProjectTable from "../../components/project/ProjectTable";
 import { useState } from "react";
 import Project from "@savenkorodion/webapp-model/entities/Project";
 import ProjectCreateDialog from "../../components/project/ProjectCreateDialog";
-import ProjectRepository from "../../repository/localstorage/ProjectRepository";
 import { TProjectContext } from "../../components/layout/Layout";
-import ICrudRepository from "@savenkorodion/repository-interfaces/sync/ICrudRepository";
+import ProjectRepository from "../../repository/backend/ProjectRepository";
+import IAsyncCrudRepository from "../../repository/interfaces/async/IAsyncCrudRepository";
+import CreateProjectRequest from "@savenkorodion/webapp-model/requests/CreateProjectRequest";
 
 const ProjectList = () => {
   const context: TProjectContext = useOutletContext();
-  const projectRepository: ICrudRepository<Project> = new ProjectRepository();
+  const projectRepository: IAsyncCrudRepository<CreateProjectRequest, Project> =
+    new ProjectRepository();
 
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
@@ -23,7 +25,7 @@ const ProjectList = () => {
   };
 
   const handleCreateDialogCreate = (name: string, description: string) => {
-    projectRepository.create({ name: name, description: description, id: "" });
+    projectRepository.create({ name: name, description: description });
     setIsCreateDialogOpen(false);
     window.location.reload();
   };

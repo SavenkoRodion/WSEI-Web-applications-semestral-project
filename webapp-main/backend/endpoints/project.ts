@@ -18,9 +18,7 @@ class ProjectEndpoints {
 
   mapProjectEndpoints = (app: Express) => {
     app.get("/project/all", async (req, res) => {
-      console.log("one");
       const dbResult = await this.#projectRepository.getAll();
-      console.log(dbResult);
       res.send(JSON.stringify(dbResult));
     });
 
@@ -56,14 +54,12 @@ class ProjectEndpoints {
     });
 
     app.get("/project/selected", async (req, res) => {
-      console.log("one");
-      const dbResult = await this.#projectRepository.getAll();
-      console.log(dbResult);
+      const dbResult = await this.#selectedProjectRepository.getAll();
       res.send(JSON.stringify(dbResult));
     });
 
     app.post("/project/selected", async (req, res) => {
-      const requestObject: string | null = req.body;
+      const requestObject: string | null = req.body.id;
 
       const dbResult = await this.#selectedProjectRepository.replace(
         requestObject

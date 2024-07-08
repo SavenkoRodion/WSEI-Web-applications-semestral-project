@@ -1,5 +1,5 @@
 type Story = {
-  id: string;
+  _id: string;
   name: string;
   description: string;
   priority: StoryPriority;

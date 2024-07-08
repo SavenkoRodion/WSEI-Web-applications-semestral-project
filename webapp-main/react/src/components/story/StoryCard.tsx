@@ -15,8 +15,8 @@ import { useState } from "react";
 import StoryDeleteDialog from "./StoryDeleteDialog";
 import StoryRepository from "../../repository/localstorage/StoryRepository";
 import StoryEditDialog from "./StoryEditDialog";
-import IReadRepository from "@savenkorodion/repository-interfaces/sync/IReadRepository";
-import ICrudRepository from "@savenkorodion/repository-interfaces/sync/ICrudRepository";
+import IReadRepository from "../../repository/interfaces/sync/IReadRepository";
+import ICrudRepository from "../../repository/interfaces/sync/ICrudRepository";
 
 type StoryCardProps = {
   story: Story;

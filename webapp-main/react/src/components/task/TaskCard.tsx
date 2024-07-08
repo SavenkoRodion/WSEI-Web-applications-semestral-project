@@ -18,8 +18,8 @@ import TaskEditDialog from "./TaskEditDialog";
 import Story from "@savenkorodion/webapp-model/entities/Story";
 import StoryRepository from "../../repository/localstorage/StoryRepository";
 import { useParams } from "react-router-dom";
-import IReadRepository from "@savenkorodion/repository-interfaces/sync/IReadRepository";
-import ICrudRepository from "@savenkorodion/repository-interfaces/sync/ICrudRepository";
+import IReadRepository from "../../repository/interfaces/sync/IReadRepository";
+import ICrudRepository from "../../repository/interfaces/sync/ICrudRepository";
 
 type TaskCardProps = {
   task: Task;
@@ -51,7 +51,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
   const taskRepository: ICrudRepository<Task> = new TaskRepository();
 
   const handleDelete = () => {
-    taskRepository.delete(task.id);
+    taskRepository.delete(task._id);
     handleDeleteDialogClose();
     window.location.reload();
   };
@@ -119,7 +119,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
         <TaskDeleteDialog
           onClose={handleDeleteDialogClose}
           onDelete={handleDelete}
-          id={task.id}
+          id={task._id}
           name={task.name}
         />
       )}

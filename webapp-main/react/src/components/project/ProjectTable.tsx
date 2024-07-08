@@ -2,11 +2,12 @@ import { DataGrid, GridColDef, GridRowId } from "@mui/x-data-grid";
 import Project from "@savenkorodion/webapp-model/entities/Project";
 import { Button } from "@mui/material";
 import { useState } from "react";
-import ProjectRepository from "../../repository/localstorage/ProjectRepository";
 import ProjectDeleteDialog from "./ProjectDeleteDialog";
 import ProjectEditDialog from "./ProjectEditDialog";
 import { TProjectContext } from "../layout/Layout";
-import ICrudRepository from "@savenkorodion/repository-interfaces/sync/ICrudRepository";
+import IAsyncCrudRepository from "../../repository/interfaces/async/IAsyncCrudRepository";
+import ProjectRepository from "../../repository/backend/ProjectRepository";
+import CreateProjectRequest from "@savenkorodion/webapp-model/requests/CreateProjectRequest";
 
 type ProjectTableProps = {
   context: TProjectContext;
@@ -21,7 +22,11 @@ const ProjectTable = ({ context }: ProjectTableProps) => {
   };
 
   const handleEditDialogSave = (projectToEdit: Project) => {
-    const projectRepository: ICrudRepository<Project> = new ProjectRepository();
+    const projectRepository: IAsyncCrudRepository<
+      CreateProjectRequest,
+      Project
+    > = new ProjectRepository();
+
     projectRepository.replace(projectToEdit);
     setProjectToEdit(null);
     window.location.reload();
@@ -32,7 +37,11 @@ const ProjectTable = ({ context }: ProjectTableProps) => {
   };
 
   const handleDeleteDialogDelete = (projectId: string) => {
-    const projectRepository: ICrudRepository<Project> = new ProjectRepository();
+    const projectRepository: IAsyncCrudRepository<
+      CreateProjectRequest,
+      Project
+    > = new ProjectRepository();
+
     projectRepository.delete(projectId);
     setProjectToDelete(null);
     window.location.reload();
@@ -47,7 +56,7 @@ const ProjectTable = ({ context }: ProjectTableProps) => {
   };
 
   const columns: GridColDef<Project[][number]>[] = [
-    { field: "id", headerName: "ID", flex: 1 },
+    { field: "_id", headerName: "ID", flex: 1 },
     { field: "name", headerName: "Project name", flex: 0.75 },
     { field: "description", headerName: "Project description", flex: 2 },
     {
@@ -102,6 +111,7 @@ const ProjectTable = ({ context }: ProjectTableProps) => {
         disableColumnResize
         disableColumnMenu
         autoHeight
+        getRowId={(row: Project) => row._id}
       ></DataGrid>
       {projectToEdit && (
         <ProjectEditDialog
@@ -112,7 +122,7 @@ const ProjectTable = ({ context }: ProjectTableProps) => {
       )}
       {projectToDelete && (
         <ProjectDeleteDialog
-          id={projectToDelete.id}
+          id={projectToDelete._id}
           name={projectToDelete.name}
           onClose={handleDeleteDialogClose}
           onDelete={handleDeleteDialogDelete}

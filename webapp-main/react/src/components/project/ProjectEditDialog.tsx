@@ -53,7 +53,7 @@ const ProjectEditDialog = ({
           }}
         >
           <Stack>
-            <Typography>Project id: {project.id}</Typography>
+            <Typography>Project id: {project._id}</Typography>
           </Stack>
           <Stack>
             <TextField
@@ -85,7 +85,7 @@ const ProjectEditDialog = ({
           <Button
             variant="contained"
             onClick={() =>
-              onSave({ id: project.id, name: name, description: description })
+              onSave({ _id: project._id, name: name, description: description })
             }
             disabled={!name || !description}
           >

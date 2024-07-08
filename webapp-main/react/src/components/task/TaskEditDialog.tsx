@@ -65,7 +65,7 @@ const TaskEditDialog = ({
       <DialogContent>
         <Stack gap="15px" width="500px" sx={{ marginTop: "5px" }}>
           <Stack>
-            <TextField label="Task id" value={task.id} size="small" disabled />
+            <TextField label="Task id" value={task._id} size="small" disabled />
           </Stack>
           <Stack>
             <TextField

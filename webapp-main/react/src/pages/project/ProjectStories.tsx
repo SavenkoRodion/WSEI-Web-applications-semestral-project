@@ -13,8 +13,8 @@ import UserRepository from "../../repository/localstorage/UserRepository";
 import Task, { TaskPriority } from "@savenkorodion/webapp-model/entities/Task";
 import TaskRepository from "../../repository/localstorage/TaskRepository";
 import TaskCreateDialog from "../../components/task/TaskCreateDialog";
-import ICrudRepository from "@savenkorodion/repository-interfaces/sync/ICrudRepository";
-import IReadRepository from "@savenkorodion/repository-interfaces/sync/IReadRepository";
+import ICrudRepository from "../../repository/interfaces/sync/ICrudRepository";
+import IReadRepository from "../../repository/interfaces/sync/IReadRepository";
 
 const ProjectStories = () => {
   const [isStoryCreateDialogOpen, setIsStoryCreateDialogOpen] = useState(false);

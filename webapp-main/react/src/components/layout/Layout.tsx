@@ -11,9 +11,7 @@ import {
   createTheme,
 } from "@mui/material";
 import { Outlet } from "react-router-dom";
-
 import { useEffect, useState } from "react";
-import SelectedProjectRepository from "../../repository/localstorage/SelectedProjectRepository";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { enGB } from "date-fns/locale";
@@ -21,6 +19,7 @@ import Project from "@savenkorodion/webapp-model/entities/Project";
 import ProjectRepository from "../../repository/backend/ProjectRepository";
 import CreateProjectRequest from "@savenkorodion/webapp-model/requests/CreateProjectRequest";
 import IAsyncCrudRepository from "../../repository/interfaces/async/IAsyncCrudRepository";
+import SelectedProjectRepository from "../../repository/backend/SelectedProjectRepository";
 
 export type TProjectContext = {
   projects: Project[];
@@ -34,16 +33,27 @@ const Layout = () => {
   const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => {
-    projectRepository.getAll().then((p) => setProjects(p));
+    projectRepository.getAll().then((p) => {
+      setProjects(p);
+    });
   }, []);
 
   const selectedProjectRepository = new SelectedProjectRepository();
 
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
-    selectedProjectRepository.getAll()[0]?.id ?? null
+    null
   );
+
+  useEffect(() => {
+    selectedProjectRepository.getAll().then((e) => {
+      setSelectedProjectId(e[0]?._id ?? null);
+      console.log("here");
+      console.log(e);
+    });
+  }, []);
+
   const [selectedProject, setSelectedProject] = useState<Project | null>(
-    projects.filter((e) => e.id === selectedProjectId)[0] ?? null
+    projects.filter((e) => e._id === selectedProjectId)[0] ?? null
   );
 
   const context: TProjectContext = {
@@ -53,8 +63,8 @@ const Layout = () => {
   };
 
   useEffect(() => {
-    selectedProjectRepository.create({ id: null });
-    setSelectedProject(projects.filter((e) => e.id === selectedProjectId)[0]);
+    selectedProjectRepository.replace(null);
+    setSelectedProject(projects.filter((e) => e._id === selectedProjectId)[0]);
   }, [selectedProjectId]);
 
   const fromStorage: boolean = JSON.parse(
@@ -108,7 +118,7 @@ const Layout = () => {
                 </Typography>
                 <Typography>
                   <Link
-                    href={`/project/${selectedProject?.id ?? ""}`}
+                    href={`/project/${selectedProject?._id ?? ""}`}
                     sx={{
                       color: "white",
                       textDecoration: "underline",

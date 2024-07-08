@@ -1,6 +1,7 @@
 import Project from "@savenkorodion/webapp-model/entities/Project";
 import CreateProjectRequest from "@savenkorodion/webapp-model/requests/CreateProjectRequest";
 import { MongoClient, ObjectId } from "mongodb";
+import getMongoClient from "../getMongoClient";
 
 class ProjectRepository {
   #mongoClient: MongoClient;
@@ -18,7 +19,7 @@ class ProjectRepository {
       .find<Project>({})
       .toArray();
 
-    await this.#mongoClient.close();
+    //await this.#mongoClient.close();
 
     return result;
   }
@@ -31,7 +32,7 @@ class ProjectRepository {
       .collection("projects")
       .findOne<Project>({ _id: new ObjectId(id) });
 
-    await this.#mongoClient.close();
+    //await this.#mongoClient.close();
 
     return result;
   }
@@ -44,7 +45,7 @@ class ProjectRepository {
       .collection("projects")
       .insertOne(requestObject);
 
-    await this.#mongoClient.close();
+    //await this.#mongoClient.close();
 
     return result.acknowledged;
   }
@@ -58,7 +59,7 @@ class ProjectRepository {
       .collection("projects")
       .replaceOne({ id: _id }, requestObject);
 
-    await this.#mongoClient.close();
+    //await this.#mongoClient.close();
 
     return result.acknowledged;
   }
@@ -71,7 +72,7 @@ class ProjectRepository {
       .collection("projects")
       .deleteOne({ _id: new ObjectId(id) });
 
-    await this.#mongoClient.close();
+    //await this.#mongoClient.close();
 
     return result.acknowledged;
   }
