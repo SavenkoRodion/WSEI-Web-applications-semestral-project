@@ -6,6 +6,7 @@ import { MongoClient, ServerApiVersion } from "mongodb";
 import getAuthEndpoints from "./endpoints/auth";
 import getProjectEndpoints from "./endpoints/project";
 import credentials from "./credentials";
+import ProjectEndpoints from "./endpoints/project";
 
 const app = express();
 const port = 3000;
@@ -24,7 +25,8 @@ const client = new MongoClient(uri, {
 });
 
 getAuthEndpoints(app);
-getProjectEndpoints(app, client);
+const projectEndpoints = new ProjectEndpoints(client);
+projectEndpoints.mapProjectEndpoints(app);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

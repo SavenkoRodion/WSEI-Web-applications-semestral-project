@@ -3,7 +3,7 @@ interface IAsyncCrudRepository<Request, Response> {
   getAll(): Promise<Response[]>;
   get(id: unknown): Promise<Response | null>;
   delete(id: unknown): Promise<boolean>;
-  replace(object: Request): Promise<boolean>;
+  replace(object: Response): Promise<boolean>;
 }
 
 export default IAsyncCrudRepository;

@@ -38,12 +38,12 @@ class ProjectRepository
     await axios({
       method: "delete",
       url: "http://localhost:3000/project",
-      params: id,
+      params: { id },
     });
     return true;
   }
 
-  async replace(project: CreateProjectRequest) {
+  async replace(project: Project) {
     await axios({
       method: "put",
       url: "http://localhost:3000/project",

@@ -12,14 +12,14 @@ const Home = () => {
   const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => {
-    // projectRepository.getAll().then((p) => {
-    //   console.log("here2");
-    //   console.log(p[0].id);
-
-    // });
-    projectRepository
-      .get("668195ccee74a0e61999bc4e")
-      .then((pp) => console.log(pp));
+    projectRepository.getAll().then((p) => {
+      console.log("here2");
+      console.log(p[0]._id);
+    });
+    //console.log(projectRepository.getAll())
+    // projectRepository
+    //   .delete("668195ccee74a0e61999bc4e")
+    //   .then((e) => console.log(e));
   }, []);
   return <Box>Welcome to home page</Box>;
 };

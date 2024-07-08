@@ -1,5 +1,5 @@
 type Task = {
-  id: string;
+  _id: string;
   name: string;
   priority: TaskPriority;
   timeEstimationInDays?: number;

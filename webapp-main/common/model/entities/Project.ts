@@ -1,5 +1,5 @@
-type Project = { name: string; description: string; id: string };
+type Project = { name: string; description: string; _id: string };
 
-export type SelectedProjectId = { id: string | null };
+export type SelectedProjectId = { _id: string | null };
 
 export default Project;

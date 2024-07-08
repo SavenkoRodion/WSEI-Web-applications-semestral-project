@@ -1,63 +1,77 @@
 import CreateProjectRequest from "@savenkorodion/webapp-model/requests/CreateProjectRequest";
 import { Express } from "express";
 import { MongoClient, ObjectId } from "mongodb";
+import ProjectRepository from "../repostories/ProjectRepository";
+import Project from "@savenkorodion/webapp-model/entities/Project";
+import SelectedProjectRepository from "../repostories/SelectedProjectRepository";
 
-const mapProjectEndpoints = (app: Express, mongoClient: MongoClient) => {
-  app.get("/project/all", async (req, res) => {
-    await mongoClient.connect();
-    const db = mongoClient.db("webapp");
-    const result = await db.collection("projects").find({}).toArray();
-    res.send(JSON.stringify(result));
-  });
+class ProjectEndpoints {
+  #projectRepository: ProjectRepository;
+  #selectedProjectRepository: SelectedProjectRepository;
 
-  app.get("/project", async (req, res) => {
-    const id = req.query.id as string;
+  constructor(mongoClient: MongoClient) {
+    this.#projectRepository = new ProjectRepository(mongoClient);
+    this.#selectedProjectRepository = new SelectedProjectRepository(
+      mongoClient
+    );
+  }
 
-    await mongoClient.connect();
-    const db = mongoClient.db("webapp");
-    const result = await db
-      .collection("projects")
-      .findOne({ _id: new ObjectId(id) });
+  mapProjectEndpoints = (app: Express) => {
+    app.get("/project/all", async (req, res) => {
+      console.log("one");
+      const dbResult = await this.#projectRepository.getAll();
+      console.log(dbResult);
+      res.send(JSON.stringify(dbResult));
+    });
 
-    res.send(JSON.stringify(result));
-  });
+    app.get("/project", async (req, res) => {
+      const id = req.query.id as string;
 
-  app.post("/project/", async (req, res) => {
-    const requestObject: CreateProjectRequest = req.body;
-    try {
-      await mongoClient.connect();
-      const db = mongoClient.db("webapp");
-      const lol = db.collection("projects");
-      await lol.insertOne(requestObject);
-    } catch {}
-    res.send(JSON.stringify(true));
-  });
-  app.put("/project/", async (req, res) => {
-    const requestObject: CreateProjectRequest = req.body;
-    try {
-      await mongoClient.connect();
-      const db = mongoClient.db("webapp");
-      const lol = db.collection("projects");
-      const lolek = await lol.insertOne(req.body);
-      console.log(lolek);
-    } catch (e) {
-      console.log(e);
-    }
-    res.send(JSON.stringify(true));
-  });
-  app.delete("/project/", async (req, res) => {
-    console.log(req.body);
-    try {
-      await mongoClient.connect();
-      const db = mongoClient.db("webapp");
-      const lol = db.collection("projects");
-      const lolek = await lol.insertOne(req.body);
-      console.log(lolek);
-    } catch (e) {
-      console.log(e);
-    }
-    res.send(JSON.stringify(true));
-  });
-};
+      const dbResult = await this.#projectRepository.get(id);
 
-export default mapProjectEndpoints;
+      res.send(JSON.stringify(dbResult));
+    });
+
+    app.post("/project/", async (req, res) => {
+      const requestObject: CreateProjectRequest = req.body;
+
+      const dbResult = await this.#projectRepository.create(requestObject);
+
+      res.send(JSON.stringify(dbResult));
+    });
+    app.put("/project/", async (req, res) => {
+      const requestObject: Project = req.body;
+
+      const dbResult = await this.#projectRepository.replace(requestObject);
+
+      res.send(JSON.stringify(dbResult));
+    });
+
+    app.delete("/project/", async (req, res) => {
+      const id: string = req.query.id as string;
+
+      const dbResult = await this.#projectRepository.delete(id);
+
+      res.send(JSON.stringify(dbResult));
+    });
+
+    app.get("/project/selected", async (req, res) => {
+      console.log("one");
+      const dbResult = await this.#projectRepository.getAll();
+      console.log(dbResult);
+      res.send(JSON.stringify(dbResult));
+    });
+
+    app.post("/project/selected", async (req, res) => {
+      const requestObject: string | null = req.body;
+
+      const dbResult = await this.#selectedProjectRepository.replace(
+        requestObject
+      );
+
+      res.send(JSON.stringify(dbResult));
+    });
+  };
+}
+
+export default ProjectEndpoints;
