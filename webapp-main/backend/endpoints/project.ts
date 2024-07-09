@@ -37,6 +37,7 @@ class ProjectEndpoints {
 
       res.send(JSON.stringify(dbResult));
     });
+
     app.put("/project/", async (req, res) => {
       const requestObject: Project = req.body;
 

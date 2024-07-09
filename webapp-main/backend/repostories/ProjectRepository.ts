@@ -57,9 +57,7 @@ class ProjectRepository {
     const result = await this.#mongoClient
       .db("webapp")
       .collection("projects")
-      .replaceOne({ id: _id }, requestObject);
-
-    //await this.#mongoClient.close();
+      .replaceOne({ _id: new ObjectId(_id) }, requestObject);
 
     return result.acknowledged;
   }

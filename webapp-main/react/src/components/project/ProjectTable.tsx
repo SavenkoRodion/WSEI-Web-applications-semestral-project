@@ -26,7 +26,6 @@ const ProjectTable = ({ context }: ProjectTableProps) => {
       CreateProjectRequest,
       Project
     > = new ProjectRepository();
-
     projectRepository.replace(projectToEdit);
     setProjectToEdit(null);
     window.location.reload();
