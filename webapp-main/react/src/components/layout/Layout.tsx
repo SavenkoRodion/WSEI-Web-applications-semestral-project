@@ -1,6 +1,7 @@
 import {
   AppBar,
   Box,
+  CircularProgress,
   CssBaseline,
   Link,
   Stack,
@@ -30,41 +31,44 @@ export type TProjectContext = {
 const Layout = () => {
   const projectRepository: IAsyncCrudRepository<CreateProjectRequest, Project> =
     new ProjectRepository();
-  const [projects, setProjects] = useState<Project[]>([]);
+  const selectedProjectRepository = new SelectedProjectRepository();
+
+  const [projects, setProjects] = useState<Project[] | undefined>(undefined);
+  const [selectedProjectId, setSelectedProjectId] = useState<
+    string | null | undefined
+  >(undefined);
+  const [selectedProject, setSelectedProject] = useState<
+    Project | null | undefined
+  >(undefined);
 
   useEffect(() => {
     projectRepository.getAll().then((p) => {
       setProjects(p);
     });
-  }, []);
-
-  const selectedProjectRepository = new SelectedProjectRepository();
-
-  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
-    null
-  );
-
-  useEffect(() => {
     selectedProjectRepository.getAll().then((e) => {
       setSelectedProjectId(e[0]?._id ?? null);
-      console.log("here");
-      console.log(e);
     });
   }, []);
 
-  const [selectedProject, setSelectedProject] = useState<Project | null>(
-    projects.filter((e) => e._id === selectedProjectId)[0] ?? null
-  );
+  useEffect(() => {
+    if (projects !== undefined) {
+      console.log();
+      setSelectedProject(
+        projects.filter((e) => e._id === selectedProjectId)[0]
+      );
+    }
+  }, [selectedProjectId, projects]);
 
-  const context: TProjectContext = {
-    projects: projects,
-    selectedProjectId: selectedProjectId,
-    setSelectedProjectId: setSelectedProjectId,
+  const setSelectedProjectIdWrapper = (id: string | null) => {
+    selectedProjectRepository.replace(id);
+    setSelectedProjectId(id);
   };
 
-  useEffect(() => {
-    setSelectedProject(projects.filter((e) => e._id === selectedProjectId)[0]);
-  }, [selectedProjectId]);
+  const context: TProjectContext = {
+    projects: projects!,
+    selectedProjectId: selectedProjectId!,
+    setSelectedProjectId: setSelectedProjectIdWrapper,
+  };
 
   const fromStorage: boolean = JSON.parse(
     localStorage.getItem("react_theme") ?? "false"
@@ -153,7 +157,11 @@ const Layout = () => {
             </Toolbar>
           </AppBar>
           <Box>
-            <Outlet context={context} />
+            {projects?.length && selectedProjectId !== undefined ? (
+              <Outlet context={context} />
+            ) : (
+              <CircularProgress />
+            )}
           </Box>
         </LocalizationProvider>
       </ThemeProvider>
