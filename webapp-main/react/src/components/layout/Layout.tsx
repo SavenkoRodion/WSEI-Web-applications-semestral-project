@@ -63,7 +63,6 @@ const Layout = () => {
   };
 
   useEffect(() => {
-    selectedProjectRepository.replace(null);
     setSelectedProject(projects.filter((e) => e._id === selectedProjectId)[0]);
   }, [selectedProjectId]);
 
@@ -126,6 +125,18 @@ const Layout = () => {
                     }}
                   >
                     Selected project: {selectedProject?.name ?? "none"}
+                  </Link>
+                </Typography>
+                <Typography>
+                  <Link
+                    href="/login"
+                    sx={{
+                      color: "white",
+                      textDecoration: "underline",
+                      marginLeft: "16px",
+                    }}
+                  >
+                    Login
                   </Link>
                 </Typography>
               </Stack>

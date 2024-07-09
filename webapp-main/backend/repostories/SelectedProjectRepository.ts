@@ -43,7 +43,6 @@ class SelectedProjectRepository {
         .collection("selectedProject")
         .deleteMany({})
     ).acknowledged;
-
     if (id !== null) {
       result = (
         await this.#mongoClient
@@ -52,6 +51,7 @@ class SelectedProjectRepository {
           .insertOne({ _id: new ObjectId(id) })
       ).acknowledged;
     }
+    console.log(result);
 
     //await this.#mongoClient.close();
 

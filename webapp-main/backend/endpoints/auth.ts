@@ -2,7 +2,8 @@ import { Express } from "express";
 import jwt from "jsonwebtoken";
 
 const getAuthEndpoints = (app: Express) => {
-  const tokenSecret = process.env.TOKEN_SECRET as string;
+  //const tokenSecret = process.env.TOKEN_SECRET as string;
+  const tokenSecret = "lolek" as string;
   let refreshToken: string;
 
   app.get("/", (req, res) => {
@@ -10,6 +11,7 @@ const getAuthEndpoints = (app: Express) => {
   });
 
   app.post("/token", function (req, res) {
+    console.log("here");
     const expTime = req.body.exp || 60;
     const token = generateToken(+expTime);
     refreshToken = generateToken(60 * 60);
