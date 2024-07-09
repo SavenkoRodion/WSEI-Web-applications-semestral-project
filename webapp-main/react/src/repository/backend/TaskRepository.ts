@@ -1,8 +1,7 @@
-import Task, {
-  CreateTaskRequest,
-} from "@savenkorodion/webapp-model/entities/Task";
+import Task from "@savenkorodion/webapp-model/entities/Task";
 import axios from "axios";
 import IAsyncCrudRepository from "../interfaces/async/IAsyncCrudRepository";
+import CreateTaskRequest from "@savenkorodion/webapp-model/requests/CreateTaskRequest";
 
 class TaskRepository implements IAsyncCrudRepository<CreateTaskRequest, Task> {
   async getAll() {
@@ -42,7 +41,7 @@ class TaskRepository implements IAsyncCrudRepository<CreateTaskRequest, Task> {
     return true;
   }
 
-  async replace(project: CreateTaskRequest) {
+  async replace(project: Task) {
     await axios({
       method: "put",
       url: "http://localhost:3000/task",

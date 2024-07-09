@@ -1,6 +1,6 @@
 import CreateProjectRequest from "@savenkorodion/webapp-model/requests/CreateProjectRequest";
 import { Express } from "express";
-import { MongoClient, ObjectId } from "mongodb";
+import { MongoClient } from "mongodb";
 import ProjectRepository from "../repostories/ProjectRepository";
 import Project from "@savenkorodion/webapp-model/entities/Project";
 import SelectedProjectRepository from "../repostories/SelectedProjectRepository";
