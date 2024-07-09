@@ -10,7 +10,7 @@ import Story, {
   StoryStatus,
 } from "@savenkorodion/webapp-model/entities/Story";
 import UserRepository from "../../repository/localstorage/UserRepository";
-import User from "@savenkorodion/webapp-model/entities/User";
+import User, { UserRole } from "@savenkorodion/webapp-model/entities/User";
 import { useState } from "react";
 import StoryDeleteDialog from "./StoryDeleteDialog";
 import StoryEditDialog from "./StoryEditDialog";
@@ -26,7 +26,9 @@ type StoryCardProps = {
 const StoryCard = ({ story }: StoryCardProps) => {
   const userRepository: IReadRepository<User> = new UserRepository();
 
-  const userList = userRepository.getAll();
+  const userList = userRepository
+    .getAll()
+    .filter((e) => e.role !== UserRole.Admin);
 
   const storyOwner = userList.filter((e) => e.id === story.ownerUserId)[0];
 
