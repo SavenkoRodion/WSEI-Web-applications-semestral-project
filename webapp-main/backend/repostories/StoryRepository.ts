@@ -1,6 +1,7 @@
+import Story from "@savenkorodion/webapp-model/entities/Story";
 import CreateStoryRequest from "@savenkorodion/webapp-model/requests/CreateStoryRequest";
-import { Story } from "./../model/classes/Story";
 import { MongoClient, ObjectId } from "mongodb";
+import StoryClass from "../model/classes/StoryClass";
 
 class StoryRepository {
   #mongoClient: MongoClient;
@@ -38,20 +39,20 @@ class StoryRepository {
     const result = await this.#mongoClient
       .db("webapp")
       .collection("stories")
-      .insertOne(requestObject);
+      .insertOne(new StoryClass(requestObject));
 
     return result.acknowledged;
   }
 
   async replace(story: Story) {
-    const { id, ...requestObject } = story;
+    const { _id, ...requestObject } = story;
 
     await this.#mongoClient.connect();
 
     const result = await this.#mongoClient
       .db("webapp")
       .collection("stories")
-      .replaceOne({ _id: new ObjectId(id) }, requestObject);
+      .replaceOne({ _id: new ObjectId(_id) }, requestObject);
 
     return result.acknowledged;
   }

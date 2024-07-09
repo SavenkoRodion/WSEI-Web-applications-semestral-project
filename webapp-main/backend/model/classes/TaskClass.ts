@@ -4,8 +4,7 @@ import {
 } from "@savenkorodion/webapp-model/entities/Task";
 import CreateTaskRequest from "@savenkorodion/webapp-model/requests/CreateTaskRequest";
 
-export class Task {
-  id: string;
+export default class TaskClass {
   name: string;
   priority: TaskPriority;
   timeEstimationInDays?: number;
@@ -21,12 +20,11 @@ export class Task {
     storyId,
     priority,
     projectId,
-    timeEstimationInDays = undefined,
-    startDate = undefined,
-    endDate = undefined,
-    ownerUserId = undefined,
+    timeEstimationInDays,
+    startDate,
+    endDate,
+    ownerUserId,
   }: CreateTaskRequest) {
-    this.id = crypto.randomUUID();
     this.name = name;
     this.storyId = storyId;
     this.priority = priority;

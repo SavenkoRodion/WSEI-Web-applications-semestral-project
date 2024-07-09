@@ -1,6 +1,7 @@
 import { MongoClient, ObjectId } from "mongodb";
-import Task from "@savenkorodion/webapp-model/entities/Task";
 import CreateTaskRequest from "@savenkorodion/webapp-model/requests/CreateTaskRequest";
+import TaskClass from "../model/classes/TaskClass";
+import Task from "@savenkorodion/webapp-model/entities/Task";
 
 class TaskRepository {
   #mongoClient: MongoClient;
@@ -14,7 +15,7 @@ class TaskRepository {
 
     const result = await this.#mongoClient
       .db("webapp")
-      .collection("task")
+      .collection("tasks")
       .find<Task>({})
       .toArray();
 
@@ -26,7 +27,7 @@ class TaskRepository {
 
     const result = await this.#mongoClient
       .db("webapp")
-      .collection("task")
+      .collection("tasks")
       .findOne<Task>({ _id: new ObjectId(id) });
 
     return result;
@@ -34,12 +35,12 @@ class TaskRepository {
 
   async create(requestObject: CreateTaskRequest) {
     await this.#mongoClient.connect();
-
+    console.log(requestObject);
     const result = await this.#mongoClient
       .db("webapp")
-      .collection("task")
+      .collection("tasks")
       .insertOne(requestObject);
-
+    //new TaskClass();
     return result.acknowledged;
   }
 
@@ -50,7 +51,7 @@ class TaskRepository {
 
     const result = await this.#mongoClient
       .db("webapp")
-      .collection("task")
+      .collection("tasks")
       .replaceOne({ _id: new ObjectId(_id) }, requestObject);
 
     return result.acknowledged;
@@ -61,7 +62,7 @@ class TaskRepository {
 
     const result = await this.#mongoClient
       .db("webapp")
-      .collection("task")
+      .collection("tasks")
       .deleteOne({ _id: new ObjectId(id) });
 
     return result.acknowledged;

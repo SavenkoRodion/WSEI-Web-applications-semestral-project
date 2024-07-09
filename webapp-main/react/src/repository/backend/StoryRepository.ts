@@ -20,7 +20,7 @@ class StoryRepository
       method: "get",
       url: "http://localhost:3000/story",
       responseType: "json",
-      params: id,
+      params: { id },
     });
     return response.data as Story | null;
   }
@@ -38,7 +38,7 @@ class StoryRepository
     await axios({
       method: "delete",
       url: "http://localhost:3000/story",
-      params: id,
+      params: { id },
     });
     return true;
   }

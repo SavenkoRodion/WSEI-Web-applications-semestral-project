@@ -12,14 +12,16 @@ import Task, {
 import UserRepository from "../../repository/localstorage/UserRepository";
 import User, { UserRole } from "@savenkorodion/webapp-model/entities/User";
 import { useState } from "react";
-import TaskRepository from "../../repository/localstorage/TaskRepository";
 import TaskDeleteDialog from "./TaskDeleteDialog";
 import TaskEditDialog from "./TaskEditDialog";
 import Story from "@savenkorodion/webapp-model/entities/Story";
-import StoryRepository from "../../repository/localstorage/StoryRepository";
 import { useParams } from "react-router-dom";
 import IReadRepository from "../../repository/interfaces/sync/IReadRepository";
-import ICrudRepository from "../../repository/interfaces/sync/ICrudRepository";
+import StoryRepository from "../../repository/backend/StoryRepository";
+import IAsyncCrudRepository from "../../repository/interfaces/async/IAsyncCrudRepository";
+import CreateStoryRequest from "@savenkorodion/webapp-model/requests/CreateStoryRequest";
+import CreateTaskRequest from "@savenkorodion/webapp-model/requests/CreateTaskRequest";
+import TaskRepository from "../../repository/backend/TaskRepository";
 
 type TaskCardProps = {
   task: Task;
@@ -48,7 +50,8 @@ const TaskCard = ({ task }: TaskCardProps) => {
     setIsDeleteDialogOpen(true);
   };
 
-  const taskRepository: ICrudRepository<Task> = new TaskRepository();
+  const taskRepository: IAsyncCrudRepository<CreateTaskRequest, Task> =
+    new TaskRepository();
 
   const handleDelete = () => {
     taskRepository.delete(task._id);
@@ -73,10 +76,13 @@ const TaskCard = ({ task }: TaskCardProps) => {
   };
 
   const { projectId } = useParams();
-  const storyRepository: ICrudRepository<Story> = new StoryRepository();
-  const storyList = storyRepository
+  const storyRepository: IAsyncCrudRepository<CreateStoryRequest, Story> =
+    new StoryRepository();
+  const [storyList, setStoryList] = useState<Story[] | undefined>(undefined);
+
+  storyRepository
     .getAll()
-    .filter((e) => e.projectId === projectId);
+    .then((e) => setStoryList(e.filter((e) => e.projectId === projectId)));
 
   const handleTaskComplete = () => {
     const editedTask = task;
@@ -123,7 +129,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
           name={task.name}
         />
       )}
-      {isEditDialogOpen && (
+      {isEditDialogOpen && storyList !== undefined && (
         <TaskEditDialog
           onClose={handleEditDialogClose}
           onEdit={handleEdit}

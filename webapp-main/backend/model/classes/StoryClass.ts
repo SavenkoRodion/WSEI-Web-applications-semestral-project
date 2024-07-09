@@ -2,9 +2,9 @@ import {
   StoryPriority,
   StoryStatus,
 } from "@savenkorodion/webapp-model/entities/Story";
+import CreateStoryRequest from "@savenkorodion/webapp-model/requests/CreateStoryRequest";
 
-export class Story {
-  id: string;
+export default class StoryClass {
   name: string;
   description: string;
   priority: StoryPriority;
@@ -13,15 +13,14 @@ export class Story {
   status: StoryStatus;
   ownerUserId: string;
 
-  constructor(
-    name: string,
-    description: string,
-    priority: StoryPriority,
-    projectId: string,
-    status: StoryStatus,
-    ownerUserId: string
-  ) {
-    this.id = crypto.randomUUID();
+  constructor({
+    name,
+    description,
+    priority,
+    projectId,
+    status,
+    ownerUserId,
+  }: CreateStoryRequest) {
     this.name = name.trim();
     this.description = description.trim();
     this.priority = priority;

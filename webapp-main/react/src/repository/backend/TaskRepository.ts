@@ -18,7 +18,7 @@ class TaskRepository implements IAsyncCrudRepository<CreateTaskRequest, Task> {
       method: "get",
       url: "http://localhost:3000/task",
       responseType: "json",
-      params: id,
+      params: { id },
     });
     return response.data as Task | null;
   }
@@ -36,7 +36,7 @@ class TaskRepository implements IAsyncCrudRepository<CreateTaskRequest, Task> {
     await axios({
       method: "delete",
       url: "http://localhost:3000/task",
-      params: id,
+      params: { id },
     });
     return true;
   }

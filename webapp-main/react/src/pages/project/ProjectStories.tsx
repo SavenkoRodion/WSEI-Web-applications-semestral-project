@@ -1,7 +1,13 @@
-import { AppBar, Box, Button, Stack, Toolbar } from "@mui/material";
-import { useState } from "react";
+import {
+  AppBar,
+  Box,
+  Button,
+  CircularProgress,
+  Stack,
+  Toolbar,
+} from "@mui/material";
+import { useEffect, useState } from "react";
 import StoryGrid from "../../components/story/StoryGrid";
-import StoryRepository from "../../repository/localstorage/StoryRepository";
 import { useParams } from "react-router-dom";
 import StoryCreateDialog from "../../components/story/StoryCreateDialog";
 import Story, {
@@ -11,12 +17,21 @@ import Story, {
 import User, { UserRole } from "@savenkorodion/webapp-model/entities/User";
 import UserRepository from "../../repository/localstorage/UserRepository";
 import Task, { TaskPriority } from "@savenkorodion/webapp-model/entities/Task";
-import TaskRepository from "../../repository/localstorage/TaskRepository";
 import TaskCreateDialog from "../../components/task/TaskCreateDialog";
-import ICrudRepository from "../../repository/interfaces/sync/ICrudRepository";
 import IReadRepository from "../../repository/interfaces/sync/IReadRepository";
+import IAsyncCrudRepository from "../../repository/interfaces/async/IAsyncCrudRepository";
+import StoryRepository from "../../repository/backend/StoryRepository";
+import CreateStoryRequest from "@savenkorodion/webapp-model/requests/CreateStoryRequest";
+import TaskRepository from "../../repository/backend/TaskRepository";
+import CreateTaskRequest from "@savenkorodion/webapp-model/requests/CreateTaskRequest";
 
 const ProjectStories = () => {
+  const storyRepository: IAsyncCrudRepository<CreateStoryRequest, Story> =
+    new StoryRepository();
+  const userRepository: IReadRepository<User> = new UserRepository();
+  const taskRepository: IAsyncCrudRepository<CreateTaskRequest, Task> =
+    new TaskRepository();
+
   const [isStoryCreateDialogOpen, setIsStoryCreateDialogOpen] = useState(false);
 
   const handleStoryCreateDialogClose = () => {
@@ -27,11 +42,7 @@ const ProjectStories = () => {
     setIsStoryCreateDialogOpen(true);
   };
 
-  const storyRepository: ICrudRepository<Story> = new StoryRepository();
-
   const { projectId } = useParams();
-
-  const userRepository: IReadRepository<User> = new UserRepository();
 
   const handleStoryCreateDialogCreate = (
     name: string,
@@ -47,14 +58,10 @@ const ProjectStories = () => {
       projectId: projectId!,
       status: status,
       ownerUserId: ownerUserId,
-      id: "",
-      dateOfCreation: new Date(),
     });
     setIsStoryCreateDialogOpen(false);
     window.location.reload();
   };
-
-  const taskRepository: ICrudRepository<Task> = new TaskRepository();
 
   const [isTaskCreateDialogOpen, setIsTaskCreateDialogOpen] = useState(false);
 
@@ -81,15 +88,24 @@ const ProjectStories = () => {
       ownerUserId: undefined,
       projectId: projectId!,
       storyId: storyId,
-      id: "",
-    } as any);
+    });
     setIsStoryCreateDialogOpen(false);
     window.location.reload();
   };
 
-  const storyList = storyRepository
-    .getAll()
-    .filter((e) => e.projectId === projectId);
+  const [storyList, setStoryList] = useState<Story[] | undefined>(undefined);
+  useEffect(() => {
+    storyRepository
+      .getAll()
+      .then((e) => setStoryList(e.filter((e) => e.projectId === projectId)));
+  }, [storyList]);
+
+  const [taskList, setTaskList] = useState<Task[] | undefined>(undefined);
+  useEffect(() => {
+    taskRepository
+      .getAll()
+      .then((e) => setTaskList(e.filter((e) => e.projectId === projectId)));
+  }, [taskList]);
 
   const userList = userRepository
     .getAll()
@@ -108,7 +124,7 @@ const ProjectStories = () => {
               >
                 Create story
               </Button>
-              {!!storyList.length && (
+              {!!storyList?.length && (
                 <Button
                   sx={{ color: "white", textDecoration: "underline" }}
                   size="small"
@@ -121,7 +137,11 @@ const ProjectStories = () => {
           </AppBar>
           <Box>
             <Stack>
-              <StoryGrid stories={storyList} tasks={taskRepository.getAll()} />
+              {storyList !== undefined && taskList !== undefined ? (
+                <StoryGrid stories={storyList} tasks={taskList} />
+              ) : (
+                <CircularProgress />
+              )}
             </Stack>
             {isStoryCreateDialogOpen && (
               <StoryCreateDialog
@@ -130,7 +150,7 @@ const ProjectStories = () => {
                 userList={userList}
               />
             )}
-            {isTaskCreateDialogOpen && (
+            {isTaskCreateDialogOpen && storyList !== undefined && (
               <TaskCreateDialog
                 onClose={handleTaskCreateDialogClose}
                 onCreate={handleTaskCreateDialogCreate}

@@ -1,12 +1,10 @@
 import { UserRole } from "@savenkorodion/webapp-model/entities/User";
 
-export class User {
+export default class UserClass {
   firstName: string;
   lastName: string;
-  id: string;
   role: UserRole;
   constructor(firstName: string, lastName: string, role: UserRole) {
-    this.id = crypto.randomUUID();
     this.firstName = firstName;
     this.lastName = lastName;
     this.role = role;

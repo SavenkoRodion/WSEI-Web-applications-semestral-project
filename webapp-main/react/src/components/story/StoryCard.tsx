@@ -13,10 +13,11 @@ import UserRepository from "../../repository/localstorage/UserRepository";
 import User from "@savenkorodion/webapp-model/entities/User";
 import { useState } from "react";
 import StoryDeleteDialog from "./StoryDeleteDialog";
-import StoryRepository from "../../repository/localstorage/StoryRepository";
 import StoryEditDialog from "./StoryEditDialog";
 import IReadRepository from "../../repository/interfaces/sync/IReadRepository";
-import ICrudRepository from "../../repository/interfaces/sync/ICrudRepository";
+import IAsyncCrudRepository from "../../repository/interfaces/async/IAsyncCrudRepository";
+import StoryRepository from "../../repository/backend/StoryRepository";
+import CreateStoryRequest from "@savenkorodion/webapp-model/requests/CreateStoryRequest";
 
 type StoryCardProps = {
   story: Story;
@@ -39,10 +40,11 @@ const StoryCard = ({ story }: StoryCardProps) => {
     setIsDeleteDialogOpen(true);
   };
 
-  const storyRepository: ICrudRepository<Story> = new StoryRepository();
+  const storyRepository: IAsyncCrudRepository<CreateStoryRequest, Story> =
+    new StoryRepository();
 
   const handleDelete = () => {
-    storyRepository.delete(story.id);
+    storyRepository.delete(story._id);
     handleDeleteDialogClose();
     window.location.reload();
   };
@@ -100,7 +102,7 @@ const StoryCard = ({ story }: StoryCardProps) => {
         <StoryDeleteDialog
           onClose={handleDeleteDialogClose}
           onDelete={handleDelete}
-          id={story.id}
+          id={story._id}
           name={story.name}
         />
       )}
