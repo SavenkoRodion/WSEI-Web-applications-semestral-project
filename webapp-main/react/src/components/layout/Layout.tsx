@@ -48,6 +48,7 @@ const Layout = () => {
     selectedProjectRepository.getAll().then((e) => {
       setSelectedProjectId(e[0]?._id ?? null);
     });
+    console.log("1");
   }, []);
 
   useEffect(() => {
@@ -57,6 +58,7 @@ const Layout = () => {
         projects.filter((e) => e._id === selectedProjectId)[0]
       );
     }
+    console.log("2");
   }, [selectedProjectId, projects]);
 
   const setSelectedProjectIdWrapper = (id: string | null) => {

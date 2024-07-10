@@ -13,7 +13,7 @@ import Story from "@savenkorodion/webapp-model/entities/Story";
 import {
   TaskPriority,
   TaskPriorityValues,
-} from "@savenkorodion/webapp-model/entities/Task";
+} from "@savenkorodion/webapp-model/entities/TaskObjects";
 
 type TaskCreateDialogProps = {
   onClose: () => void;
@@ -62,8 +62,8 @@ const TaskCreateDialog = ({
           >
             {storyList.map((e) => (
               <MenuItem
-                value={e.id}
-                key={e.id}
+                value={e._id}
+                key={e._id}
               >{`${e.name} - ${e.description}`}</MenuItem>
             ))}
           </TextField>
@@ -85,7 +85,7 @@ const TaskCreateDialog = ({
           </TextField>
           <Divider>Optional parameters</Divider>
           <TextField
-            label="Time estimation in business days"
+            label="Estimation"
             value={timeEstimation}
             onChange={(e) =>
               setTimeEstimation(e.target.value as unknown as number)

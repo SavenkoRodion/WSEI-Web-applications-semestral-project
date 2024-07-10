@@ -1,8 +1,5 @@
-import {
-  TaskPriority,
-  TaskStatus,
-} from "@savenkorodion/webapp-model/entities/Task";
 import CreateTaskRequest from "@savenkorodion/webapp-model/requests/CreateTaskRequest";
+import { TaskPriority, TaskStatus } from "../TaskObjects";
 
 export default class TaskClass {
   name: string;

@@ -1,4 +1,4 @@
-import { TaskPriority } from "../entities/Task";
+import { TaskPriority } from "../entities/TaskObjects";
 
 type CreateTaskRequest = {
   name: string;

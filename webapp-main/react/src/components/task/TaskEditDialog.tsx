@@ -10,14 +10,15 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import Task, {
-  TaskPriority,
-  TaskPriorityValues,
-  TaskStatus,
-} from "@savenkorodion/webapp-model/entities/Task";
 import User from "@savenkorodion/webapp-model/entities/User";
 import { DatePicker } from "@mui/x-date-pickers";
 import Story from "@savenkorodion/webapp-model/entities/Story";
+import Task from "@savenkorodion/webapp-model/entities/Task";
+import {
+  TaskPriority,
+  TaskPriorityValues,
+  TaskStatus,
+} from "@savenkorodion/webapp-model/entities/TaskObjects";
 
 type TaskEditDialogProps = {
   onClose: () => void;
@@ -90,8 +91,8 @@ const TaskEditDialog = ({
           >
             {storyList.map((e) => (
               <MenuItem
-                value={e.id}
-                key={e.id}
+                value={e._id}
+                key={e._id}
               >{`${e.name} - ${e.description}`}</MenuItem>
             ))}
           </TextField>

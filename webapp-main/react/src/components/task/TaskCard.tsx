@@ -5,10 +5,10 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import Task, {
+import {
   TaskPriority,
   TaskStatus,
-} from "@savenkorodion/webapp-model/entities/Task";
+} from "@savenkorodion/webapp-model/entities/TaskObjects";
 import UserRepository from "../../repository/localstorage/UserRepository";
 import User, { UserRole } from "@savenkorodion/webapp-model/entities/User";
 import { useState } from "react";
@@ -22,6 +22,7 @@ import IAsyncCrudRepository from "../../repository/interfaces/async/IAsyncCrudRe
 import CreateStoryRequest from "@savenkorodion/webapp-model/requests/CreateStoryRequest";
 import CreateTaskRequest from "@savenkorodion/webapp-model/requests/CreateTaskRequest";
 import TaskRepository from "../../repository/backend/TaskRepository";
+import Task from "@savenkorodion/webapp-model/entities/Task";
 
 type TaskCardProps = {
   task: Task;

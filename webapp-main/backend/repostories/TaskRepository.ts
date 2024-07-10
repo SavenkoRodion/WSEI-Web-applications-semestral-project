@@ -39,8 +39,8 @@ class TaskRepository {
     const result = await this.#mongoClient
       .db("webapp")
       .collection("tasks")
-      .insertOne(requestObject);
-    //new TaskClass();
+      .insertOne(new TaskClass(requestObject));
+
     return result.acknowledged;
   }
 

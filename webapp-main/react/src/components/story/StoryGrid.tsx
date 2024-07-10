@@ -2,8 +2,9 @@ import { Box, Stack, Typography } from "@mui/material";
 import styles from "./styles";
 import StoryCard from "./StoryCard";
 import Story from "@savenkorodion/webapp-model/entities/Story";
-import Task, { TaskStatus } from "@savenkorodion/webapp-model/entities/Task";
+import Task from "@savenkorodion/webapp-model/entities/Task";
 import TaskCard from "../task/TaskCard";
+import { TaskStatus } from "@savenkorodion/webapp-model/entities/TaskObjects";
 
 type StoryGridProps = {
   stories: Story[];
@@ -11,6 +12,7 @@ type StoryGridProps = {
 };
 
 const StoryGrid = ({ stories, tasks }: StoryGridProps) => {
+  console.log(tasks[0]);
   return (
     <Box>
       {!!stories.length && (
@@ -32,14 +34,14 @@ const StoryGrid = ({ stories, tasks }: StoryGridProps) => {
       {stories.map((story) => (
         <Box sx={styles.grid}>
           <Box sx={[styles.column]}>
-            <Stack key={story.id}>
+            <Stack key={story._id}>
               <StoryCard story={story} />
             </Stack>
           </Box>
           <Box sx={[styles.column]}>
             {tasks
               .filter(
-                (e) => e.status === TaskStatus.Todo && e.storyId === story.id
+                (e) => e.status === TaskStatus.Todo && e.storyId === story._id
               )
               .map((e) => (
                 <TaskCard task={e} />
@@ -48,7 +50,7 @@ const StoryGrid = ({ stories, tasks }: StoryGridProps) => {
           <Box sx={[styles.column]}>
             {tasks
               .filter(
-                (e) => e.status === TaskStatus.Doing && e.storyId === story.id
+                (e) => e.status === TaskStatus.Doing && e.storyId === story._id
               )
               .map((e) => (
                 <TaskCard task={e} />
@@ -57,7 +59,7 @@ const StoryGrid = ({ stories, tasks }: StoryGridProps) => {
           <Box sx={[styles.column]}>
             {tasks
               .filter(
-                (e) => e.status === TaskStatus.Done && e.storyId === story.id
+                (e) => e.status === TaskStatus.Done && e.storyId === story._id
               )
               .map((e) => (
                 <TaskCard task={e} />

@@ -16,7 +16,7 @@ import Story, {
 } from "@savenkorodion/webapp-model/entities/Story";
 import User, { UserRole } from "@savenkorodion/webapp-model/entities/User";
 import UserRepository from "../../repository/localstorage/UserRepository";
-import Task, { TaskPriority } from "@savenkorodion/webapp-model/entities/Task";
+import Task from "@savenkorodion/webapp-model/entities/Task";
 import TaskCreateDialog from "../../components/task/TaskCreateDialog";
 import IReadRepository from "../../repository/interfaces/sync/IReadRepository";
 import IAsyncCrudRepository from "../../repository/interfaces/async/IAsyncCrudRepository";
@@ -24,6 +24,7 @@ import StoryRepository from "../../repository/backend/StoryRepository";
 import CreateStoryRequest from "@savenkorodion/webapp-model/requests/CreateStoryRequest";
 import TaskRepository from "../../repository/backend/TaskRepository";
 import CreateTaskRequest from "@savenkorodion/webapp-model/requests/CreateTaskRequest";
+import { TaskPriority } from "@savenkorodion/webapp-model/entities/TaskObjects";
 
 const ProjectStories = () => {
   const storyRepository: IAsyncCrudRepository<CreateStoryRequest, Story> =
@@ -33,6 +34,7 @@ const ProjectStories = () => {
     new TaskRepository();
 
   const [isStoryCreateDialogOpen, setIsStoryCreateDialogOpen] = useState(false);
+  const [isTaskCreateDialogOpen, setIsTaskCreateDialogOpen] = useState(false);
 
   const handleStoryCreateDialogClose = () => {
     setIsStoryCreateDialogOpen(false);
@@ -62,8 +64,6 @@ const ProjectStories = () => {
     setIsStoryCreateDialogOpen(false);
     window.location.reload();
   };
-
-  const [isTaskCreateDialogOpen, setIsTaskCreateDialogOpen] = useState(false);
 
   const handleTaskCreateDialogClose = () => {
     setIsTaskCreateDialogOpen(false);
@@ -98,14 +98,15 @@ const ProjectStories = () => {
     storyRepository
       .getAll()
       .then((e) => setStoryList(e.filter((e) => e.projectId === projectId)));
-  }, [storyList]);
+  }, [projectId]);
 
   const [taskList, setTaskList] = useState<Task[] | undefined>(undefined);
   useEffect(() => {
-    taskRepository
-      .getAll()
-      .then((e) => setTaskList(e.filter((e) => e.projectId === projectId)));
-  }, [taskList]);
+    taskRepository.getAll().then((e) => {
+      setTaskList(e.filter((e) => e.projectId === projectId));
+      console.log(taskList);
+    });
+  }, [projectId]);
 
   const userList = userRepository
     .getAll()
