@@ -1,0 +1,14 @@
+{
+  "name": "@savenkorodion/repository-interfaces",
+  "version": "3.3.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rodion Savenko",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^5.5.2"
+  }
+}
