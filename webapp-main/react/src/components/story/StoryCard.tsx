@@ -9,28 +9,39 @@ import Story, {
   StoryPriority,
   StoryStatus,
 } from "@savenkorodion/webapp-model/entities/Story";
-import UserRepository from "../../repository/localstorage/UserRepository";
 import User, { UserRole } from "@savenkorodion/webapp-model/entities/User";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StoryDeleteDialog from "./StoryDeleteDialog";
 import StoryEditDialog from "./StoryEditDialog";
-import IReadRepository from "../../repository/interfaces/sync/IReadRepository";
 import IAsyncCrudRepository from "../../repository/interfaces/async/IAsyncCrudRepository";
 import StoryRepository from "../../repository/backend/StoryRepository";
 import CreateStoryRequest from "@savenkorodion/webapp-model/requests/CreateStoryRequest";
+import UserRepository from "../../repository/backend/UserRepository";
 
 type StoryCardProps = {
   story: Story;
 };
 
 const StoryCard = ({ story }: StoryCardProps) => {
-  const userRepository: IReadRepository<User> = new UserRepository();
+  const userRepository = new UserRepository();
 
-  const userList = userRepository
-    .getAll()
-    .filter((e) => e.role !== UserRole.Admin);
+  const [userList, setUserList] = useState<User[] | undefined>(undefined);
 
-  const storyOwner = userList.filter((e) => e.id === story.ownerUserId)[0];
+  useEffect(() => {
+    console.log("a1");
+    userRepository
+      .getAll()
+      .then((e) => setUserList(e.filter((e) => e.role !== UserRole.Admin)));
+  }, []);
+
+  const [storyOwner, setStoryOwner] = useState<User | undefined>(undefined);
+
+  useEffect(() => {
+    console.log("a2");
+    if (userList?.length) {
+      setStoryOwner(userList.filter((e) => e._id === story.ownerUserId)[0]);
+    }
+  }, [userList]);
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
@@ -72,7 +83,9 @@ const StoryCard = ({ story }: StoryCardProps) => {
       <Card sx={{ boxShadow: "inset 2px 0px blue" }}>
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            {`Owner: ${storyOwner.firstName} ${storyOwner.lastName}`}
+            {storyOwner
+              ? `Owner: ${storyOwner!.firstName} ${storyOwner!.lastName}`
+              : "Loading..."}
           </Typography>
           <Typography variant="h5" component="div">
             {story.name}
@@ -108,7 +121,7 @@ const StoryCard = ({ story }: StoryCardProps) => {
           name={story.name}
         />
       )}
-      {isEditDialogOpen && (
+      {isEditDialogOpen && userList?.length && (
         <StoryEditDialog
           onClose={handleEditDialogClose}
           onEdit={handleEdit}

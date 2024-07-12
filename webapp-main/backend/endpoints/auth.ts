@@ -6,10 +6,6 @@ const getAuthEndpoints = (app: Express) => {
   const tokenSecret = "lolek" as string;
   let refreshToken: string;
 
-  app.get("/", (req, res) => {
-    res.send("Hello World - simple api with JWT!");
-  });
-
   app.post("/token", function (req, res) {
     console.log("here");
     const expTime = req.body.exp || 60;

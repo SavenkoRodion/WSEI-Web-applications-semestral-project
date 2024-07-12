@@ -2,26 +2,20 @@ import {
   AppBar,
   Box,
   CircularProgress,
-  CssBaseline,
   Link,
   Stack,
-  Switch,
-  ThemeProvider,
   Toolbar,
   Typography,
-  createTheme,
 } from "@mui/material";
-import { Outlet } from "react-router-dom";
+import { Outlet, useOutletContext } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
-import { enGB } from "date-fns/locale";
 import Project from "@savenkorodion/webapp-model/entities/Project";
 import ProjectRepository from "../../repository/backend/ProjectRepository";
 import CreateProjectRequest from "@savenkorodion/webapp-model/requests/CreateProjectRequest";
 import IAsyncCrudRepository from "../../repository/interfaces/async/IAsyncCrudRepository";
 import SelectedProjectRepository from "../../repository/backend/SelectedProjectRepository";
-import { grey } from "@mui/material/colors";
+import { TBaselineContext } from "./BaselineLayout";
+import ThemeSwitch from "./ThemeSwitch";
 
 export type TProjectContext = {
   projects: Project[];
@@ -49,7 +43,6 @@ const Layout = () => {
     selectedProjectRepository.getAll().then((e) => {
       setSelectedProjectId(e[0]?._id ?? null);
     });
-    console.log("1");
   }, []);
 
   useEffect(() => {
@@ -59,7 +52,6 @@ const Layout = () => {
         projects.filter((e) => e._id === selectedProjectId)[0]
       );
     }
-    console.log("2");
   }, [selectedProjectId, projects]);
 
   const setSelectedProjectIdWrapper = (id: string | null) => {
@@ -73,103 +65,77 @@ const Layout = () => {
     setSelectedProjectId: setSelectedProjectIdWrapper,
   };
 
-  const fromStorage: boolean = JSON.parse(
-    localStorage.getItem("react_theme") ?? "false"
-  );
-
-  const [isDarkTheme, setIsDarkTheme] = useState(fromStorage);
-
-  useEffect(() => {
-    localStorage.setItem("react_theme", JSON.stringify(isDarkTheme));
-  }, [isDarkTheme]);
-
-  const theme = createTheme({
-    palette: {
-      secondary: {
-        main: isDarkTheme ? grey[900] : grey[300],
-      },
-      mode: isDarkTheme ? "dark" : "light",
-    },
-  });
+  const baselineContext: TBaselineContext = useOutletContext();
 
   return (
-    <Box>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
-          <AppBar position="sticky">
-            <Toolbar
-              variant="dense"
-              sx={{ display: "flex", justifyContent: "space-between" }}
-            >
-              <Stack flexDirection={"row"}>
-                <Typography>
-                  <Link
-                    href="/"
-                    sx={{ color: "white", textDecoration: "underline" }}
-                  >
-                    Home
-                  </Link>
-                </Typography>
-                <Typography>
-                  <Link
-                    href="/project"
-                    sx={{
-                      color: "white",
-                      textDecoration: "underline",
-                      marginLeft: "16px",
-                    }}
-                  >
-                    Project list
-                  </Link>
-                </Typography>
-                <Typography>
-                  <Link
-                    href={`/project/${selectedProject?._id ?? ""}`}
-                    sx={{
-                      color: "white",
-                      textDecoration: "underline",
-                      marginLeft: "16px",
-                    }}
-                  >
-                    Selected project: {selectedProject?.name ?? "none"}
-                  </Link>
-                </Typography>
-                <Typography>
-                  <Link
-                    href="/login"
-                    sx={{
-                      color: "white",
-                      textDecoration: "underline",
-                      marginLeft: "16px",
-                    }}
-                  >
-                    Login
-                  </Link>
-                </Typography>
-              </Stack>
-              <Stack>
-                <Switch
-                  value={isDarkTheme}
-                  onChange={(e) => {
-                    setIsDarkTheme(e.target.checked);
-                  }}
-                  defaultChecked={isDarkTheme}
-                  color="info"
-                />
-              </Stack>
-            </Toolbar>
-          </AppBar>
-          <Box>
-            {projects?.length && selectedProjectId !== undefined ? (
-              <Outlet context={context} />
-            ) : (
-              <CircularProgress />
-            )}
-          </Box>
-        </LocalizationProvider>
-      </ThemeProvider>
-    </Box>
+    <>
+      <AppBar position="sticky">
+        <Toolbar
+          variant="dense"
+          sx={{ display: "flex", justifyContent: "space-between" }}
+        >
+          <Stack flexDirection={"row"}>
+            <Typography>
+              <Link
+                href="/"
+                sx={{ color: "white", textDecoration: "underline" }}
+              >
+                Home
+              </Link>
+            </Typography>
+            <Typography>
+              <Link
+                href="/project"
+                sx={{
+                  color: "white",
+                  textDecoration: "underline",
+                  marginLeft: "16px",
+                }}
+              >
+                Project list
+              </Link>
+            </Typography>
+            <Typography>
+              <Link
+                href={`/project/${selectedProject?._id ?? ""}`}
+                sx={{
+                  color: "white",
+                  textDecoration: "underline",
+                  marginLeft: "16px",
+                }}
+              >
+                Selected project: {selectedProject?.name ?? "none"}
+              </Link>
+            </Typography>
+            <Typography>
+              <Link
+                href="/login"
+                sx={{
+                  color: "white",
+                  textDecoration: "underline",
+                  marginLeft: "16px",
+                }}
+              >
+                Login
+              </Link>
+            </Typography>
+          </Stack>
+          <Stack>
+            <ThemeSwitch
+              isDarkTheme={baselineContext.isDarkTheme}
+              setIsDarkTheme={baselineContext.setIsDarkTheme}
+            />
+          </Stack>
+        </Toolbar>
+      </AppBar>
+      <Box>
+        {projects?.length && selectedProjectId !== undefined ? (
+          <Outlet context={context} />
+        ) : (
+          <CircularProgress />
+        )}
+      </Box>
+    </>
   );
 };
 

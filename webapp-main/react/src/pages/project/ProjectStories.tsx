@@ -14,11 +14,10 @@ import Story, {
   StoryPriority,
   StoryStatus,
 } from "@savenkorodion/webapp-model/entities/Story";
-import User, { UserRole } from "@savenkorodion/webapp-model/entities/User";
+import { UserRole } from "@savenkorodion/webapp-model/entities/User";
 import UserRepository from "../../repository/localstorage/UserRepository";
 import Task from "@savenkorodion/webapp-model/entities/Task";
 import TaskCreateDialog from "../../components/task/TaskCreateDialog";
-import IReadRepository from "../../repository/interfaces/sync/IReadRepository";
 import IAsyncCrudRepository from "../../repository/interfaces/async/IAsyncCrudRepository";
 import StoryRepository from "../../repository/backend/StoryRepository";
 import CreateStoryRequest from "@savenkorodion/webapp-model/requests/CreateStoryRequest";
@@ -29,7 +28,7 @@ import { TaskPriority } from "@savenkorodion/webapp-model/entities/TaskObjects";
 const ProjectStories = () => {
   const storyRepository: IAsyncCrudRepository<CreateStoryRequest, Story> =
     new StoryRepository();
-  const userRepository: IReadRepository<User> = new UserRepository();
+  const userRepository = new UserRepository();
   const taskRepository: IAsyncCrudRepository<CreateTaskRequest, Task> =
     new TaskRepository();
 
