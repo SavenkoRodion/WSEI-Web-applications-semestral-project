@@ -105,8 +105,8 @@ const StoryCreateDialog = ({
           >
             {userList.map((e) => (
               <MenuItem
-                value={e.id}
-                key={e.id}
+                value={e._id}
+                key={e._id}
               >{`${e.firstName} ${e.lastName}`}</MenuItem>
             ))}
           </TextField>

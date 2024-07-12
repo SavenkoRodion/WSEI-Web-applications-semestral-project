@@ -12,7 +12,6 @@ import { enGB } from "date-fns/locale";
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import UserRepository from "../../repository/backend/UserRepository";
-import jwt from "jsonwebtoken";
 import axios from "axios";
 
 export type TBaselineContext = {
@@ -31,14 +30,16 @@ const BaselineLayout = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const authToken = userRepository.getTokenFromStorage();
 
-    const status = axios({
+    axios({
       url: "http://localhost:3000/status",
       headers: { Authorization: `bearer ${authToken}` },
     })
       .then(() => setIsLoading(false))
       .catch(() => {
         console.log(2);
-        navigate("/anonymous/login");
+        if (location.pathname !== "/anonymous/login") {
+          navigate("/anonymous/login");
+        }
         setIsLoading(false);
       });
 

@@ -9,8 +9,7 @@ import {
   TaskPriority,
   TaskStatus,
 } from "@savenkorodion/webapp-model/entities/TaskObjects";
-import UserRepository from "../../repository/localstorage/UserRepository";
-import { UserRole } from "@savenkorodion/webapp-model/entities/User";
+import User from "@savenkorodion/webapp-model/entities/User";
 import { useState } from "react";
 import TaskDeleteDialog from "./TaskDeleteDialog";
 import TaskEditDialog from "./TaskEditDialog";
@@ -25,19 +24,20 @@ import Task from "@savenkorodion/webapp-model/entities/Task";
 
 type TaskCardProps = {
   task: Task;
+  userList: User[];
 };
 
-const TaskCard = ({ task }: TaskCardProps) => {
-  const userRepository = new UserRepository();
+const TaskCard = ({ task, userList }: TaskCardProps) => {
+  //const userRepository = new UserRepository();
 
-  const userList = userRepository
-    .getAll()
-    .filter((e) => e.role !== UserRole.Admin);
+  // const userList = userRepository
+  //   .getAll()
+  //   .filter((e) => e.role !== UserRole.Admin);
 
   const taskOwner = userList.filter((e) => e._id === task.ownerUserId)[0];
 
   const taskOwnerName = task.ownerUserId
-    ? `${taskOwner.firstName} ${taskOwner.lastName}`
+    ? `${taskOwner?.firstName} ${taskOwner?.lastName}`
     : "Unassigned";
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -96,7 +96,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
       <Card sx={{ boxShadow: "inset 2px 0px green" }}>
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            {`Owner: ${taskOwnerName}`}
+            {`Owner: ${taskOwner ? taskOwnerName : "Unknown"}`}
           </Typography>
           <Typography variant="h5" component="div">
             {task.name}

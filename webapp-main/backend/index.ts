@@ -8,6 +8,7 @@ import credentials from "./credentials";
 import ProjectEndpoints from "./endpoints/project";
 import StoryEndpoints from "./endpoints/story";
 import TaskEndpoints from "./endpoints/task";
+import UserEndpoints from "./endpoints/user";
 
 const app = express();
 const port = 3000;
@@ -30,9 +31,11 @@ getAuthEndpoints(app);
 const projectEndpoints = new ProjectEndpoints(client);
 const storyEndpoints = new StoryEndpoints(client);
 const taskEndpoints = new TaskEndpoints(client);
+const userEndpoints = new UserEndpoints(client);
 projectEndpoints.mapProjectEndpoints(app);
 storyEndpoints.mapStoryEndpoints(app);
 taskEndpoints.mapTaskEndpoints(app);
+userEndpoints.mapUserEndpoints(app);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

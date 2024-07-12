@@ -5,13 +5,15 @@ import Story from "@savenkorodion/webapp-model/entities/Story";
 import Task from "@savenkorodion/webapp-model/entities/Task";
 import TaskCard from "../task/TaskCard";
 import { TaskStatus } from "@savenkorodion/webapp-model/entities/TaskObjects";
+import User from "@savenkorodion/webapp-model/entities/User";
 
 type StoryGridProps = {
   stories: Story[];
   tasks: Task[];
+  users: User[];
 };
 
-const StoryGrid = ({ stories, tasks }: StoryGridProps) => {
+const StoryGrid = ({ stories, tasks, users }: StoryGridProps) => {
   console.log(tasks[0]);
   return (
     <Box>
@@ -44,7 +46,7 @@ const StoryGrid = ({ stories, tasks }: StoryGridProps) => {
                 (e) => e.status === TaskStatus.Todo && e.storyId === story._id
               )
               .map((e) => (
-                <TaskCard task={e} />
+                <TaskCard task={e} userList={users} />
               ))}
           </Box>
           <Box sx={[styles.column]}>
@@ -53,7 +55,7 @@ const StoryGrid = ({ stories, tasks }: StoryGridProps) => {
                 (e) => e.status === TaskStatus.Doing && e.storyId === story._id
               )
               .map((e) => (
-                <TaskCard task={e} />
+                <TaskCard task={e} userList={users} />
               ))}
           </Box>
           <Box sx={[styles.column]}>
@@ -62,7 +64,7 @@ const StoryGrid = ({ stories, tasks }: StoryGridProps) => {
                 (e) => e.status === TaskStatus.Done && e.storyId === story._id
               )
               .map((e) => (
-                <TaskCard task={e} />
+                <TaskCard task={e} userList={users} />
               ))}
           </Box>
         </Box>

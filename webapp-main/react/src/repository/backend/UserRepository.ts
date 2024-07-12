@@ -9,6 +9,7 @@ class UserRepository {
       url: "http://localhost:3000/user/all",
       responseType: "json",
     });
+    console.log(response);
     return response.data as User[];
   }
 

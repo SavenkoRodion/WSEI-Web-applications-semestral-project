@@ -16,7 +16,7 @@ class UserEndpoints {
       res.send(JSON.stringify(dbResult));
     });
 
-    app.get("/task", async (req, res) => {
+    app.get("/user", async (req, res) => {
       const id = req.query.id as string;
 
       const dbResult = await this.#userRepository.get(id);

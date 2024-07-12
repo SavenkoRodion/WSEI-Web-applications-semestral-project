@@ -14,8 +14,7 @@ import Story, {
   StoryPriority,
   StoryStatus,
 } from "@savenkorodion/webapp-model/entities/Story";
-import { UserRole } from "@savenkorodion/webapp-model/entities/User";
-import UserRepository from "../../repository/localstorage/UserRepository";
+import User, { UserRole } from "@savenkorodion/webapp-model/entities/User";
 import Task from "@savenkorodion/webapp-model/entities/Task";
 import TaskCreateDialog from "../../components/task/TaskCreateDialog";
 import IAsyncCrudRepository from "../../repository/interfaces/async/IAsyncCrudRepository";
@@ -24,6 +23,7 @@ import CreateStoryRequest from "@savenkorodion/webapp-model/requests/CreateStory
 import TaskRepository from "../../repository/backend/TaskRepository";
 import CreateTaskRequest from "@savenkorodion/webapp-model/requests/CreateTaskRequest";
 import { TaskPriority } from "@savenkorodion/webapp-model/entities/TaskObjects";
+import UserRepository from "../../repository/backend/UserRepository";
 
 const ProjectStories = () => {
   const storyRepository: IAsyncCrudRepository<CreateStoryRequest, Story> =
@@ -97,7 +97,7 @@ const ProjectStories = () => {
     storyRepository
       .getAll()
       .then((e) => setStoryList(e.filter((e) => e.projectId === projectId)));
-  }, [projectId]);
+  }, []);
 
   const [taskList, setTaskList] = useState<Task[] | undefined>(undefined);
   useEffect(() => {
@@ -105,11 +105,14 @@ const ProjectStories = () => {
       setTaskList(e.filter((e) => e.projectId === projectId));
       console.log(taskList);
     });
-  }, [projectId]);
+  }, []);
 
-  const userList = userRepository
-    .getAll()
-    .filter((e) => e.role !== UserRole.Admin);
+  const [userList, setUserList] = useState<User[] | undefined>(undefined);
+  useEffect(() => {
+    userRepository.getAll().then((e: User[]) => {
+      setUserList(e.filter((e) => e.role === UserRole.Admin));
+    });
+  }, []);
 
   return (
     <>
@@ -137,13 +140,19 @@ const ProjectStories = () => {
           </AppBar>
           <Box>
             <Stack>
-              {storyList !== undefined && taskList !== undefined ? (
-                <StoryGrid stories={storyList} tasks={taskList} />
+              {storyList !== undefined &&
+              taskList !== undefined &&
+              userList?.length !== undefined ? (
+                <StoryGrid
+                  stories={storyList}
+                  tasks={taskList}
+                  users={userList}
+                />
               ) : (
                 <CircularProgress />
               )}
             </Stack>
-            {isStoryCreateDialogOpen && (
+            {isStoryCreateDialogOpen && userList?.length && (
               <StoryCreateDialog
                 onClose={handleStoryCreateDialogClose}
                 onCreate={handleStoryCreateDialogCreate}
