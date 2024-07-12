@@ -1,10 +1,19 @@
-import { Box, createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  createTheme,
+  CssBaseline,
+  ThemeProvider,
+} from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { enGB } from "date-fns/locale";
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import UserRepository from "../../repository/backend/UserRepository";
+import jwt from "jsonwebtoken";
+import axios from "axios";
 
 export type TBaselineContext = {
   isDarkTheme: boolean;
@@ -12,11 +21,48 @@ export type TBaselineContext = {
 };
 
 const BaselineLayout = () => {
-  const fromStorage: boolean = JSON.parse(
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const userRepository = new UserRepository();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const authToken = userRepository.getTokenFromStorage();
+
+    const status = axios({
+      url: "http://localhost:3000/status",
+      headers: { Authorization: `bearer ${authToken}` },
+    })
+      .then(() => setIsLoading(false))
+      .catch(() => {
+        console.log(2);
+        navigate("/anonymous/login");
+        setIsLoading(false);
+      });
+
+    // const isValid = authToken?.exp > new Date();
+    // console.log(new Date());
+    // console.log(new Date(authToken?.exp));
+    // if (!isValid && location.pathname !== "/anonymous/login") {
+    //   userRepository
+    //     .requestNewAuthtoken()
+    //     .then(() => setIsLoading(false))
+    //     .catch(() => {
+    //       navigate("/anonymous/login");
+    //       setIsLoading(false);
+    //     });
+    // } else {
+    //   setIsLoading(false);
+    // }
+  }, []);
+
+  const isDarkThemeStorage: boolean = JSON.parse(
     localStorage.getItem("react_theme") ?? "false"
   );
 
-  const [isDarkTheme, setIsDarkTheme] = useState(fromStorage);
+  const [isDarkTheme, setIsDarkTheme] = useState(isDarkThemeStorage);
 
   useEffect(() => {
     localStorage.setItem("react_theme", JSON.stringify(isDarkTheme));
@@ -41,7 +87,7 @@ const BaselineLayout = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
-          <Outlet context={context} />
+          {isLoading ? <CircularProgress /> : <Outlet context={context} />}
         </LocalizationProvider>
       </ThemeProvider>
     </Box>

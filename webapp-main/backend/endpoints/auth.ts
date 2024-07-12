@@ -13,24 +13,24 @@ const getAuthEndpoints = (app: Express) => {
     refreshToken = generateToken(60 * 60);
     res.status(200).send({ token, refreshToken });
   });
+
   app.post("/refreshToken", function (req, res) {
     const refreshTokenFromPost = req.body.refreshToken;
     if (refreshToken !== refreshTokenFromPost) {
+      console.log(refreshToken);
+      console.log(refreshTokenFromPost);
+      console.log(refreshToken !== refreshTokenFromPost);
       res.status(400).send("Bad refresh token!");
+      return;
     }
     const expTime = req.headers.exp || 60;
     const token = generateToken(+expTime);
     refreshToken = generateToken(60 * 60);
-    setTimeout(() => {
-      res.status(200).send({ token, refreshToken });
-    }, 3000);
+    res.status(200).send({ token, refreshToken });
   });
-  app.get("/protected/:id/:delay?", verifyToken, (req, res) => {
-    const id = req.params.id;
-    const delay = req.params.delay ? +req.params.delay : 1000;
-    setTimeout(() => {
-      res.status(200).send(`{"message": "protected endpoint ${id}"}`);
-    }, delay);
+
+  app.get("/status", verifyToken, (req, res) => {
+    res.status(200).send();
   });
 
   function generateToken(expirationInSeconds: number) {
@@ -44,7 +44,7 @@ const getAuthEndpoints = (app: Express) => {
   function verifyToken(req: any, res: any, next: any) {
     const authHeader = req.headers["authorization"];
     const token = authHeader?.split(" ")[1];
-
+    console.log(authHeader);
     if (!token) return res.sendStatus(403);
 
     jwt.verify(token, tokenSecret, (err: any, user: any) => {

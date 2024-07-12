@@ -1,5 +1,4 @@
 import User, { UserRole } from "@savenkorodion/webapp-model/entities/User";
-import localStorageConfigs from "../../localStorageConfigs";
 
 class UserRepository {
   getAll() {
@@ -24,26 +23,6 @@ class UserRepository {
       },
     ];
     return parsed;
-  }
-
-  saveTokens(token: string, refreshToken: string) {
-    localStorage.setItem(localStorageConfigs.token, JSON.stringify(token));
-    localStorage.setItem(
-      localStorageConfigs.refreshToken,
-      JSON.stringify(refreshToken)
-    );
-
-    return true;
-  }
-
-  getToken() {
-    return JSON.parse(localStorage.getItem(localStorageConfigs.token) ?? "");
-  }
-
-  getRefreshToken() {
-    return JSON.parse(
-      localStorage.getItem(localStorageConfigs.refreshToken) ?? ""
-    );
   }
 }
 

@@ -1,14 +1,15 @@
-import { Box, Button, OutlinedInput } from "@mui/material";
-import axios from "axios";
+import { Box, Button, OutlinedInput, Stack, Typography } from "@mui/material";
 import { useState } from "react";
-import UserRepository from "../../repository/localstorage/UserRepository";
+import UserRepository from "../../repository/backend/UserRepository";
 
 const Login = () => {
   const [login, setLogin] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string | undefined>(undefined);
   const userRepository = new UserRepository();
-  console.log(userRepository.getToken());
-  console.log(userRepository.getRefreshToken());
+  console.log(userRepository.getTokenFromStorage());
+  console.log(userRepository.getRefreshTokenFromStorage());
+  const lol = new UserRepository();
   return (
     <Box>
       <OutlinedInput value={login} onChange={(e) => setLogin(e.target.value)} />
@@ -18,18 +19,8 @@ const Login = () => {
       />
       <Button
         onClick={async () => {
-          const response = await axios({
-            method: "post",
-            url: "http://localhost:3000/token",
-            data: { login: login, password: password },
-          });
-          if (response.status === 200) {
-            userRepository.saveTokens(
-              response.data.token,
-              response.data.refreshToken
-            );
-          }
-
+          const response = await lol.authorize(login, password);
+          if (!response) setError("Failed to login");
           // await axios({
           //   method: "post",
           //   url: "http://localhost:3000/refreshToken",
@@ -45,6 +36,13 @@ const Login = () => {
       >
         Send
       </Button>
+      {!error ? (
+        <Stack>
+          <Typography>{error}</Typography>
+        </Stack>
+      ) : (
+        <></>
+      )}
     </Box>
   );
 };

@@ -10,7 +10,7 @@ import BaselineLayout from "./components/layout/BaselineLayout.tsx";
 import AnonLayout from "./components/layout/AnonLayout.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  <>
     <BrowserRouter>
       <Routes>
         <Route element={<BaselineLayout />}>
@@ -26,5 +26,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </Route>
       </Routes>
     </BrowserRouter>
-  </React.StrictMode>
+  </>
 );
