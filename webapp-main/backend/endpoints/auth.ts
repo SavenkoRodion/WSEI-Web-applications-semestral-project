@@ -23,7 +23,7 @@ const getAuthEndpoints = (app: Express) => {
       res.status(400).send("Bad refresh token!");
       return;
     }
-    const expTime = req.headers.exp || 60;
+    const expTime = req.headers.exp || 10;
     const token = generateToken(+expTime);
     refreshToken = generateToken(60 * 60 * 10);
     res.status(200).send({ token, refreshToken });

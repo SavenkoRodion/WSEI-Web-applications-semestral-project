@@ -35,21 +35,34 @@ const BaselineLayout = () => {
     const isValid = new Date(decodedToken.exp * 1000) > new Date();
 
     if (!isValid) {
-      userRepository.requestNewAuthtoken();
-      authToken = userRepository.getTokenFromStorage();
-    }
-    axios({
-      url: "http://localhost:3000/status",
-      headers: { Authorization: `bearer ${authToken}` },
-    })
-      .then(() => setIsLoading(false))
-      .catch(() => {
-        if (location.pathname !== "/anonymous/login") {
-          navigate("/anonymous/login");
-        }
-        setIsLoading(false);
+      userRepository.requestNewAuthtoken().then(() => {
+        authToken = userRepository.getTokenFromStorage();
+        axios({
+          url: "http://localhost:3000/status",
+          headers: { Authorization: `bearer ${authToken}` },
+        })
+          .then(() => setIsLoading(false))
+          .catch(() => {
+            if (location.pathname !== "/anonymous/login") {
+              navigate("/anonymous/login");
+            }
+            setIsLoading(false);
+          });
       });
-  }, []);
+    } else {
+      axios({
+        url: "http://localhost:3000/status",
+        headers: { Authorization: `bearer ${authToken}` },
+      })
+        .then(() => setIsLoading(false))
+        .catch(() => {
+          if (location.pathname !== "/anonymous/login") {
+            navigate("/anonymous/login");
+          }
+          setIsLoading(false);
+        });
+    }
+  }, [location.pathname, navigate]);
 
   const isDarkThemeStorage: boolean = JSON.parse(
     localStorage.getItem("react_theme") ?? "false"
