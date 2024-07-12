@@ -35,7 +35,9 @@ const BaselineLayout = () => {
     const isValid = new Date(decodedToken.exp * 1000) > new Date();
 
     if (!isValid) {
-      userRepository.requestNewAuthtoken().then(() => {
+      userRepository.requestNewAuthtoken().then((e: boolean) => {
+        console.log("here");
+        console.log(e);
         authToken = userRepository.getTokenFromStorage();
         axios({
           url: "http://localhost:3000/status",

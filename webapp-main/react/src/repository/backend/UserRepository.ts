@@ -44,17 +44,18 @@ class UserRepository {
   }
 
   async requestNewAuthtoken() {
-    const response = await axios({
+    axios({
       method: "post",
       url: "http://localhost:3000/refreshToken",
       data: { refreshToken: this.getRefreshTokenFromStorage() },
-    });
-    console.log("here");
-    console.log(response);
-    if (response.status === 200) {
-      this.saveTokens(response.data.token, response.data.refreshToken);
-      return true;
-    }
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          this.saveTokens(response.data.token, response.data.refreshToken);
+          return true;
+        }
+      })
+      .catch(() => false);
 
     return false;
   }
