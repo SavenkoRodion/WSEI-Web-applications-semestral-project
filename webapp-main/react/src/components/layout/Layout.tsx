@@ -21,6 +21,7 @@ import ProjectRepository from "../../repository/backend/ProjectRepository";
 import CreateProjectRequest from "@savenkorodion/webapp-model/requests/CreateProjectRequest";
 import IAsyncCrudRepository from "../../repository/interfaces/async/IAsyncCrudRepository";
 import SelectedProjectRepository from "../../repository/backend/SelectedProjectRepository";
+import { grey } from "@mui/material/colors";
 
 export type TProjectContext = {
   projects: Project[];
@@ -84,9 +85,10 @@ const Layout = () => {
 
   const theme = createTheme({
     palette: {
-      primary: {
-        main: isDarkTheme ? "#212121" : "#3f50b5",
+      secondary: {
+        main: isDarkTheme ? grey[900] : grey[300],
       },
+      mode: isDarkTheme ? "dark" : "light",
     },
   });
 
