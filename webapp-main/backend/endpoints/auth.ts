@@ -8,7 +8,7 @@ const getAuthEndpoints = (app: Express) => {
 
   app.post("/token", function (req, res) {
     console.log("here");
-    const expTime = req.body.exp || 60;
+    const expTime = req.body.exp || 10;
     const token = generateToken(+expTime);
     refreshToken = generateToken(60 * 60);
     res.status(200).send({ token, refreshToken });
@@ -25,7 +25,7 @@ const getAuthEndpoints = (app: Express) => {
     }
     const expTime = req.headers.exp || 60;
     const token = generateToken(+expTime);
-    refreshToken = generateToken(60 * 60 * 3);
+    refreshToken = generateToken(60 * 60 * 10);
     res.status(200).send({ token, refreshToken });
   });
 

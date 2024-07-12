@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import UserRepository from "../../repository/backend/UserRepository";
 import axios from "axios";
+import jwt from "jsonwebtoken";
 
 export type TBaselineContext = {
   isDarkTheme: boolean;
@@ -27,36 +28,27 @@ const BaselineLayout = () => {
   useEffect(() => {
     const userRepository = new UserRepository();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const authToken = userRepository.getTokenFromStorage();
+    let authToken = userRepository.getTokenFromStorage();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const decodedToken: any = jwt.decode(authToken);
+    const isValid = new Date(decodedToken.exp * 1000) > new Date();
+
+    if (!isValid) {
+      userRepository.requestNewAuthtoken();
+      authToken = userRepository.getTokenFromStorage();
+    }
     axios({
       url: "http://localhost:3000/status",
       headers: { Authorization: `bearer ${authToken}` },
     })
       .then(() => setIsLoading(false))
       .catch(() => {
-        console.log(2);
         if (location.pathname !== "/anonymous/login") {
           navigate("/anonymous/login");
         }
         setIsLoading(false);
       });
-
-    // const isValid = authToken?.exp > new Date();
-    // console.log(new Date());
-    // console.log(new Date(authToken?.exp));
-    // if (!isValid && location.pathname !== "/anonymous/login") {
-    //   userRepository
-    //     .requestNewAuthtoken()
-    //     .then(() => setIsLoading(false))
-    //     .catch(() => {
-    //       navigate("/anonymous/login");
-    //       setIsLoading(false);
-    //     });
-    // } else {
-    //   setIsLoading(false);
-    // }
   }, []);
 
   const isDarkThemeStorage: boolean = JSON.parse(
