@@ -103,7 +103,6 @@ const ProjectStories = () => {
   useEffect(() => {
     taskRepository.getAll().then((e) => {
       setTaskList(e.filter((e) => e.projectId === projectId));
-      console.log(taskList);
     });
   }, []);
 

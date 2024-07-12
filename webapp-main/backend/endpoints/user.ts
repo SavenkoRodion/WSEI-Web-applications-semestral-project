@@ -12,7 +12,6 @@ class UserEndpoints {
   mapUserEndpoints = (app: Express) => {
     app.get("/user/all", async (req, res) => {
       const dbResult = await this.#userRepository.getAll();
-      console.log(dbResult);
       res.send(JSON.stringify(dbResult));
     });
 
@@ -20,7 +19,6 @@ class UserEndpoints {
       const id = req.query.id as string;
 
       const dbResult = await this.#userRepository.get(id);
-      console.log(dbResult);
       res.send(JSON.stringify(dbResult));
     });
   };

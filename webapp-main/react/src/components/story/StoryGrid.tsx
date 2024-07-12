@@ -14,7 +14,6 @@ type StoryGridProps = {
 };
 
 const StoryGrid = ({ stories, tasks, users }: StoryGridProps) => {
-  console.log(tasks[0]);
   return (
     <Box>
       {!!stories.length && (

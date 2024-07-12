@@ -9,7 +9,6 @@ class UserRepository {
       url: "http://localhost:3000/user/all",
       responseType: "json",
     });
-    console.log(response);
     return response.data as User[];
   }
 
@@ -56,8 +55,6 @@ class UserRepository {
         }
       })
       .catch(() => false);
-
-    return false;
   }
 
   async authorize(login: string, password: string) {

@@ -35,9 +35,8 @@ const BaselineLayout = () => {
     const isValid = new Date(decodedToken.exp * 1000) > new Date();
 
     if (!isValid) {
-      userRepository.requestNewAuthtoken().then((e: boolean) => {
-        console.log("here");
-        console.log(e);
+      userRepository.requestNewAuthtoken().then(() => {
+        //if (!e) navigate("/anonymous/login");
         authToken = userRepository.getTokenFromStorage();
         axios({
           url: "http://localhost:3000/status",

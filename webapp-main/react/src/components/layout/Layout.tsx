@@ -47,7 +47,6 @@ const Layout = () => {
 
   useEffect(() => {
     if (projects !== undefined) {
-      console.log();
       setSelectedProject(
         projects.filter((e) => e._id === selectedProjectId)[0]
       );

@@ -8,8 +8,6 @@ const Login = () => {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | undefined>(undefined);
   const userRepository = new UserRepository();
-  console.log(userRepository.getTokenFromStorage());
-  console.log(userRepository.getRefreshTokenFromStorage());
   const navigate = useNavigate();
 
   return (

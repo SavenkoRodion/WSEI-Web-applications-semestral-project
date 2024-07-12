@@ -28,7 +28,6 @@ const StoryCard = ({ story }: StoryCardProps) => {
   const [userList, setUserList] = useState<User[] | undefined>(undefined);
 
   useEffect(() => {
-    console.log("a1");
     userRepository
       .getAll()
       .then((e) => setUserList(e.filter((e) => e.role !== UserRole.Admin)));
@@ -37,7 +36,6 @@ const StoryCard = ({ story }: StoryCardProps) => {
   const [storyOwner, setStoryOwner] = useState<User | undefined>(undefined);
 
   useEffect(() => {
-    console.log("a2");
     if (userList?.length) {
       setStoryOwner(userList.filter((e) => e._id === story.ownerUserId)[0]);
     }

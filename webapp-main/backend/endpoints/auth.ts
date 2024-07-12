@@ -7,7 +7,6 @@ const getAuthEndpoints = (app: Express) => {
   let refreshToken: string;
 
   app.post("/token", function (req, res) {
-    console.log("here");
     const expTime = req.body.exp || 10;
     const token = generateToken(+expTime);
     refreshToken = generateToken(60 * 60);
@@ -17,9 +16,6 @@ const getAuthEndpoints = (app: Express) => {
   app.post("/refreshToken", function (req, res) {
     const refreshTokenFromPost = req.body.refreshToken;
     if (refreshToken !== refreshTokenFromPost) {
-      console.log(refreshToken);
-      console.log(refreshTokenFromPost);
-      console.log(refreshToken !== refreshTokenFromPost);
       res.status(400).send("Bad refresh token!");
       return;
     }
@@ -44,12 +40,10 @@ const getAuthEndpoints = (app: Express) => {
   function verifyToken(req: any, res: any, next: any) {
     const authHeader = req.headers["authorization"];
     const token = authHeader?.split(" ")[1];
-    console.log(authHeader);
     if (!token) return res.sendStatus(403);
 
     jwt.verify(token, tokenSecret, (err: any, user: any) => {
       if (err) {
-        console.log(err);
         return res.status(401).send(err.message);
       }
       req.user = user;
