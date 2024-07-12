@@ -110,10 +110,7 @@ const ProjectStories = () => {
   const [userList, setUserList] = useState<User[] | undefined>(undefined);
   useEffect(() => {
     userRepository.getAll().then((e: User[]) => {
-      setUserList(e.filter((e) => e.role === UserRole.Admin));
-      console.log("looll");
-      console.log(e.role);
-      console.log(userList);
+      setUserList(e.filter((e) => e.role !== UserRole.Admin));
     });
   }, []);
 

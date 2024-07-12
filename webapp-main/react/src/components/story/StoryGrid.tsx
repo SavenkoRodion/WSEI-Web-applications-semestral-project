@@ -34,7 +34,7 @@ const StoryGrid = ({ stories, tasks, users }: StoryGridProps) => {
         </Box>
       )}
       {stories.map((story) => (
-        <Box sx={styles.grid}>
+        <Box sx={styles.grid} key={story._id}>
           <Box sx={[styles.column]}>
             <Stack key={story._id}>
               <StoryCard story={story} />
