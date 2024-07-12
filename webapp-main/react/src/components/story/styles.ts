@@ -15,11 +15,11 @@ const header: SxProps = {
 
 const column: SxProps = {
   width: "100%",
-  backgroundColor: "#eeeeee",
   padding: "10px",
   gap: "10px",
   display: "flex",
   flexDirection: "column",
+  bgcolor: "secondary.main",
 };
 
 const styles = {
