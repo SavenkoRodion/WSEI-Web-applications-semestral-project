@@ -51,7 +51,6 @@ class SelectedProjectRepository {
           .insertOne({ _id: new ObjectId(id) })
       ).acknowledged;
     }
-    console.log(result);
 
     //await this.#mongoClient.close();
 

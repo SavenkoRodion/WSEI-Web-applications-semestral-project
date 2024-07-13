@@ -9,36 +9,33 @@ import {
   TaskPriority,
   TaskStatus,
 } from "@savenkorodion/webapp-model/entities/TaskObjects";
-import UserRepository from "../../repository/localstorage/UserRepository";
-import User, { UserRole } from "@savenkorodion/webapp-model/entities/User";
+import User from "@savenkorodion/webapp-model/entities/User";
 import { useState } from "react";
 import TaskDeleteDialog from "./TaskDeleteDialog";
 import TaskEditDialog from "./TaskEditDialog";
 import Story from "@savenkorodion/webapp-model/entities/Story";
-import { useParams } from "react-router-dom";
-import IReadRepository from "../../repository/interfaces/sync/IReadRepository";
-import StoryRepository from "../../repository/backend/StoryRepository";
 import IAsyncCrudRepository from "../../repository/interfaces/async/IAsyncCrudRepository";
-import CreateStoryRequest from "@savenkorodion/webapp-model/requests/CreateStoryRequest";
 import CreateTaskRequest from "@savenkorodion/webapp-model/requests/CreateTaskRequest";
 import TaskRepository from "../../repository/backend/TaskRepository";
 import Task from "@savenkorodion/webapp-model/entities/Task";
 
 type TaskCardProps = {
   task: Task;
+  userList: User[];
+  storyList: Story[];
 };
 
-const TaskCard = ({ task }: TaskCardProps) => {
-  const userRepository: IReadRepository<User> = new UserRepository();
+const TaskCard = ({ task, userList, storyList }: TaskCardProps) => {
+  //const userRepository = new UserRepository();
 
-  const userList = userRepository
-    .getAll()
-    .filter((e) => e.role !== UserRole.Admin);
+  // const userList = userRepository
+  //   .getAll()
+  //   .filter((e) => e.role !== UserRole.Admin);
 
-  const taskOwner = userList.filter((e) => e.id === task.ownerUserId)[0];
+  const taskOwner = userList.filter((e) => e._id === task.ownerUserId)[0];
 
   const taskOwnerName = task.ownerUserId
-    ? `${taskOwner.firstName} ${taskOwner.lastName}`
+    ? `${taskOwner?.firstName} ${taskOwner?.lastName}`
     : "Unassigned";
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -75,15 +72,6 @@ const TaskCard = ({ task }: TaskCardProps) => {
     handleDeleteDialogClose();
     window.location.reload();
   };
-
-  const { projectId } = useParams();
-  const storyRepository: IAsyncCrudRepository<CreateStoryRequest, Story> =
-    new StoryRepository();
-  const [storyList, setStoryList] = useState<Story[] | undefined>(undefined);
-
-  storyRepository
-    .getAll()
-    .then((e) => setStoryList(e.filter((e) => e.projectId === projectId)));
 
   const handleTaskComplete = () => {
     const editedTask = task;

@@ -12,13 +12,11 @@ class SelectedProjectRepository {
   }
 
   async replace(id: string | null) {
-    const response = await axios({
+    await axios({
       method: "post",
       url: "http://localhost:3000/project/selected",
       data: { id },
     });
-
-    console.log(response);
 
     return true;
   }

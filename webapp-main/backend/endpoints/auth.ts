@@ -1,65 +1,78 @@
 import { Express } from "express";
 import jwt from "jsonwebtoken";
+import UserRepository from "../repostories/UserRepository";
+import { MongoClient } from "mongodb";
+import User from "@savenkorodion/webapp-model/entities/User";
 
-const getAuthEndpoints = (app: Express) => {
-  //const tokenSecret = process.env.TOKEN_SECRET as string;
-  const tokenSecret = "lolek" as string;
-  let refreshToken: string;
+class AuthEndpoints {
+  mapAuthEndpoints = (app: Express, client: MongoClient) => {
+    const tokenSecret = "lolek" as string;
+    let refreshToken: string;
+    let user: User | null;
 
-  app.get("/", (req, res) => {
-    res.send("Hello World - simple api with JWT!");
-  });
-
-  app.post("/token", function (req, res) {
-    console.log("here");
-    const expTime = req.body.exp || 60;
-    const token = generateToken(+expTime);
-    refreshToken = generateToken(60 * 60);
-    res.status(200).send({ token, refreshToken });
-  });
-  app.post("/refreshToken", function (req, res) {
-    const refreshTokenFromPost = req.body.refreshToken;
-    if (refreshToken !== refreshTokenFromPost) {
-      res.status(400).send("Bad refresh token!");
-    }
-    const expTime = req.headers.exp || 60;
-    const token = generateToken(+expTime);
-    refreshToken = generateToken(60 * 60);
-    setTimeout(() => {
-      res.status(200).send({ token, refreshToken });
-    }, 3000);
-  });
-  app.get("/protected/:id/:delay?", verifyToken, (req, res) => {
-    const id = req.params.id;
-    const delay = req.params.delay ? +req.params.delay : 1000;
-    setTimeout(() => {
-      res.status(200).send(`{"message": "protected endpoint ${id}"}`);
-    }, delay);
-  });
-
-  function generateToken(expirationInSeconds: number) {
-    const exp = Math.floor(Date.now() / 1000) + expirationInSeconds;
-    const token = jwt.sign({ exp, foo: "bar" }, tokenSecret, {
-      algorithm: "HS256",
+    app.post("/token", async function (req, res) {
+      const repository = new UserRepository(client);
+      user = await repository.getByCredentials(
+        req.body.login,
+        req.body.password
+      )!;
+      if (user) {
+        const expTime = req.body.exp || 60;
+        const token = generateTokenAuth(+expTime, user);
+        refreshToken = generateToken(60 * 60);
+        res.status(200).send({ token, refreshToken });
+      } else {
+        user = null;
+        res.status(400).send();
+      }
     });
-    return token;
-  }
 
-  function verifyToken(req: any, res: any, next: any) {
+    app.post("/refreshToken", async function (req, res) {
+      const refreshTokenFromPost = req.body.refreshToken;
+      if (refreshToken !== refreshTokenFromPost) {
+        res.status(400).send("Bad refresh token!");
+        return;
+      }
+      const expTime = 60;
+      const token = generateTokenAuth(+expTime, user!);
+      refreshToken = generateToken(60 * 60);
+      res.status(200).send({ token, refreshToken });
+    });
+
+    app.get("/status", this.verifyToken, (req, res) => {
+      res.status(200).send();
+    });
+
+    function generateTokenAuth(expirationInSeconds: number, user: User) {
+      const exp = Math.floor(Date.now() / 1000) + expirationInSeconds;
+      const token = jwt.sign({ exp, user }, tokenSecret, {
+        algorithm: "HS256",
+      });
+      return token;
+    }
+
+    function generateToken(expirationInSeconds: number) {
+      const exp = Math.floor(Date.now() / 1000) + expirationInSeconds;
+      const token = jwt.sign({ exp, foo: "bar" }, tokenSecret, {
+        algorithm: "HS256",
+      });
+      return token;
+    }
+  };
+
+  verifyToken(req: any, res: any, next: any) {
     const authHeader = req.headers["authorization"];
     const token = authHeader?.split(" ")[1];
-
     if (!token) return res.sendStatus(403);
 
-    jwt.verify(token, tokenSecret, (err: any, user: any) => {
+    jwt.verify(token, "lolek", (err: any, user: any) => {
       if (err) {
-        console.log(err);
         return res.status(401).send(err.message);
       }
       req.user = user;
       next();
     });
   }
-};
+}
 
-export default getAuthEndpoints;
+export default AuthEndpoints;

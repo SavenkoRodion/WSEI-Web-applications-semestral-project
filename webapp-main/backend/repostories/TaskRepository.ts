@@ -35,7 +35,6 @@ class TaskRepository {
 
   async create(requestObject: CreateTaskRequest) {
     await this.#mongoClient.connect();
-    console.log(requestObject);
     const result = await this.#mongoClient
       .db("webapp")
       .collection("tasks")
