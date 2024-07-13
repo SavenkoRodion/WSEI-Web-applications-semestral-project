@@ -32,8 +32,7 @@ const BaselineLayout = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const decodedToken: any = jwt.decode(authToken);
-    const isValid = new Date(decodedToken.exp * 1000) >= new Date();
-    console.log(new Date(decodedToken.exp * 1000));
+    const isValid = new Date(decodedToken?.exp * 1000) >= new Date();
     if (!isValid) {
       console.log(1);
       userRepository.requestNewAuthtoken().then(() => {
@@ -72,7 +71,7 @@ const BaselineLayout = () => {
   const isDarkThemeStorage: boolean = JSON.parse(
     localStorage.getItem("react_theme") ?? "false"
   );
-
+  
   const [isDarkTheme, setIsDarkTheme] = useState(isDarkThemeStorage);
 
   useEffect(() => {

@@ -35,7 +35,7 @@ class UserRepository {
   }
 
   getTokenFromStorage() {
-    return JSON.parse(localStorage.getItem(localStorageConfigs.token) ?? "");
+    return JSON.parse(localStorage.getItem(localStorageConfigs.token) ?? "{}");
   }
 
   getRefreshTokenFromStorage() {

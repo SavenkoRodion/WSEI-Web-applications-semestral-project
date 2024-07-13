@@ -3,13 +3,12 @@ import express from "express";
 import "dotenv/config";
 import cors from "cors";
 import { MongoClient, ServerApiVersion } from "mongodb";
-import getAuthEndpoints from "./endpoints/auth";
-import credentials from "./credentials";
 import ProjectEndpoints from "./endpoints/project";
 import StoryEndpoints from "./endpoints/story";
 import TaskEndpoints from "./endpoints/task";
 import UserEndpoints from "./endpoints/user";
 import AuthEndpoints from "./endpoints/auth";
+import { credentials } from "./credentials";
 
 const app = express();
 const port = 3000;
