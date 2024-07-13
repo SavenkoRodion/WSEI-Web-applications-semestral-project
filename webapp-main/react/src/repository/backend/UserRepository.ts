@@ -23,6 +23,8 @@ class UserRepository {
   }
 
   saveTokens(token: string, refreshToken: string) {
+    localStorage.removeItem(localStorageConfigs.token);
+    localStorage.removeItem(localStorageConfigs.refreshToken);
     localStorage.setItem(localStorageConfigs.token, JSON.stringify(token));
     localStorage.setItem(
       localStorageConfigs.refreshToken,
@@ -43,18 +45,20 @@ class UserRepository {
   }
 
   async requestNewAuthtoken() {
-    axios({
-      method: "post",
-      url: "http://localhost:3000/refreshToken",
-      data: { refreshToken: this.getRefreshTokenFromStorage() },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          this.saveTokens(response.data.token, response.data.refreshToken);
-          return true;
-        }
-      })
-      .catch(() => false);
+    try {
+      const response = await axios({
+        method: "post",
+        url: "http://localhost:3000/refreshToken",
+        data: { refreshToken: this.getRefreshTokenFromStorage() },
+      });
+      if (response.status === 200) {
+        this.saveTokens(response.data.token, response.data.refreshToken);
+        return true;
+      }
+    } catch (e) {
+      return false;
+    }
+    return false;
   }
 
   async authorize(login: string, password: string) {

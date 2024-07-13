@@ -28,19 +28,22 @@ const BaselineLayout = () => {
   useEffect(() => {
     const userRepository = new UserRepository();
 
-    let authToken = userRepository.getTokenFromStorage();
+    const authToken = userRepository.getTokenFromStorage();
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const decodedToken: any = jwt.decode(authToken);
-    const isValid = new Date(decodedToken.exp * 1000) > new Date();
-
+    const isValid = new Date(decodedToken.exp * 1000) >= new Date();
+    console.log(new Date(decodedToken.exp * 1000));
     if (!isValid) {
+      console.log(1);
       userRepository.requestNewAuthtoken().then(() => {
         //if (!e) navigate("/anonymous/login");
-        authToken = userRepository.getTokenFromStorage();
+        const newAuthToken = userRepository.getTokenFromStorage();
+        console.log(jwt.decode(userRepository.getTokenFromStorage()));
+        console.log(newAuthToken === authToken);
         axios({
           url: "http://localhost:3000/status",
-          headers: { Authorization: `bearer ${authToken}` },
+          headers: { Authorization: `bearer ${newAuthToken}` },
         })
           .then(() => setIsLoading(false))
           .catch(() => {
@@ -51,6 +54,7 @@ const BaselineLayout = () => {
           });
       });
     } else {
+      console.log(2);
       axios({
         url: "http://localhost:3000/status",
         headers: { Authorization: `bearer ${authToken}` },
