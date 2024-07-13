@@ -1,4 +1,4 @@
-import { Box, Button, OutlinedInput, Stack, Typography } from "@mui/material";
+import { Box, Button, OutlinedInput, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import UserRepository from "../../repository/backend/UserRepository";
 import { useNavigate } from "react-router-dom";
@@ -11,12 +11,13 @@ const Login = () => {
   const navigate = useNavigate();
 
   return (
-    <Box>
-      <OutlinedInput value={login} onChange={(e) => setLogin(e.target.value)} />
-      <OutlinedInput
+    <Box sx={{padding: "10px"}}>
+      <TextField type={"outlined"} value={login} onChange={(e) => setLogin(e.target.value)} label="Login" />
+      <TextField
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         type={"password"}
+        label="Password"
       />
       <Button
         onClick={async () => {

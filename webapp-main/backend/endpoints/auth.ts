@@ -23,6 +23,7 @@ class AuthEndpoints {
         res.status(200).send({ token, refreshToken });
       } else {
         user = null;
+        refreshToken = "";
         res.status(400).send();
       }
     });
@@ -39,7 +40,7 @@ class AuthEndpoints {
       res.status(200).send({ token, refreshToken });
     });
 
-    app.get("/status", this.verifyToken, (req, res) => {
+    app.get("/status", verifyToken, (req, res) => {
       res.status(200).send();
     });
 
@@ -60,19 +61,21 @@ class AuthEndpoints {
     }
   };
 
-  verifyToken(req: any, res: any, next: any) {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader?.split(" ")[1];
-    if (!token) return res.sendStatus(403);
+  
+}
 
-    jwt.verify(token, "lolek", (err: any, user: any) => {
-      if (err) {
-        return res.status(401).send(err.message);
-      }
-      req.user = user;
-      next();
-    });
-  }
+export function verifyToken(req: any, res: any, next: any) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader?.split(" ")[1];
+  if (!token) return res.sendStatus(403);
+
+  jwt.verify(token, "lolek", (err: any, user: any) => {
+    if (err) {
+      return res.status(401).send(err.message);
+    }
+    req.user = user;
+    next();
+  });
 }
 
 export default AuthEndpoints;

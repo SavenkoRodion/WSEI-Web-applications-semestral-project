@@ -4,6 +4,7 @@ import { MongoClient } from "mongodb";
 import ProjectRepository from "../repostories/ProjectRepository";
 import Project from "@savenkorodion/webapp-model/entities/Project";
 import SelectedProjectRepository from "../repostories/SelectedProjectRepository";
+import { verifyToken } from "./auth";
 
 class ProjectEndpoints {
   #projectRepository: ProjectRepository;
@@ -17,12 +18,12 @@ class ProjectEndpoints {
   }
 
   mapProjectEndpoints = (app: Express) => {
-    app.get("/project/all", async (req, res) => {
+    app.get("/project/all", verifyToken, async (req, res) => {
       const dbResult = await this.#projectRepository.getAll();
       res.send(JSON.stringify(dbResult));
     });
 
-    app.get("/project", async (req, res) => {
+    app.get("/project", verifyToken, async (req, res) => {
       const id = req.query.id as string;
 
       const dbResult = await this.#projectRepository.get(id);
@@ -30,7 +31,7 @@ class ProjectEndpoints {
       res.send(JSON.stringify(dbResult));
     });
 
-    app.post("/project/", async (req, res) => {
+    app.post("/project/", verifyToken, async (req, res) => {
       const requestObject: CreateProjectRequest = req.body;
 
       const dbResult = await this.#projectRepository.create(requestObject);
@@ -38,7 +39,7 @@ class ProjectEndpoints {
       res.send(JSON.stringify(dbResult));
     });
 
-    app.put("/project/", async (req, res) => {
+    app.put("/project/", verifyToken, async (req, res) => {
       const requestObject: Project = req.body;
 
       const dbResult = await this.#projectRepository.replace(requestObject);
@@ -46,7 +47,7 @@ class ProjectEndpoints {
       res.send(JSON.stringify(dbResult));
     });
 
-    app.delete("/project/", async (req, res) => {
+    app.delete("/project/", verifyToken, async (req, res) => {
       const id: string = req.query.id as string;
 
       const dbResult = await this.#projectRepository.delete(id);
@@ -54,12 +55,12 @@ class ProjectEndpoints {
       res.send(JSON.stringify(dbResult));
     });
 
-    app.get("/project/selected", async (req, res) => {
+    app.get("/project/selected", verifyToken, async (req, res) => {
       const dbResult = await this.#selectedProjectRepository.getAll();
       res.send(JSON.stringify(dbResult));
     });
 
-    app.post("/project/selected", async (req, res) => {
+    app.post("/project/selected", verifyToken, async (req, res) => {
       const requestObject: string | null = req.body.id;
 
       const dbResult = await this.#selectedProjectRepository.replace(

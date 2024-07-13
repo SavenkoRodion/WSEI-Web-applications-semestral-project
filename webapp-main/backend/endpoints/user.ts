@@ -1,6 +1,7 @@
 import { MongoClient } from "mongodb";
 import UserRepository from "../repostories/UserRepository";
 import { Express } from "express";
+import { verifyToken } from "./auth";
 
 class UserEndpoints {
   #userRepository: UserRepository;
@@ -10,7 +11,7 @@ class UserEndpoints {
   }
 
   mapUserEndpoints = (app: Express) => {
-    app.get("/user/all", async (req, res) => {
+    app.get("/user/all", verifyToken, async (req, res) => {
       const dbResult = await this.#userRepository.getAll();
       res.send(JSON.stringify(dbResult));
     });

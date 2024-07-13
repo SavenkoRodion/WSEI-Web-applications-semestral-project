@@ -3,23 +3,16 @@ import axios from "axios";
 import localStorageConfigs from "../../localStorageConfigs";
 
 class UserRepository {
+
   async getAll() {
     const response = await axios({
       method: "get",
       url: "http://localhost:3000/user/all",
       responseType: "json",
+      headers: { Authorization: `bearer ${this.getTokenFromStorage()}` }
     });
-    return response.data as User[];
-  }
 
-  async get(id: string) {
-    const response = await axios({
-      method: "get",
-      url: "http://localhost:3000/user",
-      responseType: "json",
-      params: id,
-    });
-    return response.data as User | null;
+    return response.data as User[];
   }
 
   saveTokens(token: string, refreshToken: string) {

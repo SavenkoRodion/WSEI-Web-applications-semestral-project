@@ -3,6 +3,7 @@ import { MongoClient } from "mongodb";
 import TaskRepository from "../repostories/TaskRepository";
 import Task from "@savenkorodion/webapp-model/entities/Task";
 import CreateTaskRequest from "@savenkorodion/webapp-model/requests/CreateTaskRequest";
+import { verifyToken } from "./auth";
 
 class TaskEndpoints {
   #taskRepository: TaskRepository;
@@ -12,12 +13,12 @@ class TaskEndpoints {
   }
 
   mapTaskEndpoints = (app: Express) => {
-    app.get("/task/all", async (req, res) => {
+    app.get("/task/all", verifyToken, async (req, res) => {
       const dbResult = await this.#taskRepository.getAll();
       res.send(JSON.stringify(dbResult));
     });
 
-    app.get("/task", async (req, res) => {
+    app.get("/task", verifyToken, async (req, res) => {
       const id = req.query.id as string;
 
       const dbResult = await this.#taskRepository.get(id);
@@ -25,7 +26,7 @@ class TaskEndpoints {
       res.send(JSON.stringify(dbResult));
     });
 
-    app.post("/task", async (req, res) => {
+    app.post("/task", verifyToken, async (req, res) => {
       const requestObject: CreateTaskRequest = req.body;
 
       const dbResult = await this.#taskRepository.create(requestObject);
@@ -33,7 +34,7 @@ class TaskEndpoints {
       res.send(JSON.stringify(dbResult));
     });
 
-    app.put("/task", async (req, res) => {
+    app.put("/task", verifyToken, async (req, res) => {
       const requestObject: Task = req.body;
 
       const dbResult = await this.#taskRepository.replace(requestObject);
@@ -41,7 +42,7 @@ class TaskEndpoints {
       res.send(JSON.stringify(dbResult));
     });
 
-    app.delete("/task", async (req, res) => {
+    app.delete("/task", verifyToken, async (req, res) => {
       const id: string = req.query.id as string;
 
       const dbResult = await this.#taskRepository.delete(id);

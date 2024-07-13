@@ -2,16 +2,21 @@ import Story from "@savenkorodion/webapp-model/entities/Story";
 import axios from "axios";
 import CreateStoryRequest from "@savenkorodion/webapp-model/requests/CreateStoryRequest";
 import IAsyncCrudRepository from "../interfaces/async/IAsyncCrudRepository";
+import UserRepository from "./UserRepository";
 
 class StoryRepository
   implements IAsyncCrudRepository<CreateStoryRequest, Story>
 {
+  userRepository: UserRepository = new UserRepository();
+  
   async getAll() {
     const response = await axios({
       method: "get",
       url: "http://localhost:3000/story/all",
       responseType: "json",
+      headers: { Authorization: `bearer ${this.userRepository.getTokenFromStorage()}` }
     });
+
     return response.data as Story[];
   }
 
@@ -21,7 +26,9 @@ class StoryRepository
       url: "http://localhost:3000/story",
       responseType: "json",
       params: { id },
+      headers: { Authorization: `bearer ${this.userRepository.getTokenFromStorage()}` }
     });
+
     return response.data as Story | null;
   }
 
@@ -30,7 +37,9 @@ class StoryRepository
       method: "post",
       url: "http://localhost:3000/story",
       data: project,
+      headers: { Authorization: `bearer ${this.userRepository.getTokenFromStorage()}` }
     });
+
     return true;
   }
 
@@ -39,7 +48,9 @@ class StoryRepository
       method: "delete",
       url: "http://localhost:3000/story",
       params: { id },
+      headers: { Authorization: `bearer ${this.userRepository.getTokenFromStorage()}` }
     });
+
     return true;
   }
 
@@ -48,7 +59,9 @@ class StoryRepository
       method: "put",
       url: "http://localhost:3000/story",
       data: project,
+      headers: { Authorization: `bearer ${this.userRepository.getTokenFromStorage()}` }
     });
+
     return true;
   }
 }
