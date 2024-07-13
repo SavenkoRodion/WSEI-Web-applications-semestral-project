@@ -9,6 +9,7 @@ import ProjectEndpoints from "./endpoints/project";
 import StoryEndpoints from "./endpoints/story";
 import TaskEndpoints from "./endpoints/task";
 import UserEndpoints from "./endpoints/user";
+import AuthEndpoints from "./endpoints/auth";
 
 const app = express();
 const port = 3000;
@@ -26,12 +27,12 @@ const client = new MongoClient(uri, {
   },
 });
 
-getAuthEndpoints(app);
-
+const authEndpoints = new AuthEndpoints();
 const projectEndpoints = new ProjectEndpoints(client);
 const storyEndpoints = new StoryEndpoints(client);
 const taskEndpoints = new TaskEndpoints(client);
 const userEndpoints = new UserEndpoints(client);
+authEndpoints.mapAuthEndpoints(app, client);
 projectEndpoints.mapProjectEndpoints(app);
 storyEndpoints.mapStoryEndpoints(app);
 taskEndpoints.mapTaskEndpoints(app);

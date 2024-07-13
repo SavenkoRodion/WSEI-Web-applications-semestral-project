@@ -14,10 +14,7 @@ import { useState } from "react";
 import TaskDeleteDialog from "./TaskDeleteDialog";
 import TaskEditDialog from "./TaskEditDialog";
 import Story from "@savenkorodion/webapp-model/entities/Story";
-import { useParams } from "react-router-dom";
-import StoryRepository from "../../repository/backend/StoryRepository";
 import IAsyncCrudRepository from "../../repository/interfaces/async/IAsyncCrudRepository";
-import CreateStoryRequest from "@savenkorodion/webapp-model/requests/CreateStoryRequest";
 import CreateTaskRequest from "@savenkorodion/webapp-model/requests/CreateTaskRequest";
 import TaskRepository from "../../repository/backend/TaskRepository";
 import Task from "@savenkorodion/webapp-model/entities/Task";
@@ -25,9 +22,10 @@ import Task from "@savenkorodion/webapp-model/entities/Task";
 type TaskCardProps = {
   task: Task;
   userList: User[];
+  storyList: Story[];
 };
 
-const TaskCard = ({ task, userList }: TaskCardProps) => {
+const TaskCard = ({ task, userList, storyList }: TaskCardProps) => {
   //const userRepository = new UserRepository();
 
   // const userList = userRepository
@@ -75,15 +73,6 @@ const TaskCard = ({ task, userList }: TaskCardProps) => {
     window.location.reload();
   };
 
-  const { projectId } = useParams();
-  const storyRepository: IAsyncCrudRepository<CreateStoryRequest, Story> =
-    new StoryRepository();
-  const [storyList, setStoryList] = useState<Story[] | undefined>(undefined);
-
-  storyRepository
-    .getAll()
-    .then((e) => setStoryList(e.filter((e) => e.projectId === projectId)));
-
   const handleTaskComplete = () => {
     const editedTask = task;
     editedTask.status = TaskStatus.Done;
@@ -96,7 +85,7 @@ const TaskCard = ({ task, userList }: TaskCardProps) => {
       <Card sx={{ boxShadow: "inset 2px 0px green" }}>
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            {`Owner: ${taskOwner ? taskOwnerName : "Unknown"}`}
+            {`Owner: ${taskOwnerName}`}
           </Typography>
           <Typography variant="h5" component="div">
             {task.name}

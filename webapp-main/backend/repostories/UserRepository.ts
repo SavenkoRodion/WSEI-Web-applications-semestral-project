@@ -20,13 +20,13 @@ class UserRepository {
     return result;
   }
 
-  async get(id: string) {
+  async getByCredentials(login: string, password: string) {
     await this.#mongoClient.connect();
 
     const result = await this.#mongoClient
       .db("webapp")
-      .collection("tasks")
-      .findOne<User>({ _id: new ObjectId(id) });
+      .collection("users")
+      .findOne<User>({ login: login, password: password });
 
     return result;
   }

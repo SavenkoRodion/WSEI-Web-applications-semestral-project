@@ -15,12 +15,12 @@ class UserEndpoints {
       res.send(JSON.stringify(dbResult));
     });
 
-    app.get("/user", async (req, res) => {
-      const id = req.query.id as string;
+    // app.get("/user", async (req, res) => {
+    //   const id = req.query.id as string;
 
-      const dbResult = await this.#userRepository.get(id);
-      res.send(JSON.stringify(dbResult));
-    });
+    //   const dbResult = await this.#userRepository.get(id);
+    //   res.send(JSON.stringify(dbResult));
+    // });
   };
 }
 

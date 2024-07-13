@@ -45,7 +45,7 @@ const StoryGrid = ({ stories, tasks, users }: StoryGridProps) => {
                 (e) => e.status === TaskStatus.Todo && e.storyId === story._id
               )
               .map((e) => (
-                <TaskCard task={e} userList={users} />
+                <TaskCard task={e} userList={users} storyList={stories} />
               ))}
           </Box>
           <Box sx={[styles.column]}>
@@ -54,7 +54,7 @@ const StoryGrid = ({ stories, tasks, users }: StoryGridProps) => {
                 (e) => e.status === TaskStatus.Doing && e.storyId === story._id
               )
               .map((e) => (
-                <TaskCard task={e} userList={users} />
+                <TaskCard task={e} userList={users} storyList={stories} />
               ))}
           </Box>
           <Box sx={[styles.column]}>
@@ -63,7 +63,7 @@ const StoryGrid = ({ stories, tasks, users }: StoryGridProps) => {
                 (e) => e.status === TaskStatus.Done && e.storyId === story._id
               )
               .map((e) => (
-                <TaskCard task={e} userList={users} />
+                <TaskCard task={e} userList={users} storyList={stories} />
               ))}
           </Box>
         </Box>

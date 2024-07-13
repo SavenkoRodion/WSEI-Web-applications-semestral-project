@@ -16,6 +16,7 @@ const Login = () => {
       <OutlinedInput
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        type={"password"}
       />
       <Button
         onClick={async () => {
