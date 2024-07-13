@@ -34,12 +34,9 @@ const BaselineLayout = () => {
     const decodedToken: any = jwt.decode(authToken);
     const isValid = new Date(decodedToken?.exp * 1000) >= new Date();
     if (!isValid) {
-      console.log(1);
       userRepository.requestNewAuthtoken().then(() => {
         //if (!e) navigate("/anonymous/login");
         const newAuthToken = userRepository.getTokenFromStorage();
-        console.log(jwt.decode(userRepository.getTokenFromStorage()));
-        console.log(newAuthToken === authToken);
         axios({
           url: "http://localhost:3000/status",
           headers: { Authorization: `bearer ${newAuthToken}` },
@@ -53,7 +50,6 @@ const BaselineLayout = () => {
           });
       });
     } else {
-      console.log(2);
       axios({
         url: "http://localhost:3000/status",
         headers: { Authorization: `bearer ${authToken}` },
@@ -71,7 +67,7 @@ const BaselineLayout = () => {
   const isDarkThemeStorage: boolean = JSON.parse(
     localStorage.getItem("react_theme") ?? "false"
   );
-  
+
   const [isDarkTheme, setIsDarkTheme] = useState(isDarkThemeStorage);
 
   useEffect(() => {
